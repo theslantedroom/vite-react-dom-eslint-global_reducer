@@ -2,42 +2,26 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useGlobalContext } from '../contexts/global/GlobalContext.jsx';
 
-function Button({ text, bg, padding }) {
-  return (
-    <div>
-      <button
-        className={`
-          ${padding || 'px-6 py-2'} text-sm font-semibold uppercase 
-          rounded-sm text-white transition ${bg}`}
-      >
-        <span>{text}</span>
-      </button>
-    </div>
-  );
-}
-
 function Navbar() {
   const { foobar } = useGlobalContext();
   return (
-    <div className="fixed left-0 right-0 top-0 h-16 shadow-md border-b-2 border-gray-100 bg-gray-900">
-      <nav className="flex items-center container mx-auto h-full justify-between">
-        <h1 className="font-semibold uppercase text-lg text-gray-200">
-          🔄 Demo App - {foobar}
-        </h1>
+    <div className="box">
+      <nav className="justify-between">
+        <h1 className="text">🔄 Demo App - {foobar}</h1>
         <div>
-          <ul className="flex items-center space-x-10 text-sm">
+          <ul className="text">
             <li>
-              <Link to="/" className="text-gray-400 hover:text-gray-100">
+              <Link to="/" className="text">
                 Home
               </Link>
             </li>
             <li>
-              <Link to="/about" className="text-gray-400 hover:text-gray-100">
+              <Link to="/about" className="text">
                 About Us
               </Link>
             </li>
             <li>
-              <Link to="/docs" className="text-gray-400 hover:text-gray-100">
+              <Link to="/docs" className="text">
                 Docs
               </Link>
             </li>

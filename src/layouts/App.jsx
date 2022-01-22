@@ -10,8 +10,8 @@ function App() {
       <div className="pt-20">
         <Navbar />
         <Routes>
-          <Route path="/" component={Home} exact />
-          <Route path="/about" component={About} exact />
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
         </Routes>
       </div>
     </BrowserRouter>

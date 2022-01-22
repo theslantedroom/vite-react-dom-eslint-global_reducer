@@ -1,12 +1,12 @@
 import React, { useContext, useReducer } from 'react';
 import reducer from './globalReducer.jsx';
+import { cat, dog } from '../../classes/classes';
 
 const GlobalContext = React.createContext();
 
 const initialState = {
-  isTrue: true,
-  isFalse: false,
-  foobar: 'FooBar',
+  cat: cat,
+  dog: dog,
 };
 
 // This context provider is passed to any component requiring the context

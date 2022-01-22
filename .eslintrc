@@ -10,6 +10,9 @@
     "plugin:react-hooks/recommended",
     "plugin:import/recommended"
   ],
+  "parserOptions": {
+    "ecmaVersion": 2020
+  },
   "rules": {
     "react/prop-types": 0,
     "react/jsx-fragments": 0,

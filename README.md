@@ -8,13 +8,14 @@
 </p>
 
 -Vite
--React
--React-Dom
+-React 17
+-React-Router 6
 -Global context and reducer
+-Classes examples
 -Eslint
 
 ## How to Install.
-Have yarn installed.
 
+Have yarn installed.
 
 After clonning, go to the folder and type `yarn` to install the dependencies.

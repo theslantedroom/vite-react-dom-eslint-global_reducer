@@ -3,7 +3,7 @@ import Navbar from '../components/Navbar.jsx';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from '../pages/Home.jsx';
 import About from '../pages/About.jsx';
-import  '../classes/typescript';
+import '../classes/typescript.ts';
 
 function App() {
   return (

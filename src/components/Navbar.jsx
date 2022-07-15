@@ -16,8 +16,8 @@ function Navbar() {
               </Link>
             </li>
             <li>
-              <Link to="/about" className="text">
-                About Us
+              <Link to="/boxing" className="text">
+                Boxing Game
               </Link>
             </li>
             <li>

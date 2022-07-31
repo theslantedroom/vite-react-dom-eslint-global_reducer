@@ -18,8 +18,8 @@ export const darkPalette = {
     main: colors.darkGreen,
   },
   background: {
-    default: colors.black,
-    paper: colors.black,
+    default: colors.darkGrey,
+    paper: colors.darkGrey,
   },
   text: {
     primary: colors.white,

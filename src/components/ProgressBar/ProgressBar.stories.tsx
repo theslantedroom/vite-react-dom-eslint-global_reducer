@@ -19,12 +19,24 @@ export default {
 } as Meta;
 
 const Template: Story<Props> = (args) => (
-  <Box>
+  <Box sx={{ position: 'absolute', border: '1px solid', height: 400, width: 400, p: 2 }}>
     <ProgressBar {...args} />
   </Box>
 );
 
 export const Progress = Template.bind({});
 Progress.args = {
-  message: '0/200',
+  message: 'Health',
+  tooltip: 'Health is Half Full',
+  max: 100,
+  value: 50,
+};
+
+export const Full = Template.bind({});
+Full.args = {
+  message: 'Health',
+  tooltip: 'Full',
+  max: 100,
+  value: 100,
+  width: 300,
 };

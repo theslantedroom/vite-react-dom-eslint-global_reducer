@@ -1,0 +1,21 @@
+// Figma Palette
+export const colors = {
+  absoluteBlack: '#000000',
+  blackestBlack: '#111213',
+  black: '#15191D',
+  veryDarkGrey: '#252D33',
+  darkGrey: '#333F48',
+  middleGrey: '#5D6A75',
+  grey: '#878B8F',
+  middleGrey2: '#BCC1C6',
+  lightGrey: '#D1D4D8',
+  lightGrey2: '#DDE2E6',
+  veryLightGrey: '#F4F6FA',
+  veryLightGrey2: '#F1F5F7',
+  white: '#FFFFFF',
+  red: '#E04726',
+  darkGreen: '#289430',
+  darkBlue: '#0076D1',
+  facebook: '#3B5998',
+  google: '#DD4B39',
+};

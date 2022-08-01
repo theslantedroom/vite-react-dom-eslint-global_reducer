@@ -1,0 +1,42 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+  ],
+  "settings": {
+  "restoreTerminals.terminals": [
+    {
+      "profile": "Git Bash",
+      "splitTerminals": [
+            {
+              "name": " Git Bash",
+              "commands": [
+                "git fetch",
+                "git status"
+              ]
+            },
+            {
+              "name": "server",
+              "commands": [
+                "yarn dev"
+              ]
+            },
+            {
+              "name": "typescript",
+              "commands": [
+                "tsc -w"
+              ]
+            },
+            {
+              "name": "storybook",
+              "commands": [
+                "yarn storybook",
+              ],
+              "shouldRunCommands": false
+            }
+          ]
+    }
+  ]
+  }
+}

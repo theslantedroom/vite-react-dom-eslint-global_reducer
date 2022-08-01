@@ -32,8 +32,8 @@ Progress.args = {
   value: 50,
 };
 
-export const Full = Template.bind({});
-Full.args = {
+export const Long = Template.bind({});
+Long.args = {
   message: 'Health',
   tooltip: 'Full',
   max: 100,

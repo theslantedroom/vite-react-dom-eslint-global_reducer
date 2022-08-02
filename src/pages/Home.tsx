@@ -1,23 +1,17 @@
 import React from 'react';
+
+import { Typography, Box, Button, Stack } from '@mui/material';
 import { useGlobalContext } from '../contexts/global/GlobalContext.jsx';
 import { DisplayData } from '../components/cards/DisplayData/DisplayData.jsx';
 import { FightTwo } from '../components/cards/DisplayData/FightTwo.jsx';
 //style
-import { globalStyles } from '../theme/globalStyles';
-function Home() {
+export const Home = () => {
   const { cat, dog } = useGlobalContext();
-
   return (
-    <div style={globalStyles.container}>
-      <h1>HOME</h1>
-
-      <div style={globalStyles.flexRowSA}>
-        <DisplayData object={cat} />
-        <DisplayData object={dog} />
-      </div>
+    <Stack>
+      <DisplayData object={cat} />
       <FightTwo objectA={cat} objectB={dog} />
-    </div>
+      <DisplayData object={dog} />
+    </Stack>
   );
-}
-
-export default Home;
+};

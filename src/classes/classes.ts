@@ -1,5 +1,8 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
 class Living {
-  constructor(options) {
+  constructor(options: any) {
     const defaults = {
       _isAlive: true,
       name: 'noname',
@@ -30,11 +33,11 @@ class Living {
 }
 
 class Sentient extends Living {
-  constructor(options, extendedOptions) {
+  constructor(options: any, extendedOptions: any) {
     const defaults = {
-      intelligence: 1,
-      attPierce: 1,
-      defPierce: 1,
+      int: 1,
+      atkPrc: 1,
+      defPrc: 1,
     };
     const populated = Object.assign(defaults, extendedOptions);
     super(options);
@@ -49,9 +52,9 @@ class Sentient extends Living {
     super.speak();
     console.log(`Sentient speaks.`);
   }
-  defend(attacker) {
-    let incomingPierce = attacker.attPierce;
-    let damage = incomingPierce - this.defPierce;
+  defend(attacker: any) {
+    let incomingPierce = attacker.atkPrc;
+    let damage = incomingPierce - this.defPrc;
 
     this.health -= damage <= 0 ? 0 : damage;
     if (this.health <= 0) {
@@ -63,11 +66,11 @@ class Sentient extends Living {
   }
 }
 
-export const cat = new Sentient(
+export const cat: any = new Sentient(
   { name: 'cat', age: 2, health: 100 },
-  { intelligence: 5, attPierce: 14, defPierce: 2 }
+  { int: 5, atkPrc: 14, defPrc: 2 }
 );
 export const dog = new Sentient(
   { name: 'dog', age: 21, health: 100 },
-  { intelligence: 5, attPierce: 8, defPierce: 5 }
+  { int: 5, atkPrc: 8, defPrc: 5 }
 );

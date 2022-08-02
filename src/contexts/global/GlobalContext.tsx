@@ -1,16 +1,17 @@
 import React, { useContext, useReducer } from 'react';
-import reducer from './globalReducer.jsx';
-import { cat, dog } from '../../classes/classes';
+import reducer from './globalReducer';
 
-const GlobalContext = React.createContext();
+import { cat, dog } from '../../classes/classes';
 
 const initialState = {
   cat: cat,
   dog: dog,
 };
 
+const GlobalContext = React.createContext(initialState);
+
 // This context provider is passed to any component requiring the context
-const GlobalContextProvider = ({ children }) => {
+const GlobalContextProvider = ({ children }: any) => {
   // use reducer for dispatch
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -21,7 +22,7 @@ const GlobalContextProvider = ({ children }) => {
     dispatch({ type: 'TOGGLE_ISFALSE' });
   };
 
-  const setFoobarFoo = (foo) => {
+  const setFoobarFoo = (foo: any) => {
     dispatch({ type: 'RUN_FOO', foo });
   };
 

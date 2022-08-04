@@ -17,9 +17,11 @@
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.9.2",
     "@mui/system": "^5.9.2",
+    "@xstate/react": "^3.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.3.0"
+    "react-router-dom": "^6.3.0",
+    "xstate": "^4.32.1"
   },
   "devDependencies": {
     "@babel/core": "^7.18.9",
@@ -29,6 +31,8 @@
     "@storybook/addon-essentials": "^6.5.9",
     "@storybook/addon-links": "^6.5.9",
     "@storybook/react": "^6.5.9",
+    "@types/react": "^18.0.15",
+    "@types/react-dom": "^18.0.6",
     "@typescript-eslint/eslint-plugin": "^5.31.0",
     "@typescript-eslint/parser": "^5.31.0",
     "babel-loader": "^8.2.5",

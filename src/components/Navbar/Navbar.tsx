@@ -1,25 +1,37 @@
 import React, { useCallback, useState, useMemo } from 'react';
 
-import { Stack, Box, Divider } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Stack, Box, Divider, Chip, Link } from '@mui/material';
+import FaceIcon from '@mui/icons-material/Face';
 
 function Navbar() {
+  const handleClick = () => {};
   return (
-    <Box className="box">
-      <Stack direction="row" justifyContent="space-around" alignItems="center" spacing={0}>
-        <Link to="/" className="text">
-          Home
-        </Link>
-
-        <Link to="/boxing" className="text">
-          Boxing Game
-        </Link>
-
-        <Link to="/mobileWrapper" className="text">
-          Mobile
-        </Link>
-      </Stack>
-      <Divider sx={{ my: 1 }} />
+    <Box
+      sx={{
+        direction: 'row',
+        alignItems: 'center',
+        spacing: 1,
+        p: 1,
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+      }}
+    >
+      <Link href="/" underline={'none'} className="text">
+        <Chip label="Home" onClick={handleClick} />
+      </Link>{' '}
+      <Link href="/SwipeablePage" underline={'none'} className="text">
+        <Chip label="SwipeablePage" onClick={handleClick} />
+      </Link>
+      <Link href="/EndlessScroll" underline={'none'} className="text">
+        <Chip label="EndlessScroll" onClick={handleClick} />
+      </Link>
+      <Link href="/FightPage" underline={'none'} className="text">
+        <Chip label="FightPage" onClick={handleClick} />
+      </Link>
+      <Link href="/StreetLightXstate" underline={'none'} className="text">
+        <Chip label="StreetLightXstate" onClick={handleClick} />
+      </Link>
     </Box>
   );
 }

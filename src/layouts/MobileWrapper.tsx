@@ -7,14 +7,14 @@ export const MobileWrapper = ({ children }: any) => {
     <Box
       id="mobile-wrapper"
       sx={{
-        border: '1px solid grey',
         position: 'absolute',
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
         overflow: 'auto',
-        backgroundColor: 'gray',
+        // backgroundImage:
+        //   'radial-gradient( circle 610px at 5.2% 51.6%,  rgba(5,8,114,1) 0%, rgba(7,3,53,1) 97.5% )',
       }}
     >
       {children}

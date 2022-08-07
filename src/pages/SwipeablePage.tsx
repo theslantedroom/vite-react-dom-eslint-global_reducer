@@ -5,7 +5,8 @@ import { SwipeableButton } from './../components/Swipeable/SwipeableButton';
 
 export const SwipeablePage = () => {
   return (
-    <Box sx={{ ...centerFlexColumn }}>
+    <Box sx={{ ...centerFlexRow }}>
+      <SwipeableButton></SwipeableButton>
       <SwipeableButton></SwipeableButton>
     </Box>
   );
@@ -18,4 +19,11 @@ const centerFlexColumn = {
   justifyContent: 'center',
   alignItems: 'center',
   flexDirection: 'column',
+};
+
+const centerFlexRow = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  flexDirection: 'row',
 };

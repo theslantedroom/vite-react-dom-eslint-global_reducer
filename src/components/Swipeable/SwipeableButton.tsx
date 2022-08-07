@@ -14,6 +14,7 @@ import AddRoadIcon from '@mui/icons-material/AddRoad';
 import AddToHomeScreenIcon from '@mui/icons-material/AddToHomeScreen';
 import Battery20Icon from '@mui/icons-material/Battery20';
 import Brightness5Icon from '@mui/icons-material/Brightness5';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 const config = {
   delta: 10, // min distance(px) before a swipe starts. *See Notes*
@@ -135,18 +136,16 @@ export const SwipeableButton: React.FC<Props> = ({ buttonGroups = buttonGroupsDe
 
   useEffect(() => {
     switch (lastSwipe.swipeDirection || lastClickNav) {
-      case 'Left':
-        setCurrentBtnState(currentGroup.states[processStateIndex(currentGroup.states, 1)]);
-
-        break;
-      case 'Right':
-        setCurrentBtnState(currentGroup.states[processStateIndex(currentGroup.states, -1)]);
-
-        break;
       case 'Up':
-        setCurrentGroup(buttonGroups[processGroupIndex(buttonGroups, 1)]);
+        setCurrentBtnState(currentGroup.states[processStateIndex(currentGroup.states, 1)]);
         break;
       case 'Down':
+        setCurrentBtnState(currentGroup.states[processStateIndex(currentGroup.states, -1)]);
+        break;
+      case 'Left':
+        setCurrentGroup(buttonGroups[processGroupIndex(buttonGroups, 1)]);
+        break;
+      case 'Right':
         setCurrentGroup(buttonGroups[processGroupIndex(buttonGroups, -1)]);
         break;
     }
@@ -160,17 +159,27 @@ export const SwipeableButton: React.FC<Props> = ({ buttonGroups = buttonGroupsDe
     <Box {...handlersBox}>
       <Button variant="outlined">
         <Box>
-          <Typography sx={{ ...centerFlexColumn }} variant="h6">
+          <Typography sx={{ ...centerFlexRow }} variant="h6">
             {currentGroup.groupName}
           </Typography>
-          <IconButton onClick={() => null}>
-            <ArrowBackIosNewIcon />
-          </IconButton>
+
           <IconButton size="large" onClick={() => null}>
-            {currentBtnState?.icon}
+            <KeyboardArrowDownIcon sx={{ transform: 'rotate(180deg)' }} />
           </IconButton>
-          <IconButton onClick={() => null}>
-            <ArrowForwardIosIcon />
+          <Box>
+            <IconButton size="large" onClick={() => null}>
+              <KeyboardArrowDownIcon sx={{ transform: 'rotate(90deg)' }} />
+            </IconButton>
+            <IconButton size="large" onClick={() => null}>
+              {currentBtnState?.icon}
+            </IconButton>
+            <IconButton size="large" onClick={() => null}>
+              <KeyboardArrowDownIcon sx={{ transform: 'rotate(-90deg)' }} />
+            </IconButton>
+          </Box>
+
+          <IconButton size="large" onClick={() => null}>
+            <KeyboardArrowDownIcon />
           </IconButton>
         </Box>
       </Button>
@@ -180,7 +189,7 @@ export const SwipeableButton: React.FC<Props> = ({ buttonGroups = buttonGroupsDe
 
 const border = { border: '2px solid grey' };
 
-const buttonSize = { width: 56, height: 56 };
+const buttonSize = { width: 15, height: 15 };
 const centerFlexRow = {
   display: 'flex',
   justifyContent: 'center',

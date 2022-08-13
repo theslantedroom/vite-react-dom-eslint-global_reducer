@@ -35,7 +35,7 @@ export const FightPage = () => {
     <Stack>
       {/* <DisplayData object={cat} /> */}
 
-      <SpeakA objectA={cat} objectB={dog} />
+      {/* <SpeakA objectA={cat} objectB={dog} /> */}
       <FightTwo objectA={cat} objectB={dog} />
       {/* <DisplayData object={dog} /> */}
     </Stack>

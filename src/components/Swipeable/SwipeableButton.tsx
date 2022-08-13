@@ -172,6 +172,9 @@ export const SwipeableButton: React.FC<Props> = ({ buttonGroups = buttonGroupsDe
           <Typography sx={{ ...centerFlexRow }} variant="h6">
             {currentGroup.groupName}
           </Typography>
+          <Typography sx={{ ...centerFlexRow }} variant="caption">
+            {currentBtnState.buttonName}
+          </Typography>
 
           <IconButton size="large" disabled onClick={() => handleClickNav('Up')}>
             <KeyboardArrowDownIcon sx={{ transform: 'rotate(180deg)' }} />

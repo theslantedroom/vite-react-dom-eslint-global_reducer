@@ -9955,7 +9955,7 @@ prompts@^2.4.0:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@^15.0.0, prop-types@^15.6.2, prop-types@^15.7.2, prop-types@^15.8.1:
+prop-types@^15.0.0, prop-types@^15.5.10, prop-types@^15.6.2, prop-types@^15.7.2, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.npmjs.org/prop-types/-/prop-types-15.8.1.tgz"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -10275,6 +10275,18 @@ react-transition-group@^4.4.2:
     dom-helpers "^5.0.1"
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
+
+react-typeme@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-typeme/-/react-typeme-1.0.1.tgz#b0673677528ede0951566112a133c0b5ee4e3db9"
+  integrity sha512-ylcrJBU2qTWwfoDEzBuP2WBUhcS/93pFhqzaxub8VbI4QoScnqgj+BX/4rjlqdWMl2Y0oNMLEsWuPd5jv4ooHg==
+
+react-typeout@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-typeout/-/react-typeout-1.0.0.tgz#b1e15860051a625e75c5cd7ca0cd9022bb398996"
+  integrity sha512-A9RCIoU98aM6SxPa6jb9tKot8GK0NXCVoyYPwmnfgojGswSvFpL1ZztzzsmIOZ0CEAbFNIg60H/o0ZGmOuP51w==
+  dependencies:
+    prop-types "^15.5.10"
 
 react@^18.2.0:
   version "18.2.0"

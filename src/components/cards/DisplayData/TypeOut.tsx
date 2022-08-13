@@ -1,27 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Box, Stack } from '@mui/material';
 import { ProgressBar } from '../../ProgressBar/ProgressBar';
-import { useGlobalContext } from '../../../contexts/global/GlobalContext';
-export const SpeakA = ({ objectA, objectB }: any) => {
+
+export const TypeOut2 = ({ objectA, objectB }: any) => {
   const [processingText, setProcessingText] = useState('Speak');
-
-  const renderAlive = (obj: any) => {
-    return (
-      <Stack
-        sx={{ height: '100%' }}
-        direction="column"
-        justifyContent="space-between"
-        alignItems="center"
-        spacing={0}
-      >
-        <ProgressBar value={obj.health} message={obj.name?.toUpperCase()} />
-      </Stack>
-    );
-  };
-
-  const renderDead = (obj: any) => {
-    return <Box>{obj.name?.toUpperCase() + 'Dead'}</Box>;
-  };
 
   const animateCompute = () => {
     let i = 0;
@@ -47,6 +29,9 @@ export const SpeakA = ({ objectA, objectB }: any) => {
     }
   }, [objectB.health, objectA.health]);
 
+  // create array of names of objects to be displayed     ***************************
+  const names = ['cat', 'dog'];
+
   return (
     <Stack
       sx={{ height: '100%' }}
@@ -56,7 +41,6 @@ export const SpeakA = ({ objectA, objectB }: any) => {
       spacing={2}
     >
       <Button variant="contained" onClick={compute}>{`${processingText}`}</Button>
-      <Box>{objectB.health > 0 ? renderAlive(objectB) : renderDead(objectB)}</Box>
     </Stack>
   );
 };

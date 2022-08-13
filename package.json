@@ -23,6 +23,7 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.3.0",
     "react-swipeable": "^7.0.0",
+    "react-typeout": "^1.0.0",
     "xstate": "^4.32.1"
   },
   "devDependencies": {

@@ -18,9 +18,9 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 const config = {
   delta: 10, // min distance(px) before a swipe starts. *See Notes*
-  preventScrollOnSwipe: false, // prevents scroll during swipe (*See Details*)
+  preventScrollOnSwipe: true, // prevents scroll during swipe (*See Details*)
   trackTouch: true, // track touch input
-  trackMouse: false, // track mouse input
+  trackMouse: true, // track mouse input
   rotationAngle: 0, // set a rotation angle
   swipeDuration: Infinity, // allowable duration of a swipe (ms). *See Notes*
   touchEventOptions: { passive: true }, // options for touch listeners (*See Details*)
@@ -71,6 +71,7 @@ export const SwipeableButton: React.FC<Props> = ({ buttonGroups = buttonGroupsDe
   const [lastSwipe, setLastSwipe] = useState<any>([]);
   const [lastClickNav, setLastClickNav] = useState<any>(null);
   const [currentGroup, setCurrentGroup] = useState<any>(buttonGroups[0]);
+  const [clickCount, setClickCount] = useState(0);
 
   const [currentBtnState, setCurrentBtnState] = useState<any>(buttonGroupsDefault[0].states[0]);
 
@@ -87,12 +88,12 @@ export const SwipeableButton: React.FC<Props> = ({ buttonGroups = buttonGroupsDe
     onSwipedUp: (SwipeEventData) => console.log(SwipeEventData),
     onSwipedDown: (SwipeEventData) => console.log(SwipeEventData),
     onSwipeStart: (SwipeEventData) => console.log(SwipeEventData),
-    onSwiping: (SwipeEventData) => console.log(SwipeEventData),
-    onTap: (SwipeEventData) => console.log(SwipeEventData),
+    // onSwiping: (SwipeEventData) => console.log(SwipeEventData),
+    // onTap: (SwipeEventData) => console.log(SwipeEventData),
     // Pass through callbacks, event provided: ({ event }) => void
 
-    onTouchStartOrOnMouseDown: (SwipeEventData) => console.log(SwipeEventData),
-    onTouchEndOrOnMouseUp: (SwipeEventData) => console.log(SwipeEventData),
+    // onTouchStartOrOnMouseDown: (SwipeEventData) => console.log(SwipeEventData),
+    // onTouchEndOrOnMouseUp: (SwipeEventData) => console.log(SwipeEventData),
 
     ...config,
   });
@@ -135,7 +136,10 @@ export const SwipeableButton: React.FC<Props> = ({ buttonGroups = buttonGroupsDe
   useEffect(() => documentRef(document));
 
   useEffect(() => {
-    switch (lastSwipe.swipeDirection || lastClickNav) {
+    console.log('lastSwipe.timeStamp', lastSwipe.timeStamp);
+    console.log('lastClickNav.timeStamp', lastClickNav?.timeStamp);
+
+    switch (lastSwipe.swipeDirection || lastClickNav?.direction) {
       case 'Up':
         setCurrentBtnState(currentGroup.states[processStateIndex(currentGroup.states, 1)]);
         break;
@@ -155,6 +159,12 @@ export const SwipeableButton: React.FC<Props> = ({ buttonGroups = buttonGroupsDe
     setCurrentBtnState(currentGroup.states[0]);
   }, [currentGroup]);
 
+  const handleClickNav = (direction: string) => {
+    console.log('direction', direction);
+    // setLastClickNav({ direction: direction, timeStamp: Math.floor(Date.now()) });
+    setClickCount((prev) => prev + 1);
+  };
+
   return (
     <Box {...handlersBox}>
       <Button variant="outlined">
@@ -163,22 +173,22 @@ export const SwipeableButton: React.FC<Props> = ({ buttonGroups = buttonGroupsDe
             {currentGroup.groupName}
           </Typography>
 
-          <IconButton size="large" onClick={() => null}>
+          <IconButton size="large" disabled onClick={() => handleClickNav('Up')}>
             <KeyboardArrowDownIcon sx={{ transform: 'rotate(180deg)' }} />
           </IconButton>
           <Box>
-            <IconButton size="large" onClick={() => null}>
+            <IconButton size="large" disabled onClick={() => handleClickNav('Left')}>
               <KeyboardArrowDownIcon sx={{ transform: 'rotate(90deg)' }} />
             </IconButton>
-            <IconButton size="large" onClick={() => null}>
+            <IconButton size="large" disableRipple onClick={() => null}>
               {currentBtnState?.icon}
             </IconButton>
-            <IconButton size="large" onClick={() => null}>
+            <IconButton size="large" disabled onClick={() => handleClickNav('Right')}>
               <KeyboardArrowDownIcon sx={{ transform: 'rotate(-90deg)' }} />
             </IconButton>
           </Box>
 
-          <IconButton size="large" onClick={() => null}>
+          <IconButton size="large" disabled onClick={() => handleClickNav('Down')}>
             <KeyboardArrowDownIcon />
           </IconButton>
         </Box>

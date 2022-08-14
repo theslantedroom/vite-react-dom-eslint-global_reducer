@@ -28,22 +28,25 @@ const config = {
 
 const buttonGroupsDefault = [
   {
-    groupName: 'Actions',
+    groupName: 'Offense',
     icon: <AirlineStopsIcon />,
     onClick: () => {},
     states: [
-      { buttonName: 'Left', icon: <ArrowCircleLeftIcon />, onClick: () => {} },
-      { buttonName: 'Right', icon: <ArrowCircleRightIcon />, onClick: () => {} },
+      { buttonName: 'Hook', icon: <ArrowCircleLeftIcon />, onClick: () => {} },
+      { buttonName: 'Jab', icon: <ArrowCircleRightIcon />, onClick: () => {} },
+      { buttonName: 'Straight', icon: <ArrowCircleRightIcon />, onClick: () => {} },
+      { buttonName: 'Uppercut', icon: <ArrowCircleRightIcon />, onClick: () => {} },
     ],
   },
   {
-    groupName: 'Status',
+    groupName: 'Defense',
     icon: <QueryStatsIcon />,
     onClick: () => {},
     states: [
-      { buttonName: 'Stats', icon: <AddCommentIcon />, onClick: () => {} },
-      { buttonName: 'Flag', icon: <FlagCircleIcon />, onClick: () => {} },
-      { buttonName: 'Add', icon: <AddReactionIcon />, onClick: () => {} },
+      { buttonName: 'Dodge', icon: <AddCommentIcon />, onClick: () => {} },
+      { buttonName: 'Roll', icon: <FlagCircleIcon />, onClick: () => {} },
+      { buttonName: 'Slip', icon: <AddReactionIcon />, onClick: () => {} },
+      { buttonName: 'Block', icon: <AddReactionIcon />, onClick: () => {} },
     ],
   },
 
@@ -52,10 +55,10 @@ const buttonGroupsDefault = [
     icon: <QueryStatsIcon />,
     onClick: () => {},
     states: [
-      { buttonName: 'Road', icon: <AddRoadIcon />, onClick: () => {} },
-      { buttonName: 'Add', icon: <AddToHomeScreenIcon />, onClick: () => {} },
-      { buttonName: 'Battery20Icon', icon: <Battery20Icon />, onClick: () => {} },
-      { buttonName: 'Brightness5Icon', icon: <Brightness5Icon />, onClick: () => {} },
+      { buttonName: 'Recover', icon: <AddRoadIcon />, onClick: () => {} },
+      { buttonName: 'Move', icon: <AddToHomeScreenIcon />, onClick: () => {} },
+      { buttonName: 'Clinch', icon: <Battery20Icon />, onClick: () => {} },
+      { buttonName: 'Low Blow', icon: <Brightness5Icon />, onClick: () => {} },
     ],
   },
 ];

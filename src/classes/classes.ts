@@ -2,8 +2,13 @@
 // @ts-nocheck
 import { boxingPunches } from '../hardData/boxingPunches';
 import { boxingTargetsBody } from '../hardData/boxingTargetsBody';
+import { boxingStats } from '../hardData/boxingStats';
 
 class Living {
+  name: string;
+  age: number;
+  health: number;
+  lastWords: string;
   constructor(options: any) {
     const defaults = {
       _isAlive: true as boolean,
@@ -81,13 +86,55 @@ export class Sentient extends Living {
   }
 }
 
-export class Boxer extends Sentient {
-  name: any;
+export class Human extends Sentient {
+  humanStats: any[];
+
+  constructor(options: any, extendedOptions: any) {
+    const defaults = {
+      _type: 'human' as string,
+      humanStats: [
+        { name: 'height', value: `5ft 10in` },
+        { name: 'weight', value: 160 },
+      ] as any[],
+    };
+    const populated = Object.assign(defaults, extendedOptions);
+    super(options);
+    for (const key in populated) {
+      if (populated.hasOwnProperty(key)) {
+        this[key] = populated[key];
+      }
+    }
+  }
+
+  speak() {
+    const said = 'I am a Human!';
+    super.speak();
+    this.lastWords = said;
+    console.log(`${this.name} says "${said}"`);
+  }
+}
+
+export class Boxer extends Human {
+  punches: any[];
+  boxingTargetsBody: any[];
+  boxingStats: any[];
+  boxingCustomization: any[];
   constructor(options: any, extendedOptions: any) {
     const defaults = {
       _type: 'boxer' as string,
       punches: boxingPunches,
       boxingTargetsBody: boxingTargetsBody,
+      boxingStats: boxingStats,
+      boxingCustomization: [
+        {
+          name: 'stance',
+          value: 'orthodox',
+        },
+        {
+          name: 'nickname',
+          value: 'nickname',
+        },
+      ],
     };
     const populated = Object.assign(defaults, extendedOptions);
     super(options);
@@ -117,10 +164,42 @@ export const dog = new Sentient(
 
 export const testBoxerOne = new Boxer(
   { name: 'testBoxerOne', age: 21, health: 100 },
-  { int: 5, damage: 38, absorbDamage: 5 }
+  {
+    int: 5,
+    damage: 38,
+    absorbDamage: 5,
+    humanStats: [
+      { name: 'height', value: `6ft 5in` },
+      { name: 'weight', value: 225 },
+    ],
+    boxingCustomization: [
+      {
+        name: 'nickname',
+        value: 'giant man',
+      },
+    ],
+  }
 );
 
 export const testBoxerTwo = new Boxer(
-  { name: 'testBoxerTwo', age: 51, health: 110 },
-  { int: 10, damage: 25, absorbDamage: 8 }
+  { name: 'testBoxerTwo', age: 21, health: 110 },
+  {
+    int: 10,
+    damage: 25,
+    absorbDamage: 1,
+    humanStats: [
+      { name: 'height', value: `5ft 5in` },
+      { name: 'weight', value: 126 },
+    ],
+    boxingCustomization: [
+      {
+        name: 'stance',
+        value: 'southpaw',
+      },
+      {
+        name: 'nickname',
+        value: 'mini man',
+      },
+    ],
+  }
 );

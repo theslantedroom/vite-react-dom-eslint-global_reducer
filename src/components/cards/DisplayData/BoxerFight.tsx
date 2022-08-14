@@ -40,6 +40,7 @@ export const BoxerFight = ({ objectA, objectB }: any) => {
       justifyContent="space-between"
       alignItems="center"
       spacing={2}
+      p={2}
     >
       <Button variant="contained" onClick={compute}>{`${processingText}`}</Button>
     </Stack>

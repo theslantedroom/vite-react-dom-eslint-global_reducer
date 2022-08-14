@@ -1,10 +1,10 @@
 import React, { useCallback, useState, useMemo } from 'react';
 
 import { Stack, Box, Divider, Chip, Link } from '@mui/material';
-import FaceIcon from '@mui/icons-material/Face';
+
+import { appRoutes } from './../../layouts/App';
 
 function Navbar() {
-  const handleClick = () => {};
   return (
     <Box
       sx={{
@@ -17,21 +17,13 @@ function Navbar() {
         justifyContent: 'space-between',
       }}
     >
-      <Link href="/" underline={'none'} className="text">
-        <Chip label="Home" onClick={handleClick} />
-      </Link>{' '}
-      <Link href="/SwipeablePage" underline={'none'} className="text">
-        <Chip label="SwipeablePage" onClick={handleClick} />
-      </Link>
-      <Link href="/EndlessScroll" underline={'none'} className="text">
-        <Chip label="EndlessScroll" onClick={handleClick} />
-      </Link>
-      <Link href="/FightPage" underline={'none'} className="text">
-        <Chip label="FightPage" onClick={handleClick} />
-      </Link>
-      <Link href="/StreetLightXstate" underline={'none'} className="text">
-        <Chip label="StreetLightXstate" onClick={handleClick} />
-      </Link>
+      {appRoutes.map((route, index) => {
+        return (
+          <Link href={route.path} underline={'none'}>
+            <Chip label={route.navText} />
+          </Link>
+        );
+      })}
     </Box>
   );
 }

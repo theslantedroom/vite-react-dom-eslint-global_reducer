@@ -1,11 +1,13 @@
 import React, { useContext, useReducer } from 'react';
 import reducer from './globalReducer';
 
-import { cat, dog } from '../../classes/classes';
+import { cat, dog, testBoxerOne, testBoxerTwo } from '../../classes/classes';
 
 const initialState = {
   cat: cat,
   dog: dog,
+  testBoxerOne: testBoxerOne,
+  testBoxerTwo: testBoxerTwo,
 };
 
 const GlobalContext = React.createContext(initialState);

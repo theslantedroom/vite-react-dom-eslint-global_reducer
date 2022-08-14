@@ -1,0 +1,38 @@
+export const boxingTargetsBody = [
+  {
+    name: 'head',
+    description: 'head',
+    image: 'https://picsum.photos/200/300?image=1',
+    aux1: 0,
+    aux2: 0,
+    group1: [],
+    group2: [],
+  },
+  {
+    name: 'chin',
+    description: 'chin',
+    image: 'https://picsum.photos/200/300?image=1',
+    aux1: 0,
+    aux2: 0,
+    group1: [],
+    group2: [],
+  },
+  {
+    name: 'body',
+    description: 'body',
+    image: 'https://picsum.photos/200/300?image=1',
+    aux1: 0,
+    aux2: 0,
+    group1: [],
+    group2: [],
+  },
+  {
+    name: 'liver',
+    description: 'liver',
+    image: 'https://picsum.photos/200/300?image=1',
+    aux1: 0,
+    aux2: 0,
+    group1: [],
+    group2: [],
+  },
+];

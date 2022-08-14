@@ -1,0 +1,38 @@
+export const boxingPunches = [
+  {
+    name: 'jab',
+    description: 'jab',
+    image: 'https://picsum.photos/200/300?image=1',
+    aux1: 0,
+    aux2: 0,
+    group1: [],
+    group2: [],
+  },
+  {
+    name: 'straight',
+    description: 'straight',
+    image: 'https://picsum.photos/200/300?image=1',
+    aux1: 0,
+    aux2: 0,
+    group1: [],
+    group2: [],
+  },
+  {
+    name: 'hook',
+    description: 'hook',
+    image: 'https://picsum.photos/200/300?image=1',
+    aux1: 0,
+    aux2: 0,
+    group1: [],
+    group2: [],
+  },
+  {
+    name: 'uppercut',
+    description: 'uppercut',
+    image: 'https://picsum.photos/200/300?image=1',
+    aux1: 0,
+    aux2: 0,
+    group1: [],
+    group2: [],
+  },
+];

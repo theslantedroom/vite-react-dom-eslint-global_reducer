@@ -3,7 +3,7 @@ import { Button, Divider, Stack } from '@mui/material';
 import { ProgressBar } from '../../ProgressBar/ProgressBar';
 import TypeOut from 'react-typeout';
 
-export const TypeOut2 = ({ objectA, objectB }: any) => {
+export const BoxerFight = ({ objectA, objectB }: any) => {
   const [processingText, setProcessingText] = useState('......');
 
   const animateCompute = () => {

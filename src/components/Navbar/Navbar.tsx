@@ -19,7 +19,7 @@ function Navbar() {
     >
       {appRoutes.map((route, index) => {
         return (
-          <Link href={route.path} underline={'none'}>
+          <Link key={route.path} href={route.path} underline={'none'}>
             <Chip label={route.navText} />
           </Link>
         );

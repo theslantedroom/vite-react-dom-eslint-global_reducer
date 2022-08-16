@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
-import { Typography, Box, IconButton, Button } from '@mui/material';
+import { Typography, Box, Stack, Button } from '@mui/material';
 import { useSwipeable } from 'react-swipeable';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -171,33 +171,34 @@ export const SwipeableButton: React.FC<Props> = ({ buttonGroups = buttonGroupsDe
   return (
     <Box {...handlersBox}>
       <Button variant="outlined">
-        <Box>
-          <Typography sx={{ ...centerFlexRow }} variant="h6">
-            {currentGroup.groupName}
-          </Typography>
-          <Typography sx={{ ...centerFlexRow }} variant="caption">
-            {currentBtnState.buttonName}
-          </Typography>
-
-          <IconButton size="large" disabled onClick={() => handleClickNav('Up')}>
-            <KeyboardArrowDownIcon sx={{ transform: 'rotate(180deg)' }} />
-          </IconButton>
+        <Stack direction="row" justifyContent="space-around" alignItems="center" spacing={2}>
           <Box>
-            <IconButton size="large" disabled onClick={() => handleClickNav('Left')}>
-              <KeyboardArrowDownIcon sx={{ transform: 'rotate(90deg)' }} />
-            </IconButton>
-            <IconButton size="large" disableRipple onClick={() => null}>
-              {currentBtnState?.icon}
-            </IconButton>
-            <IconButton size="large" disabled onClick={() => handleClickNav('Right')}>
-              <KeyboardArrowDownIcon sx={{ transform: 'rotate(-90deg)' }} />
-            </IconButton>
+            <Typography sx={{ ...centerFlexRow }} variant="h6">
+              {currentGroup.groupName}
+            </Typography>
+            <Typography sx={{ ...centerFlexRow }} variant="caption">
+              {currentBtnState.buttonName}
+            </Typography>
+            <Stack direction="column" justifyContent="space-around" alignItems="center" spacing={2}>
+              <KeyboardArrowDownIcon
+                onClick={() => handleClickNav('Up')}
+                sx={{ transform: 'rotate(180deg)' }}
+              />
+              <Stack direction="row" justifyContent="space-around" alignItems="center" spacing={2}>
+                <KeyboardArrowDownIcon
+                  onClick={() => handleClickNav('Left')}
+                  sx={{ transform: 'rotate(90deg)' }}
+                />
+                {currentBtnState?.icon}
+                <KeyboardArrowDownIcon
+                  onClick={() => handleClickNav('Right')}
+                  sx={{ transform: 'rotate(-90deg)' }}
+                />
+              </Stack>
+              <KeyboardArrowDownIcon onClick={() => handleClickNav('Down')} />
+            </Stack>
           </Box>
-
-          <IconButton size="large" disabled onClick={() => handleClickNav('Down')}>
-            <KeyboardArrowDownIcon />
-          </IconButton>
-        </Box>
+        </Stack>
       </Button>
     </Box>
   );

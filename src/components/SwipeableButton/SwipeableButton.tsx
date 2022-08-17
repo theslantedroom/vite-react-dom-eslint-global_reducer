@@ -1,8 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { Typography, Box, Stack, Button } from '@mui/material';
 import { useSwipeable } from 'react-swipeable';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
@@ -28,52 +27,52 @@ const config = {
 
 const buttonGroupsDefault = [
   {
-    groupName: 'Offense',
+    groupName: 'numbers',
     icon: <AirlineStopsIcon />,
     onClick: () => {},
     states: [
-      { buttonName: 'Hook', icon: <ArrowCircleLeftIcon />, onClick: () => {} },
-      { buttonName: 'Jab', icon: <ArrowCircleRightIcon />, onClick: () => {} },
-      { buttonName: 'Straight', icon: <ArrowCircleRightIcon />, onClick: () => {} },
-      { buttonName: 'Uppercut', icon: <ArrowCircleRightIcon />, onClick: () => {} },
+      { buttonName: '1', icon: <ArrowCircleLeftIcon />, onClick: () => {} },
+      { buttonName: '2', icon: <ArrowCircleRightIcon />, onClick: () => {} },
+      { buttonName: '3', icon: <ArrowCircleRightIcon />, onClick: () => {} },
+      { buttonName: '4', icon: <ArrowCircleRightIcon />, onClick: () => {} },
     ],
   },
   {
-    groupName: 'Defense',
+    groupName: 'letters',
     icon: <QueryStatsIcon />,
     onClick: () => {},
     states: [
-      { buttonName: 'Dodge', icon: <AddCommentIcon />, onClick: () => {} },
-      { buttonName: 'Roll', icon: <FlagCircleIcon />, onClick: () => {} },
-      { buttonName: 'Slip', icon: <AddReactionIcon />, onClick: () => {} },
-      { buttonName: 'Block', icon: <AddReactionIcon />, onClick: () => {} },
+      { buttonName: 'A', icon: <AddCommentIcon />, onClick: () => {} },
+      { buttonName: 'B', icon: <FlagCircleIcon />, onClick: () => {} },
+      { buttonName: 'C', icon: <AddReactionIcon />, onClick: () => {} },
+      { buttonName: 'D', icon: <AddReactionIcon />, onClick: () => {} },
     ],
   },
 
   {
-    groupName: 'Other',
+    groupName: 'File',
     icon: <QueryStatsIcon />,
     onClick: () => {},
     states: [
-      { buttonName: 'Recover', icon: <AddRoadIcon />, onClick: () => {} },
-      { buttonName: 'Move', icon: <AddToHomeScreenIcon />, onClick: () => {} },
-      { buttonName: 'Clinch', icon: <Battery20Icon />, onClick: () => {} },
-      { buttonName: 'Low Blow', icon: <Brightness5Icon />, onClick: () => {} },
+      { buttonName: 'Exit', icon: <AddRoadIcon />, onClick: () => {} },
+      { buttonName: 'Save', icon: <AddToHomeScreenIcon />, onClick: () => {} },
+      { buttonName: 'Load', icon: <Battery20Icon />, onClick: () => {} },
     ],
   },
 ];
 
-type ButtonGroup = keyof typeof buttonGroupsDefault;
+type ButtonGroups = typeof buttonGroupsDefault;
+type CurrentButtonGroup = typeof buttonGroupsDefault[0];
 
 export interface Props {
-  buttonGroups?: ButtonGroup[];
+  buttonGroups?: ButtonGroups;
 }
 
 export const SwipeableButton: React.FC<Props> = ({ buttonGroups = buttonGroupsDefault }) => {
   const [boxSwipes, setBoxSwipes] = useState<any>([]);
   const [lastSwipe, setLastSwipe] = useState<any>([]);
   const [lastClickNav, setLastClickNav] = useState<any>(null);
-  const [currentGroup, setCurrentGroup] = useState<any>(buttonGroups[0]);
+  const [currentGroup, setCurrentGroup] = useState<CurrentButtonGroup>(buttonGroups[0]);
   const [clickCount, setClickCount] = useState(0);
 
   const [currentBtnState, setCurrentBtnState] = useState<any>(buttonGroupsDefault[0].states[0]);
@@ -143,16 +142,16 @@ export const SwipeableButton: React.FC<Props> = ({ buttonGroups = buttonGroupsDe
     console.log('lastClickNav.timeStamp', lastClickNav?.timeStamp);
 
     switch (lastSwipe.swipeDirection || lastClickNav?.direction) {
-      case 'Up':
+      case 'Left':
         setCurrentBtnState(currentGroup.states[processStateIndex(currentGroup.states, 1)]);
         break;
-      case 'Down':
+      case 'Right':
         setCurrentBtnState(currentGroup.states[processStateIndex(currentGroup.states, -1)]);
         break;
-      case 'Left':
+      case 'Up':
         setCurrentGroup(buttonGroups[processGroupIndex(buttonGroups, 1)]);
         break;
-      case 'Right':
+      case 'Down':
         setCurrentGroup(buttonGroups[processGroupIndex(buttonGroups, -1)]);
         break;
     }

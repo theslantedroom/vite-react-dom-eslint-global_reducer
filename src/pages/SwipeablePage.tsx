@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Typography, Box, Button, Stack } from '@mui/material';
 
-import { SwipeableButton } from './../components/Swipeable/SwipeableButton';
+import { SwipeableButton } from '../components/SwipeableButton/SwipeableButton';
 
 export const SwipeablePage = () => {
   return (

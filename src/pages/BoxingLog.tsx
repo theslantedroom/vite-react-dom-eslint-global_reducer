@@ -5,7 +5,7 @@ import { useGlobalContext } from '../contexts/global/GlobalContext';
 import { BoxerFight } from '../components/cards/DisplayData/BoxerFight';
 import TypeOut from 'react-typeout';
 
-import { SwipeableButton } from './../components/Swipeable/SwipeableButton';
+import { SwipeableButton } from '../components/SwipeableButton/SwipeableButton';
 
 export const BoxingLog = () => {
   const { testBoxerOne, testBoxerTwo } = useGlobalContext();

@@ -17,6 +17,7 @@ export const BoxerFight = ({ objectA, objectB }: any) => {
   const fight = () => {
     objectA.speak();
     objectB.defend(objectA);
+    alert('fight');
   };
 
   const compute = () => {

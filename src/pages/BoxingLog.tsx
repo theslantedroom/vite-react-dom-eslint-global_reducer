@@ -6,24 +6,26 @@ import { BoxerFight } from '../components/cards/DisplayData/BoxerFight';
 import TypeOut from 'react-typeout';
 
 import { SwipeableButton } from '../components/SwipeableButton/SwipeableButton';
+import { swipableButtonBoxing } from '../components/SwipeableButton/swipableButtonBoxing';
+import { generateBoxer } from '../classes/classes';
 
 export const BoxingLog = () => {
-  const { testBoxerOne, testBoxerTwo } = useGlobalContext();
-
-  console.log('boxers', testBoxerOne, testBoxerTwo);
+  // const { boxerOne, boxerTwo } = useGlobalContext();
+  const [boxerTwo, setBoxerTwo] = useState(generateBoxer());
+  const [boxerOne, setBoxerOne] = useState(generateBoxer());
 
   const [text, setText] = useState<string[]>([
     `Welcome to Fight Night.`,
-    `Tonight ${testBoxerOne.name} vs  ${testBoxerTwo.name}`,
+    `Tonight ${boxerOne.name} vs  ${boxerTwo.name}`,
+    `This component uses Class Inheritance to make Living > Sentient > Human > Boxers.`,
   ]);
   const handleDoneTyping = () => {
     setText(['thats all']);
   };
 
-  testBoxerOne.speak();
   const generate = () => {
-    setText(['thats all']);
-    testBoxerOne.speak();
+    setBoxerOne(generateBoxer());
+    setBoxerTwo(generateBoxer());
   };
 
   const renderStatRows = (boxerStatsA: any, boxerStatsB: any) => {
@@ -53,26 +55,37 @@ export const BoxingLog = () => {
       <Divider sx={{ p: 1 }}></Divider>
       {/* Names */}
       <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
-        <Typography>{`${testBoxerOne.name}`}</Typography>
+        <Typography>{`${boxerOne.name}`}</Typography>
         <Typography>{` vs `}</Typography>
-        <Typography>{`${testBoxerTwo.name}`}</Typography>
+        <Typography>{`${boxerTwo.name}`}</Typography>
       </Stack>
       {/* Human Stats */}
-      {renderStatRows(testBoxerOne.humanStats, testBoxerTwo.humanStats)}
-      {renderStatRows(testBoxerOne.boxingStats, testBoxerTwo.boxingStats)}
+      {renderStatRows(boxerOne.humanStats, boxerTwo.humanStats)}
+      {renderStatRows(boxerOne.boxingStats, boxerTwo.boxingStats)}
 
       <Divider sx={{ p: 1 }}></Divider>
-      <BoxerFight objectA={testBoxerOne} objectB={testBoxerTwo} text={text}></BoxerFight>
+      <BoxerFight objectA={boxerOne} objectB={boxerTwo} text={text}></BoxerFight>
       <Stack direction="column" justifyContent="center" alignItems="center" spacing={2}>
-        <TypeOut words={text} typeSpeed={50} rewindSpeed={0} caret={true} done={handleDoneTyping} />
+        {/* TYPE LOG */}
+
+        <Typography sx={{ textAlign: 'center' }}>
+          <TypeOut
+            words={text}
+            typeSpeed={50}
+            rewindSpeed={0}
+            caret={true}
+            done={handleDoneTyping}
+          />
+        </Typography>
+
         <Button onClick={generate} variant="contained">
           Generate
         </Button>
       </Stack>
 
       <Box sx={{ ...centerFlexRow }}>
-        <SwipeableButton></SwipeableButton>
-        <SwipeableButton></SwipeableButton>
+        <SwipeableButton buttonGroups={swipableButtonBoxing}></SwipeableButton>
+        <SwipeableButton buttonGroups={swipableButtonBoxing}></SwipeableButton>
       </Box>
     </Box>
   );

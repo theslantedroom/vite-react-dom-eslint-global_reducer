@@ -17,42 +17,7 @@ import { Box } from '@mui/material';
 
 // Components
 import { SwipeableButton, Props } from './SwipeableButton';
-const buttonGroupsBoxing = [
-  {
-    groupName: 'Offense',
-    icon: <AirlineStopsIcon />,
-    onClick: () => {},
-    states: [
-      { buttonName: 'Hook', icon: <ArrowCircleLeftIcon />, onClick: () => {} },
-      { buttonName: 'Jab', icon: <ArrowCircleRightIcon />, onClick: () => {} },
-      { buttonName: 'Straight', icon: <ArrowCircleRightIcon />, onClick: () => {} },
-      { buttonName: 'Uppercut', icon: <ArrowCircleRightIcon />, onClick: () => {} },
-    ],
-  },
-  {
-    groupName: 'Defense',
-    icon: <QueryStatsIcon />,
-    onClick: () => {},
-    states: [
-      { buttonName: 'Dodge', icon: <AddCommentIcon />, onClick: () => {} },
-      { buttonName: 'Roll', icon: <FlagCircleIcon />, onClick: () => {} },
-      { buttonName: 'Slip', icon: <AddReactionIcon />, onClick: () => {} },
-      { buttonName: 'Block', icon: <AddReactionIcon />, onClick: () => {} },
-    ],
-  },
-
-  {
-    groupName: 'Other',
-    icon: <QueryStatsIcon />,
-    onClick: () => {},
-    states: [
-      { buttonName: 'Recover', icon: <AddRoadIcon />, onClick: () => {} },
-      { buttonName: 'Move', icon: <AddToHomeScreenIcon />, onClick: () => {} },
-      { buttonName: 'Clinch', icon: <Battery20Icon />, onClick: () => {} },
-      { buttonName: 'Low Blow', icon: <Brightness5Icon />, onClick: () => {} },
-    ],
-  },
-];
+import { swipableButtonBoxing } from './swipableButtonBoxing';
 
 export default {
   title: 'Swipeable/SwipeableButton',
@@ -71,5 +36,5 @@ Default.args = {
 
 export const Boxing = Template.bind({});
 Boxing.args = {
-  buttonGroups: buttonGroupsBoxing,
+  buttonGroups: swipableButtonBoxing,
 };

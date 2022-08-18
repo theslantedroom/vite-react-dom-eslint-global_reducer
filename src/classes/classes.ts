@@ -161,6 +161,42 @@ export const dog = new Sentient(
   { name: 'dog', age: 21, health: 100 },
   { int: 5, damage: 38, absorbDamage: 5 }
 );
+export const generateBoxer = () => {
+  function rn(min = 0, max = 100) {
+    // find diff
+    let difference = max - min;
+
+    // generate random number
+    let rand = Math.random();
+
+    // multiply with difference
+    rand = Math.floor(rand * difference);
+
+    // add with min value
+    rand = rand + min;
+
+    return rand;
+  }
+
+  return new Boxer(
+    { name: 'testBoxerOne', age: rn(16, 70), health: rn(100, 150) },
+    {
+      int: 5,
+      damage: 38,
+      absorbDamage: 5,
+      humanStats: [
+        { name: 'height', value: `${rn(5, 6)}ft ${rn(0, 11)}in` },
+        { name: 'weight', value: rn(100, 250) },
+      ],
+      boxingCustomization: [
+        {
+          name: 'nickname',
+          value: 'giant man',
+        },
+      ],
+    }
+  );
+};
 
 export const testBoxerOne = new Boxer(
   { name: 'testBoxerOne', age: 21, health: 100 },

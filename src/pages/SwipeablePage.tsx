@@ -7,7 +7,6 @@ export const SwipeablePage = () => {
   return (
     <Box sx={{ ...centerFlexRow }}>
       <SwipeableButton></SwipeableButton>
-      <SwipeableButton></SwipeableButton>
     </Box>
   );
 };

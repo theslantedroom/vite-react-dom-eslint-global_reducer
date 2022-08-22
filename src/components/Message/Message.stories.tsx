@@ -10,14 +10,6 @@ import { Message, Props } from './Message';
 export default {
   title: 'Conversation/Message',
   component: Message,
-  parameters: {
-    info: {
-      text: `
-                A Conversation Message.
-            `,
-    },
-    layout: 'padded',
-  },
 } as Meta;
 
 const Template: Story<Props> = (args) => (

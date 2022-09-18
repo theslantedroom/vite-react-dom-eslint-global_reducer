@@ -18,6 +18,7 @@ export interface Props {
   message: string;
   realTimeOnRender: Date;
 }
+
 export const TimeDisplayFastTime: React.FC<Props> = ({ message = 'Time' }) => {
   const dateOptions: Intl.DateTimeFormatOptions = {
     year: 'numeric',
@@ -59,9 +60,9 @@ export const TimeDisplayFastTime: React.FC<Props> = ({ message = 'Time' }) => {
         <Typography variant="h3">{time.toLocaleString('en-US', dateOptions)}</Typography>
         <Typography variant="caption">Time Past</Typography>
         <Stack spacing={1} direction="row">
-          <Typography variant="caption">{`days: ${elapsedTime.d}`}</Typography>{' '}
-          <Typography variant="caption">{`hours: ${elapsedTime.h}`}</Typography>{' '}
-          <Typography variant="caption">{`minutes: ${elapsedTime.m}`}</Typography>{' '}
+          <Typography variant="caption">{`days: ${elapsedTime.d}`}</Typography>
+          <Typography variant="caption">{`hours: ${elapsedTime.h}`}</Typography>
+          <Typography variant="caption">{`minutes: ${elapsedTime.m}`}</Typography>
           <Typography variant="caption">{`seconds: ${elapsedTime.s}`}</Typography>
         </Stack>
       </>
@@ -83,7 +84,7 @@ export const TimeDisplayFastTime: React.FC<Props> = ({ message = 'Time' }) => {
   );
 };
 
-function convertMiliseconds(miliseconds: number, format?: string) {
+function convertMiliseconds(miliseconds: number) {
   var days, hours, minutes, seconds, total_hours, total_minutes, total_seconds;
 
   total_seconds = Math.floor(miliseconds / 1000);

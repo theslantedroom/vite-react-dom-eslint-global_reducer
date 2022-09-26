@@ -6,7 +6,7 @@ export interface Props {
   name?: String;
   description?: String;
   dateCreated?: Date;
-  perMillisecond: number;
+  timeRate: number;
   creates?: string;
   counterSpeedMs?: number;
 }
@@ -14,7 +14,7 @@ export const IdleTimeAsset: React.FC<Props> = ({
   name = undefined,
   description = undefined,
   dateCreated = undefined,
-  perMillisecond = 0.001,
+  timeRate = 0.001,
   counterSpeedMs = 100,
 }) => {
   const realTimeOnRender = useRef(new Date());
@@ -40,21 +40,29 @@ export const IdleTimeAsset: React.FC<Props> = ({
   }, []);
 
   const timePassed = useMemo(() => {
+    const isReverseTime = timeRate < 0;
+
     const startCalcDate = dateCreated ? dateCreated : realTimeOnRender.current;
     const msPassed = nowDate.getTime() - startCalcDate.getTime();
-    // const totalAccumulated = Math.trunc(msPassed * perMillisecond);
-    const totalAccumulated = (msPassed * perMillisecond).toFixed(2);
+    const totalAccumulatedInt = msPassed * timeRate;
+    console.log('totalAccumulatedInt', msPassed, totalAccumulatedInt);
+    const totalAccumulated = totalAccumulatedInt.toFixed(2);
+    const futureDate = new Date(nowDate.getTime() + totalAccumulatedInt);
+    const pastDate = new Date(nowDate.getTime() - msPassed + totalAccumulatedInt);
     // @ts-ignore
     const progressToNext = parseInt((totalAccumulated % 1).toFixed(2).substring(2));
-    const totalAccumulatedText = totalAccumulated.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    const totalAccumulatedText = totalAccumulated.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     const history = convertMiliseconds(msPassed).textString;
     return {
-      age: `card age: ${msPassed}`,
-      multiMs: `multi/ms: ${perMillisecond}`,
+      age: `card age ms: ${msPassed}`,
+      multiMs: `time rate ${timeRate}x`,
       totalAccumulated: totalAccumulated,
       totalAccumulatedText,
       history,
       progressToNext,
+      futureDate,
+      pastDate,
+      isReverseTime,
     };
   }, [nowDate]);
   const centerFlexbox = {
@@ -62,6 +70,15 @@ export const IdleTimeAsset: React.FC<Props> = ({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+  };
+
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
   };
 
   return (
@@ -80,14 +97,30 @@ export const IdleTimeAsset: React.FC<Props> = ({
       <Typography variant="caption" sx={{ textAlign: 'center' }}>
         {description}
       </Typography>
-      <Typography variant="h3">{timePassed.totalAccumulatedText}</Typography>
-      <Typography>{timePassed.multiMs}</Typography>
 
       <Box sx={{ padding: 1, ...centerFlexbox }}>
-        <Typography>{`Time Held`}</Typography>
-        <Typography>{timePassed.history}</Typography>
-        <Typography>{timePassed.progressToNext}</Typography>
+        <Typography variant="h4">{`True Time Since:`}</Typography>
+        {timePassed.history}
+        {/* <Typography>{timePassed.progressToNext}</Typography> */}
       </Box>
+
+      <Box sx={{ padding: 1, ...centerFlexbox }}>
+        <Typography variant="h4">{timePassed.totalAccumulatedText}</Typography>
+        <Typography>{timePassed.multiMs}</Typography>
+        <Typography>{timePassed.age}</Typography>
+      </Box>
+
+      <Typography variant="h4">{`Calculated Date:`}</Typography>
+
+      <Typography variant="h6" sx={{ textAlign: 'center' }}>
+        {timePassed?.isReverseTime
+          ? timePassed?.pastDate.toLocaleDateString('en-US', options)
+          : timePassed?.futureDate.toLocaleDateString('en-US', options)}
+      </Typography>
+
+      <Typography variant="h6" sx={{ textAlign: 'center' }}>
+        traveling: true
+      </Typography>
     </Paper>
   );
 };
@@ -109,11 +142,11 @@ function convertMiliseconds(miliseconds: number) {
     breakdown: { d: days, h: hours, m: minutes, s: seconds },
     textString: (
       <Stack spacing={1} direction="row">
-        <Typography variant="caption">{`years: ${years}`}</Typography>
-        <Typography variant="caption">{`days: ${days}`}</Typography>
-        <Typography variant="caption">{`hours: ${hours}`}</Typography>
-        <Typography variant="caption">{`minutes: ${minutes}`}</Typography>
-        <Typography variant="caption">{`seconds: ${seconds}`}</Typography>
+        <Typography variant="body1">{`years: ${years}`}</Typography>
+        <Typography variant="body1">{`days: ${days}`}</Typography>
+        <Typography variant="body1">{`hours: ${hours}`}</Typography>
+        <Typography variant="body1">{`minutes: ${minutes}`}</Typography>
+        <Typography variant="body1">{`seconds: ${seconds}`}</Typography>
       </Stack>
     ),
   };

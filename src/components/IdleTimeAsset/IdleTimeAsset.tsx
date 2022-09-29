@@ -1,7 +1,14 @@
 import React, { useCallback, useState, useEffect, useMemo, useRef } from 'react';
 
-import { Typography, Box, Paper, Stack, Divider } from '@mui/material';
-
+import { Typography, Box, Paper, Stack, Slider } from '@mui/material';
+const dateOptions: Intl.DateTimeFormatOptions = {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+  hour: 'numeric',
+  minute: 'numeric',
+  second: 'numeric',
+};
 export interface Props {
   name?: String;
   description?: String;
@@ -9,19 +16,29 @@ export interface Props {
   timeRate: number;
   creates?: string;
   counterSpeedMs?: number;
+  minTimeRate?: number;
+  maxTimeRate?: number;
+  rateSliderStep?: number;
+  rateReturn?: number;
 }
 export const IdleTimeAsset: React.FC<Props> = ({
   name = undefined,
   description = undefined,
   dateCreated = undefined,
-  timeRate = 0.001,
+  timeRate = 1,
   counterSpeedMs = 100,
+  minTimeRate = -10000,
+  maxTimeRate = 10000,
+  rateSliderStep = 1,
+  rateReturn = -1,
 }) => {
   const realTimeOnRender = useRef(new Date());
   const startCalcOnMount = useRef(!dateCreated);
   const [hover, setHover] = useState<boolean>(false);
 
   const [nowDate, setNowDate] = useState(new Date());
+  const [rate, setRate] = useState(timeRate);
+  const [rateReturnCounter, setRateReturnCounter] = useState(rateReturn);
   const handleMouseIn = useCallback(() => {
     setHover(true);
   }, []);
@@ -39,27 +56,38 @@ export const IdleTimeAsset: React.FC<Props> = ({
     };
   }, []);
 
-  const timePassed = useMemo(() => {
-    const isReverseTime = timeRate < 0;
+  const timeData = useMemo(() => {
+    // runs each loop
+    setRateReturnCounter(rateReturnCounter - 1);
+    if (rateReturnCounter === 0) {
+      if (rate > 1) setRate(rate - 1 * 100 < 0 ? 0 : rate - 1 * 100);
+      if (rate < 1) setRate(rate + 1 * 100 > 0 ? 0 : rate + 1 * 100);
+      setRateReturnCounter(rateReturn);
+    }
+
+    const isReverseTime = rate < 0;
 
     const startCalcDate = dateCreated ? dateCreated : realTimeOnRender.current;
     const msPassed = nowDate.getTime() - startCalcDate.getTime();
-    const totalAccumulatedInt = msPassed * timeRate;
-    console.log('totalAccumulatedInt', msPassed, totalAccumulatedInt);
+    const totalAccumulatedInt = msPassed * rate;
     const totalAccumulated = totalAccumulatedInt.toFixed(2);
-    const futureDate = new Date(nowDate.getTime() + totalAccumulatedInt);
+    const futureMs = totalAccumulatedInt - msPassed - startCalcDate.getTime();
+    const futureDate = new Date(nowDate.getTime() + totalAccumulatedInt - msPassed);
     const pastDate = new Date(nowDate.getTime() - msPassed + totalAccumulatedInt);
-    // @ts-ignore
-    const progressToNext = parseInt((totalAccumulated % 1).toFixed(2).substring(2));
+
     const totalAccumulatedText = totalAccumulated.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    const history = convertMiliseconds(msPassed).textString;
+    const realTimePast = convertMiliseconds(msPassed).textString;
     return {
       age: `card age ms: ${msPassed}`,
-      multiMs: `time rate ${timeRate}x`,
+      timeRate: `${rate}x`,
       totalAccumulated: totalAccumulated,
       totalAccumulatedText,
-      history,
-      progressToNext,
+      realTimePast,
+      dateCreated: dateCreated?.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      }),
       futureDate,
       pastDate,
       isReverseTime,
@@ -72,14 +100,8 @@ export const IdleTimeAsset: React.FC<Props> = ({
     alignItems: 'center',
   };
 
-  const options: Intl.DateTimeFormatOptions = {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-    second: 'numeric',
-  };
+  const min = -100,
+    max = 100;
 
   return (
     <Paper
@@ -93,34 +115,50 @@ export const IdleTimeAsset: React.FC<Props> = ({
       onMouseOut={handleMouseOut}
     >
       {startCalcOnMount.current ? <Typography>{`started Calc On Mount Date`}</Typography> : null}
-      <Typography variant="h5">{name}</Typography>
+      <Typography variant="h4">{name}</Typography>
+      <Typography> {timeData.dateCreated}</Typography>
       <Typography variant="caption" sx={{ textAlign: 'center' }}>
-        {description}
+        {description || '-'}
       </Typography>
 
       <Box sx={{ padding: 1, ...centerFlexbox }}>
-        <Typography variant="h4">{`True Time Since:`}</Typography>
-        {timePassed.history}
-        {/* <Typography>{timePassed.progressToNext}</Typography> */}
+        <Typography variant="h5">{`Real Time Past:`}</Typography>
+        {timeData.realTimePast}
       </Box>
 
       <Box sx={{ padding: 1, ...centerFlexbox }}>
-        <Typography variant="h4">{timePassed.totalAccumulatedText}</Typography>
-        <Typography>{timePassed.multiMs}</Typography>
-        <Typography>{timePassed.age}</Typography>
+        <Typography>{`Internal Stats`}</Typography>
+
+        <Typography variant="body2">{timeData.totalAccumulatedText}</Typography>
+        <Typography>{timeData.age}</Typography>
       </Box>
 
       <Typography variant="h4">{`Calculated Date:`}</Typography>
 
       <Typography variant="h6" sx={{ textAlign: 'center' }}>
-        {timePassed?.isReverseTime
-          ? timePassed?.pastDate.toLocaleDateString('en-US', options)
-          : timePassed?.futureDate.toLocaleDateString('en-US', options)}
+        {timeData?.isReverseTime
+          ? timeData?.pastDate.toLocaleDateString('en-US', dateOptions)
+          : timeData?.futureDate.toLocaleDateString('en-US', dateOptions)}
       </Typography>
 
       <Typography variant="h6" sx={{ textAlign: 'center' }}>
-        traveling: true
+        Time Rate
       </Typography>
+      <Typography sx={{ paddingBottom: 1 }}>{timeData.timeRate}</Typography>
+
+      <Box width={300}>
+        <Slider
+          max={maxTimeRate}
+          min={minTimeRate}
+          value={rate}
+          step={rateSliderStep}
+          scale={(x) => x - 200}
+          onChange={(e: any) => setRate(e.target.value)}
+          defaultValue={50}
+          aria-label="Default"
+          valueLabelDisplay="off"
+        />
+      </Box>
     </Paper>
   );
 };
@@ -142,11 +180,15 @@ function convertMiliseconds(miliseconds: number) {
     breakdown: { d: days, h: hours, m: minutes, s: seconds },
     textString: (
       <Stack spacing={1} direction="row">
-        <Typography variant="body1">{`years: ${years}`}</Typography>
-        <Typography variant="body1">{`days: ${days}`}</Typography>
-        <Typography variant="body1">{`hours: ${hours}`}</Typography>
-        <Typography variant="body1">{`minutes: ${minutes}`}</Typography>
-        <Typography variant="body1">{`seconds: ${seconds}`}</Typography>
+        <Typography variant="body1">{`${years} years`}</Typography>
+        <Typography variant="body1"> - </Typography>
+        <Typography variant="body1">{`${days} days`}</Typography>
+        <Typography variant="body1"> - </Typography>
+        <Typography variant="body1">{`${hours} hours`}</Typography>
+        <Typography variant="body1"> - </Typography>
+        <Typography variant="body1">{`${minutes} minutes`}</Typography>
+        <Typography variant="body1"> - </Typography>
+        <Typography variant="body1">{`${seconds} seconds`}</Typography>
       </Stack>
     ),
   };

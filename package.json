@@ -12,11 +12,13 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
+    "@dash-ui/styles": "^1.1.1",
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.10.0",
     "@mui/system": "^5.10.0",
+    "@react-hook/mouse-position": "^4.1.3",
     "@xstate/react": "^3.0.1",
     "axios": "^0.27.2",
     "react": "^18.2.0",

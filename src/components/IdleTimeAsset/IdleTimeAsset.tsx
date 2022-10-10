@@ -13,7 +13,7 @@ export interface Props {
   name?: String;
   description?: String;
   dateCreated?: Date;
-  timeRate: number;
+  timeRate?: number;
   creates?: string;
   counterSpeedMs?: number;
   minTimeRate?: number;

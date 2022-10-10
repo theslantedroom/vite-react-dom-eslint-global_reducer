@@ -1,8 +1,8 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add @types/react-typeme
+  C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\yarn\bin\yarn.js add @react-hook/mouse-position
 
 PATH: 
-  C:\Users\Steve\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\local\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\Steve\bin;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Users\Steve\AppData\Local\Programs\Python\Python39\Scripts;C:\Users\Steve\AppData\Local\Programs\Python\Python39;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\programdata\oracle\java\javapath;C:\windows\system32;C:\windows;C:\windows\system32\wbem;C:\windows\system32\windowspowershell\v1.0;C:\program files (x86)\gtksharp\2.12\bin;C:\windows\system32\openssh;C:\program files (x86)\quicktime\qtsystem;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\Git\cmd;C:\ProgramData\chocolatey\bin;C:\Users\Steve\AppData\Roaming\nvm;C:\Users\Steve\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files (x86)\Yarn\bin;C:\Users\Steve\AppData\Local\.meteor\;C:\Users\Steve\AppData\Roaming\npm\node_modules\meteor\node_modules\.bin;C:\Users\Steve\AppData\Roaming\npm\node_modules\node_modules\.bin;C:\Users\Steve\AppData\Roaming\npm\node_modules\.bin;C:\Users\Steve\AppData\Roaming\node_modules\.bin;C:\Users\Steve\AppData\node_modules\.bin;C:\Users\Steve\node_modules\.bin;C:\Users\node_modules\.bin;C:\node_modules\.bin;C:\Users\Steve\AppData\Roaming\npm\node_modules\npm\node_modules\@npmcli\run-script\lib\node-gyp-bin;C:\Users\Steve\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\local\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\Steve\bin;C:\Users\Steve\AppData\Local\Programs\Python\Python39\Scripts;C:\Users\Steve\AppData\Local\Programs\Python\Python39;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\programdata\oracle\java\javapath;C:\windows\system32;C:\windows;C:\windows\system32\wbem;C:\windows\system32\windowspowe;C:\Users\Steve\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Steve\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Users\Steve\AppData\Local\Yarn\bin;C:\Program Files\Git\usr\bin\vendor_perl;C:\Program Files\Git\usr\bin\core_perl
+  C:\Program Files\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\Git\cmd;C:\Users\steve\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Users\steve\AppData\Local\.meteor/;C:\Users\steve\AppData\Roaming\nvm\v14.18.2\node_modules\npm\node_modules\npm-lifecycle\node-gyp-bin;C:\Program Files\nodejs\node_modules\meteor\node_modules\.bin;C:\Program Files\nodejs\node_modules\.bin;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\Git\cmd;C:\Users\steve\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Users\steve\AppData\Roaming\npm\node_modules\meteor\node_modules\.bin;C:\Users\steve\AppData\Roaming\npm\node_modules\node_modules\.bin;C:\Users\steve\AppData\Roaming\npm\node_modules\.bin;C:\Users\steve\AppData\Roaming\node_modules\.bin;C:\Users\steve\AppData\node_modules\.bin;C:\Users\stev;C:\Users\steve\AppData\Local\Programs\Python\Python310;;C:\Users\steve\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\steve\AppData\Local\Microsoft\WindowsApps
 
 Yarn version: 
   1.22.18
@@ -14,17 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@types%2freact-typeme: Not found
-      at Request.params.callback [as _callback] (C:\Program Files (x86)\Yarn\lib\cli.js:66138:18)
-      at Request.self.callback (C:\Program Files (x86)\Yarn\lib\cli.js:140883:22)
-      at Request.emit (node:events:390:28)
-      at Request.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:141855:10)
-      at Request.emit (node:events:390:28)
-      at IncomingMessage.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:141777:12)
-      at Object.onceWrapper (node:events:509:28)
-      at IncomingMessage.emit (node:events:402:35)
-      at endReadableNT (node:internal/streams/readable:1343:12)
-      at processTicksAndRejections (node:internal/process/task_queues:83:21)
+  Error: EPERM: operation not permitted, unlink 'C:\Coding\vite-react-dom-eslint-global_reducer\node_modules\esbuild-windows-64\esbuild.exe'
 
 npm manifest: 
   {
@@ -41,46 +31,46 @@ npm manifest:
       "build-storybook": "build-storybook"
     },
     "dependencies": {
-      "@emotion/react": "^11.9.3",
-      "@emotion/styled": "^11.9.3",
+      "@emotion/react": "^11.10.0",
+      "@emotion/styled": "^11.10.0",
       "@mui/icons-material": "^5.8.4",
-      "@mui/material": "^5.9.2",
-      "@mui/system": "^5.9.2",
-      "@xstate/react": "^3.0.0",
+      "@mui/material": "^5.10.0",
+      "@mui/system": "^5.10.0",
+      "@xstate/react": "^3.0.1",
       "axios": "^0.27.2",
       "react": "^18.2.0",
       "react-dom": "^18.2.0",
       "react-router-dom": "^6.3.0",
       "react-swipeable": "^7.0.0",
-      "react-typeme": "^1.0.1",
-      "xstate": "^4.32.1"
+      "react-typeout": "^1.0.0",
+      "xstate": "^4.33.2"
     },
     "devDependencies": {
-      "@babel/core": "^7.18.9",
-      "@storybook/addon-a11y": "^6.5.9",
-      "@storybook/addon-actions": "^6.5.9",
-      "@storybook/addon-docs": "^6.5.9",
-      "@storybook/addon-essentials": "^6.5.9",
-      "@storybook/addon-links": "^6.5.9",
-      "@storybook/react": "^6.5.9",
-      "@types/react": "^18.0.15",
+      "@babel/core": "^7.18.10",
+      "@storybook/addon-a11y": "^6.5.10",
+      "@storybook/addon-actions": "^6.5.10",
+      "@storybook/addon-docs": "^6.5.10",
+      "@storybook/addon-essentials": "^6.5.10",
+      "@storybook/addon-links": "^6.5.10",
+      "@storybook/react": "^6.5.10",
+      "@types/react": "^18.0.17",
       "@types/react-dom": "^18.0.6",
-      "@typescript-eslint/eslint-plugin": "^5.31.0",
-      "@typescript-eslint/parser": "^5.31.0",
-      "@vitejs/plugin-react": "^2.0.0",
+      "@typescript-eslint/eslint-plugin": "^5.33.1",
+      "@typescript-eslint/parser": "^5.33.1",
+      "@vitejs/plugin-react": "^2.0.1",
       "babel-loader": "^8.2.5",
-      "eslint": "^8.20.0",
+      "eslint": "^8.22.0",
       "eslint-config-airbnb": "^19.0.4",
       "eslint-config-prettier": "^8.5.0",
       "eslint-plugin-import": "^2.26.0",
       "eslint-plugin-prettier": "^4.2.1",
       "eslint-plugin-react": "^7.30.1",
       "eslint-plugin-react-hooks": "^4.6.0",
-      "npm-check-updates": "^16.0.3",
+      "npm-check-updates": "^16.0.5",
       "prettier": "^2.7.1",
       "standard-version": "^9.5.0",
       "typescript": "^4.7.4",
-      "vite": "^3.0.4"
+      "vite": "^3.0.7"
     }
   }
 
@@ -10365,11 +10355,6 @@ Lockfile:
       dom-helpers "^5.0.1"
       loose-envify "^1.4.0"
       prop-types "^15.6.2"
-  
-  react-typeme@^1.0.1:
-    version "1.0.1"
-    resolved "https://registry.yarnpkg.com/react-typeme/-/react-typeme-1.0.1.tgz#b0673677528ede0951566112a133c0b5ee4e3db9"
-    integrity sha512-ylcrJBU2qTWwfoDEzBuP2WBUhcS/93pFhqzaxub8VbI4QoScnqgj+BX/4rjlqdWMl2Y0oNMLEsWuPd5jv4ooHg==
   
   react-typeout@^1.0.0:
     version "1.0.0"

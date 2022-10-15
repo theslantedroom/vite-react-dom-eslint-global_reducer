@@ -4,24 +4,25 @@ import useMouse from '@react-hook/mouse-position';
 import { Typography, Box, Stack } from '@mui/material';
 
 export interface Props {
-  optional?: boolean;
+  headRefA: any;
+  leftHandRefA: any;
+  rightHandRefA: any;
+  isHeadHitA?: boolean;
 }
-export const MouseTrackBoxerMouseControl: React.FC<Props> = ({ optional = true }) => {
-  return (
-    <>
-      <Stack>
-        <Draw />
-      </Stack>
-    </>
-  );
-};
 
-function Draw() {
+export const MouseTrackBoxerMouseControl: React.FC<Props> = ({
+  headRefA,
+  leftHandRefA,
+  rightHandRefA,
+  isHeadHitA = false,
+}) => {
   const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
   const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
   const boardSize = vw > vh ? vh - 100 : vw - 100;
   const headSize = boardSize / 5;
   const fistSize = headSize / 2;
+  const boundBoxBuffer = boardSize * 0.01;
+
   const target = useRef(null);
   const [isControlling, setIsControlling] = useState(true);
   const [useRightHand, setUseRightHand] = useState(true);
@@ -58,8 +59,10 @@ function Draw() {
       bottom: `${boardSize / 10}px`,
       left: `${boardSize / 2 - headSize / 2}px`,
       width: headSize,
-      height: headSize,
       backgroundColor: '#eebb99',
+      height: headSize,
+      border: isHeadHitA ? `${boundBoxBuffer}px solid red` : `none`,
+      outline: isHeadHitA ? `${boundBoxBuffer}px solid red` : `${boundBoxBuffer}px solid #eebb99`,
       borderRadius: 1000,
     };
 
@@ -71,9 +74,7 @@ function Draw() {
       ? mouse.elementWidth / 2 - headSize / 2 + mouse.x / 5
       : (mouse.elementWidth / 2 - headSize / 2 + mouse.x / 5) * 1;
 
-    const yMod = mouse.elementHeight - 200 + mouse.y / 10;
-    console.log('xMod', xMod);
-    console.log('isMouseXNegative', isMouseXNegative);
+    const yMod = mouse.elementHeight;
     const headStyleCss = {
       width: headSize,
       height: headSize,
@@ -134,6 +135,7 @@ function Draw() {
 
   player1.head = (
     <div
+      ref={headRefA}
       onClick={() => setIsControlling(true)}
       style={{
         ...headStyle(),
@@ -141,22 +143,22 @@ function Draw() {
     />
   );
 
-  if (mouse.x && mouse.elementWidth && mouse.y && mouse.elementHeight) {
-    player1.left = (
-      <div
-        style={{
-          ...fistStyle({ isLead: true, isActive: useRightHand }),
-        }}
-      />
-    );
-    player1.right = (
-      <div
-        style={{
-          ...fistStyle({ isLead: false, isActive: !useRightHand }),
-        }}
-      />
-    );
-  }
+  player1.left = (
+    <div
+      ref={leftHandRefA}
+      style={{
+        ...fistStyle({ isLead: true, isActive: useRightHand }),
+      }}
+    />
+  );
+  player1.right = (
+    <div
+      ref={rightHandRefA}
+      style={{
+        ...fistStyle({ isLead: false, isActive: !useRightHand }),
+      }}
+    />
+  );
 
   // if (isControlling) defCss.cursor = 'none';
 
@@ -188,13 +190,6 @@ function Draw() {
         {player1.left}
         {player1.right}
       </Box>
-      <div>{useRightHand ? 'left' : 'right'}</div>
-      <div>
-        x:{mouse.x} / {mouse.elementWidth}
-      </div>
-      <div>
-        y:{mouse.y} / {mouse.elementHeight}
-      </div>
     </div>
   );
-}
+};

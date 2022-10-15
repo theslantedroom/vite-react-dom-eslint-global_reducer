@@ -9,4 +9,4 @@ export default {
 const Template: Story<Props> = (args) => <MouseTrackBoxerMouseControl {...args} />;
 
 export const Default = Template.bind({});
-Default.args = { optional: true };
+Default.args = {};

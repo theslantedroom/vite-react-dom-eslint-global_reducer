@@ -1,14 +1,23 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
 import useMouse from '@react-hook/mouse-position';
+import { useBoundingclientrect } from 'rooks';
 
 import { useGamepads } from 'react-gamepads';
 import { GamepadsProvider } from 'react-gamepads';
 import { Typography, Box, Stack } from '@mui/material';
 
 export interface Props {
-  optional?: boolean;
+  headRefB: any;
+  leftHandRefB: any;
+  rightHandRefB: any;
+  isHeadHitB?: boolean;
 }
-export const XInputTrackBoxer: React.FC<Props> = ({ optional = true }) => {
+export const XInputTrackBoxer: React.FC<Props> = ({
+  headRefB,
+  leftHandRefB,
+  rightHandRefB,
+  isHeadHitB = false,
+}) => {
   const [gamepads, setGamepads] = useState<any>({});
   const [leftYScale, setLeftYScale] = useState(Math.round(window.innerHeight / 2));
   const [leftXScale, setLeftXScale] = useState(Math.round(window.innerWidth / 2));
@@ -67,10 +76,13 @@ export const XInputTrackBoxer: React.FC<Props> = ({ optional = true }) => {
   const leftTopFinal = leftHandTop;
   const rightTopFinal = rightHandTop;
 
+  const boundBoxBuffer = boardSize * 0.01;
+
   // Body Parts
   const player2 = {
     head: (
       <div
+        ref={headRefB}
         style={{
           position: 'absolute' as any,
           top: `${headTop}px`,
@@ -78,13 +90,19 @@ export const XInputTrackBoxer: React.FC<Props> = ({ optional = true }) => {
           width: headSize,
           height: headSize,
           backgroundColor: '#eebb99',
+          border: isHeadHitB ? `${boundBoxBuffer}px solid red` : `none`,
+          outline: isHeadHitB
+            ? `${boundBoxBuffer}px solid red`
+            : `${boundBoxBuffer}px solid #eebb99`,
           borderRadius: 1000,
         }}
       />
     ),
     leftHand: (
       <div
+        ref={leftHandRefB}
         style={{
+          zIndex: 100,
           position: 'absolute' as any,
           top: `${leftTopFinal}px`,
           left: `${leftLeft}px`,
@@ -97,7 +115,9 @@ export const XInputTrackBoxer: React.FC<Props> = ({ optional = true }) => {
     ),
     rightHand: (
       <div
+        ref={rightHandRefB}
         style={{
+          zIndex: 100,
           position: 'absolute' as any,
           top: `${rightTopFinal}px`,
           left: `${rightLeft}px`,
@@ -112,6 +132,7 @@ export const XInputTrackBoxer: React.FC<Props> = ({ optional = true }) => {
 
   const defCss = {
     overflow: 'hidden',
+    cursor: 'none',
     width: `${boardSize}px`,
     height: `${boardSize}px`,
     display: 'flex',
@@ -138,10 +159,6 @@ export const XInputTrackBoxer: React.FC<Props> = ({ optional = true }) => {
           {player2.rightHand}
         </GamepadsProvider>
       </Box>
-      <div>leftYScale:{leftYScale}</div>
-      <div>leftXScale:{leftXScale}</div>
-      <div>rightYScale:{rightYScale}</div>
-      <div>rightXScale:{rightXScale}</div>
     </Stack>
   );
 };

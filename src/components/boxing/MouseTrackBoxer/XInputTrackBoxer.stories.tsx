@@ -6,4 +6,4 @@ export default { title: 'XInputTrackBoxer/XInputTrackBoxer', component: XInputTr
 const Template: Story<Props> = (args) => <XInputTrackBoxer {...args} />;
 
 export const Default = Template.bind({});
-Default.args = { optional: true };
+Default.args = {};

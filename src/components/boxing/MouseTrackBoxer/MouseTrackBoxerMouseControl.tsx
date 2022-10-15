@@ -2,13 +2,11 @@ import React, { useRef, useState, useCallback, useEffect } from 'react';
 import useMouse from '@react-hook/mouse-position';
 
 import { Typography, Box, Stack } from '@mui/material';
-const boardSize = 500;
 
 export interface Props {
   optional?: boolean;
-  required: string;
 }
-export const MouseTrackBoxerMouseControl: React.FC<Props> = ({ optional = true, required }) => {
+export const MouseTrackBoxerMouseControl: React.FC<Props> = ({ optional = true }) => {
   return (
     <>
       <Stack>
@@ -19,45 +17,19 @@ export const MouseTrackBoxerMouseControl: React.FC<Props> = ({ optional = true, 
 };
 
 function Draw() {
+  const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+  const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+  const boardSize = vw > vh ? vh - 100 : vw - 100;
+  const headSize = boardSize / 5;
+  const fistSize = headSize / 2;
   const target = useRef(null);
   const [isControlling, setIsControlling] = useState(true);
   const [useRightHand, setUseRightHand] = useState(true);
+  const [isMouseXNegative, setIsMouseXNegative] = useState(false);
 
   const player1 = {
     head: <div></div>,
     left: <div></div>,
-    right: <div></div>,
-  } as any;
-
-  const headSize = boardSize / 5;
-  const fistSize = headSize / 2;
-  const player2 = {
-    head: (
-      <div
-        style={{
-          position: 'absolute' as any,
-          top: `${boardSize / 10}px`,
-          left: `${boardSize / 2 - headSize / 2}px`,
-          width: headSize,
-          height: headSize,
-          backgroundColor: '#eebb99',
-          borderRadius: 1000,
-        }}
-      ></div>
-    ),
-    left: (
-      <div
-        style={{
-          position: 'absolute' as any,
-          top: `${boardSize / 4}px`,
-          left: `${boardSize / 2 - fistSize / 2}px`,
-          width: fistSize,
-          height: fistSize,
-          backgroundColor: 'blue',
-          borderRadius: 1000,
-        }}
-      ></div>
-    ),
     right: <div></div>,
   } as any;
 
@@ -74,6 +46,7 @@ function Draw() {
     if (mouse.y < mouse.elementHeight / 2) {
       return;
     }
+    setIsMouseXNegative(mouse.x < mouse.elementWidth / 2);
 
     setUseRightHand(mouse.x > mouse.elementWidth / 2);
   }, [mouse]);
@@ -94,14 +67,18 @@ function Draw() {
       return headCss;
     }
 
-    const xMod = mouse.elementWidth / 2 - headSize / 2 + mouse.x / 10;
-    const yMod = mouse.elementHeight - 200 + mouse.y / 10;
+    const xMod = isMouseXNegative
+      ? mouse.elementWidth / 2 - headSize / 2 + mouse.x / 5
+      : (mouse.elementWidth / 2 - headSize / 2 + mouse.x / 5) * 1;
 
+    const yMod = mouse.elementHeight - 200 + mouse.y / 10;
+    console.log('xMod', xMod);
+    console.log('isMouseXNegative', isMouseXNegative);
     const headStyleCss = {
       width: headSize,
       height: headSize,
       left: Math.min(xMod, mouse.elementHeight),
-      top: Math.min(yMod, mouse.elementHeight),
+      top: Math.min(yMod, mouse.elementHeight - headSize),
     } as React.CSSProperties;
 
     return { ...headCss, ...headStyleCss };
@@ -110,7 +87,6 @@ function Draw() {
   const fistStyle = useCallback(
     (options: any): React.CSSProperties => {
       const { isLead, isActive } = options;
-      const fistSize = 50;
       const guardGap = fistSize * 0.5;
       const fistCss = {
         position: 'absolute' as any,
@@ -183,17 +159,34 @@ function Draw() {
   }
 
   // if (isControlling) defCss.cursor = 'none';
+
+  const defCss = {
+    overflow: 'hidden',
+    cursor: 'none',
+    width: `${boardSize}px`,
+    height: `${boardSize}px`,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontFamily: 'sans-serif',
+    fontSize: '12px',
+    padding: '16px',
+    borderRadius: '16px',
+    border: '1px solid red',
+    whiteSpace: 'pre',
+    touchAction: 'none',
+    position: 'relative',
+    transition: 'all 2s',
+    transitionDuration: '500ms',
+    boxSizing: 'border-box',
+  };
+
   return (
     <div>
       <Box sx={defCss} ref={target}>
         {player1.head}
         {player1.left}
         {player1.right}
-        {/* {drawing} */}
-
-        {player2.head}
-        {player2.left}
-        {player2.right}
       </Box>
       <div>{useRightHand ? 'left' : 'right'}</div>
       <div>
@@ -205,23 +198,3 @@ function Draw() {
     </div>
   );
 }
-
-const defCss = {
-  overflow: 'hidden',
-  cursor: 'none',
-  width: `${boardSize}px`,
-  height: `${boardSize}px`,
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  fontFamily: 'sans-serif',
-  fontSize: '12px',
-  padding: '16px',
-  borderRadius: '16px',
-  border: '1px solid skyblue',
-  whiteSpace: 'pre',
-  touchAction: 'none',
-  position: 'relative',
-  transition: 'all 2s',
-  transitionDuration: '500ms',
-};

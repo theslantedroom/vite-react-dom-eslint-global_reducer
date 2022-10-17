@@ -77,10 +77,10 @@ export const Annabel = Template.bind({});
 Annabel.args = {
   name: 'Annabel Born',
   dateCreated: new Date('May 30, 1994'),
-  // timeRate: 1.2,
+  timeRate: 1.2,
   // counterSpeedMs: 100,
-  // minTimeRate: -20000,
-  // maxTimeRate: 20000,
+  minTimeRate: -200,
+  maxTimeRate: 200,
   // rateSliderStep: 1,
 };
 

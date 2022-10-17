@@ -33,6 +33,9 @@ export const BoxingRing: React.FC<Props> = React.forwardRef(({}) => {
   const leftHandRefB = useRef(null);
   const rightHandRefB = useRef(null);
 
+  const [isCoolDownA, setIsCoolDownA] = useState(false);
+  const [isCoolDownB, setIsCoolDownB] = useState(false);
+
   const headRectA = useBoundingclientrect(headRefA);
   const leftHandRectA = useBoundingclientrect(leftHandRefA);
   const rightHandRectA = useBoundingclientrect(rightHandRefA);
@@ -42,46 +45,56 @@ export const BoxingRing: React.FC<Props> = React.forwardRef(({}) => {
   const rightHandRectB = useBoundingclientrect(rightHandRefB);
 
   const [isHeadHitA, setIsHeadHitA] = useState(false);
-  const [isHeadHitB, setIsHeadHitB] = useState(false);
+  const [isPunchReadyA, setIsPunchReadyA] = useState(false);
+  const [isRightReadyA, setIsRightReadyA] = useState(false);
+
+  const leftAHitHeadB = () => {
+    if (!isPunchReadyA) return;
+    setIsCoolDownB(true);
+    setIsPunchReadyA(false);
+    setTimeout(() => {
+      setIsCoolDownB(false);
+    }, 200);
+  };
+  const rightAHitHeadB = () => {
+    if (!isPunchReadyA) return;
+    setIsCoolDownB(true);
+    setIsPunchReadyA(false);
+    setTimeout(() => {
+      setIsCoolDownB(false);
+    }, 200);
+  };
 
   useEffect(() => {
     if (
       !headRectA ||
       !leftHandRectA ||
-      !leftHandRectA ||
+      !rightHandRectA ||
       !headRectB ||
       !leftHandRectB ||
-      !leftHandRectB
+      !rightHandRectB
     )
       return;
-
-    console.log('rightHandRectB', rightHandRectB);
-    console.log('leftHandRectA', leftHandRectA);
-
+    if (isCoolDownB) return;
     if (intersectRect(headRectB, leftHandRectA)) {
-      if (!isHeadHitB) setIsHeadHitB(true);
-    } else {
-      if (isHeadHitB) setIsHeadHitB(false);
+      leftAHitHeadB();
     }
 
     if (intersectRect(headRectB, rightHandRectA)) {
-      if (!isHeadHitB) setIsHeadHitB(true);
-    } else {
-      if (isHeadHitB) setIsHeadHitB(false);
+      rightAHitHeadB();
     }
+    // if (intersectRect(headRectA, leftHandRectB)) {
+    //   if (!isHeadHitA) setIsHeadHitA(true);
+    // } else {
+    //   if (isHeadHitA) setIsHeadHitA(false);
+    // }
 
-    if (intersectRect(headRectA, leftHandRectB)) {
-      if (!isHeadHitA) setIsHeadHitA(true);
-    } else {
-      if (isHeadHitA) setIsHeadHitA(false);
-    }
-
-    if (intersectRect(headRectA, rightHandRectB)) {
-      if (!isHeadHitA) setIsHeadHitA(true);
-    } else {
-      if (isHeadHitA) setIsHeadHitA(false);
-    }
-  }, [leftHandRectB, rightHandRectB, headRectA]);
+    // if (intersectRect(headRectA, rightHandRectB)) {
+    //   if (!isHeadHitA) setIsHeadHitA(true);
+    // } else {
+    //   if (isHeadHitA) setIsHeadHitA(false);
+    // }
+  }, [mouse]);
 
   const defCss = {
     width: `${boardSize}px`,
@@ -107,7 +120,7 @@ export const BoxingRing: React.FC<Props> = React.forwardRef(({}) => {
           headRefB={headRefB}
           leftHandRefB={leftHandRefB}
           rightHandRefB={rightHandRefB}
-          isHeadHitB={isHeadHitB}
+          isHeadHitB={isCoolDownB}
         />
       </Box>
       <Box sx={{ position: 'absolute', top: 0 }}>
@@ -116,6 +129,8 @@ export const BoxingRing: React.FC<Props> = React.forwardRef(({}) => {
           leftHandRefA={leftHandRefA}
           rightHandRefA={rightHandRefA}
           isHeadHitA={isHeadHitA}
+          isPunchReadyA={isPunchReadyA}
+          setIsPunchReadyA={setIsPunchReadyA}
         />
       </Box>
     </Box>

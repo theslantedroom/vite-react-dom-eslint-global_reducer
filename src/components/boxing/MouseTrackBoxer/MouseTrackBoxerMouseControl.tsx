@@ -8,6 +8,8 @@ export interface Props {
   leftHandRefA: any;
   rightHandRefA: any;
   isHeadHitA?: boolean;
+  isPunchReadyA: any;
+  setIsPunchReadyA: any;
 }
 
 export const MouseTrackBoxerMouseControl: React.FC<Props> = ({
@@ -15,6 +17,8 @@ export const MouseTrackBoxerMouseControl: React.FC<Props> = ({
   leftHandRefA,
   rightHandRefA,
   isHeadHitA = false,
+  isPunchReadyA,
+  setIsPunchReadyA,
 }) => {
   const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
   const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
@@ -47,6 +51,7 @@ export const MouseTrackBoxerMouseControl: React.FC<Props> = ({
     if (mouse.y < mouse.elementHeight / 2) {
       return;
     }
+    setIsPunchReadyA(true);
     setIsMouseXNegative(mouse.x < mouse.elementWidth / 2);
 
     setUseRightHand(mouse.x > mouse.elementWidth / 2);
@@ -119,7 +124,7 @@ export const MouseTrackBoxerMouseControl: React.FC<Props> = ({
       const yModB = mouse.elementHeight - 200 + mouse.y / 10 - mouse.y / 10;
       const isActiveCss = isActive
         ? {
-            border: '2px solid yellow',
+            border: isPunchReadyA ? '4px solid yellow' : '2px solid grey',
           }
         : ({
             width: fistSize,

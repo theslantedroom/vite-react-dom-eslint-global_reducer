@@ -60,6 +60,8 @@ export const CardBasic: React.FC<Props> = ({
         {/* REAL TIME CARD HAS EXISTED */}
 
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
+          <Typography variant="caption">Age</Typography>
+
           {timeData.realTimePast.breakdown.y !== 0 && (
             <Typography variant="caption">years: {timeData.realTimePast.breakdown.y}</Typography>
           )}
@@ -78,9 +80,9 @@ export const CardBasic: React.FC<Props> = ({
         </Stack>
 
         <Typography variant="caption">{timeData.calculatedDate}</Typography>
-
-        <Typography variant="caption">{`${timeData.ageFormatted} / rate: x${rate}`} </Typography>
       </Stack>
+      <Typography variant="body2">{`rate: ${rate}x`} </Typography>
+      <Typography sx={{ fontSize: '12px' }}>{`${timeData.ageFormatted}`} </Typography>
     </Paper>
   );
 };

@@ -13,7 +13,7 @@ export const generateCard = () => {
 export const genGameTest = () => {
   return [
     {
-      name: 'Person',
+      name: 'You',
       description: '',
       dateCreated: new Date(1667142263257),
       timeRate: 1,
@@ -30,7 +30,7 @@ export const genGameTest = () => {
       name: 'Reverse Traveller',
       description: 'Travels backwards in time',
       dateCreated: new Date(1667145501762),
-      timeRate: -5,
+      timeRate: -2,
       counterSpeedMs: 100,
     },
   ];
@@ -43,6 +43,14 @@ export const genPerson = () => {
     dateCreated: new Date(1667142263257),
     timeRate: 1,
     counterSpeedMs: 100,
+  };
+};
+
+export const genTimeTarget = () => {
+  return {
+    name: 'Hop to the future',
+    targetTime: Date.now() + 100000,
+    isVisited: false,
   };
 };
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import Navbar from '../components/Navbar/Navbar';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Typography, Box, Paper, Stack, Slider } from '@mui/material';
 
 // Pages
 import { Home } from '../pages/Home';
@@ -26,6 +27,7 @@ function App() {
   return (
     <BrowserRouter>
       <Navbar />
+      <Typography variant="h4">{'HHHsscH'}</Typography>
 
       <Routes>
         {appRoutes.map((route, index) => {

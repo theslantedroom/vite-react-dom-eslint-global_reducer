@@ -8,7 +8,7 @@ import { Box } from '@mui/material';
 import { IdleTimeAsset, Props } from './IdleTimeAsset';
 
 export default {
-  title: 'IdleTime/IdleTime',
+  title: 'IdleTime/IdleTimeAsset',
   component: IdleTimeAsset,
 } as Meta;
 

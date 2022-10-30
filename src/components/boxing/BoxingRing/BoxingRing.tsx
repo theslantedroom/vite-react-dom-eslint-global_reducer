@@ -8,7 +8,7 @@ import { MouseTrackBoxerMouseControl } from '../MouseTrackBoxer/MouseTrackBoxerM
 import { Typography, Box, Stack } from '@mui/material';
 
 export interface Props {}
-export const BoxingRing: React.FC<Props> = React.forwardRef(({}) => {
+export const BoxingRing: React.FC<Props> = React.forwardRef(({}, ref) => {
   // const [gamepads, setGamepads] = useState<any>({});
   // useGamepads((gamepads) => setGamepads(gamepads));
 

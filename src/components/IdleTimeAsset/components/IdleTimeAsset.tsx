@@ -76,7 +76,7 @@ export const IdleTimeAsset: React.FC<Props> = ({
     const pastDate = new Date(nowDate.getTime() - msPassed + totalAccumulatedInt);
 
     const totalAccumulatedText = totalAccumulated.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    const realTimePast = convertMiliseconds(msPassed).textString;
+    const realTimePast = convertMilisecondsB(msPassed).textString;
     return {
       age: `card age ms: ${msPassed}`,
       timeRate: `${rate}x`,
@@ -191,6 +191,25 @@ function convertMiliseconds(miliseconds: number) {
         <Typography variant="body1">{`${seconds} seconds`}</Typography>
       </Stack>
     ),
+  };
+}
+
+function convertMilisecondsB(miliseconds: number) {
+  var years, days, hours, minutes, seconds, total_hours, total_minutes, total_seconds;
+
+  total_seconds = Math.floor(miliseconds / 1000);
+  total_minutes = Math.floor(total_seconds / 60);
+  total_hours = Math.floor(total_minutes / 60);
+  years = Math.floor(total_hours / 24 / 365);
+  days = Math.floor(total_hours / 24 - years * 365);
+
+  seconds = total_seconds % 60;
+  minutes = total_minutes % 60;
+  hours = total_hours % 24;
+
+  return {
+    breakdown: { d: days, h: hours, m: minutes, s: seconds },
+    textString: `${years}-years ${days}-days ${hours}h:${minutes}m:${seconds}s`,
   };
 }
 

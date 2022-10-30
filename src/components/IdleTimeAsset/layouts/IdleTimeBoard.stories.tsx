@@ -22,6 +22,10 @@ const gameTest = genGameTest();
 
 export const Default = Template.bind({});
 Default.args = {
-  name: 'IdleTimeBoard',
   cards: gameTest,
+};
+
+export const NewGame = Template.bind({});
+NewGame.args = {
+  cards: [],
 };

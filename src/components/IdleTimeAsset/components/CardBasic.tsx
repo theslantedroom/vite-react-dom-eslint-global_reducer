@@ -32,7 +32,6 @@ export const CardBasic: React.FC<Props> = ({
     dateCreated,
     counterSpeedMs
   );
-
   const centerFlexbox = {
     display: 'flex',
     flexDirection: 'column',

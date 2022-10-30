@@ -49,8 +49,8 @@ export const genPerson = () => {
 export const genTimeTarget = () => {
   return {
     name: 'Hop to the future',
-    targetTime: Date.now() + 100000,
-    isVisited: false,
+    dateTargetCreated: Date.now(),
+    targetTime: Date.now() + 5000,
   };
 };
 

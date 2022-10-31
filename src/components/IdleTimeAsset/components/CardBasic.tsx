@@ -59,7 +59,7 @@ export const CardBasic: React.FC<Props> = ({
         </Box>
 
         <Box sx={centerFlexbox}>
-          <Typography variant="h4">Born</Typography>
+          <Typography variant="h6">Born</Typography>
           <Typography variant="caption">{timeData.dateCreated}</Typography>
         </Box>
 

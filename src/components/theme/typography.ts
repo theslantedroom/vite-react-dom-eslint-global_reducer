@@ -16,19 +16,19 @@ export const typography: TypographyOptions = {
   h2: {
     fontFamily,
     fontWeight: fontWeight300,
-    fontSize: 36,
+    fontSize: 40,
     textAlign: 'center',
   },
   h3: {
     fontFamily,
     fontWeight: fontWeight300,
-    fontSize: 26,
+    fontSize: 34,
     textAlign: 'center',
   },
   h4: {
     fontFamily,
     fontWeight: fontWeight300,
-    fontSize: 24,
+    fontSize: 30,
     textAlign: 'center',
   },
   h5: {

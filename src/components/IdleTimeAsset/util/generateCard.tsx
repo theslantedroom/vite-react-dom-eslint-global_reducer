@@ -20,18 +20,30 @@ export const genGameTest = () => {
       counterSpeedMs: 1000,
     },
     {
-      name: 'Forward Traveller',
+      name: 'Forward Traveler',
       description: 'Travels forward in time',
       dateCreated: new Date(1667145501762),
       timeRate: 11.1,
       counterSpeedMs: 100,
     },
     {
-      name: 'Reverse Traveller',
+      name: 'Reverse Traveler',
       description: 'Travels backwards in time',
       dateCreated: new Date(1667145501762),
       timeRate: -2,
       counterSpeedMs: 100,
+    },
+  ];
+};
+export const genVillage = () => {
+  return [
+    {
+      name: 'Villager',
+      description: 'sticks',
+      lifeDuration: 2.84e12,
+      dateCreated: new Date(1667241808900),
+      timeRate: 500,
+      counterSpeedMs: 200,
     },
   ];
 };
@@ -42,7 +54,7 @@ export const genPerson = () => {
     description: 'creates 1 Person every second',
     dateCreated: new Date(1667142263257),
     timeRate: 1,
-    counterSpeedMs: 100,
+    counterSpeedMs: 200,
   };
 };
 

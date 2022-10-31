@@ -10,10 +10,11 @@ const dateOptions: Intl.DateTimeFormatOptions = {
 };
 
 export const useCardTimeData = (
-  rateReturn: any,
-  timeRate: any,
+  rateReturn: number,
+  timeRate: number,
   dateCreated: any,
-  counterSpeedMs: any
+  counterSpeedMs: number,
+  lifeDuration: number
 ) => {
   const [rateReturnCounter, setRateReturnCounter] = useState(rateReturn);
   const [rate, setRate] = useState(timeRate);
@@ -30,36 +31,35 @@ export const useCardTimeData = (
     }
 
     const isReverseTime = rate < 0;
-
+    const nowMs = nowDate.getTime();
     const startCalcDate = dateCreated ? dateCreated : realTimeOnRender.current;
-    const msPassed = nowDate.getTime() - startCalcDate.getTime();
+    const msPassed = nowMs - startCalcDate.getTime();
     const totalAccumulatedInt = msPassed * rate;
     const totalAccumulated = totalAccumulatedInt.toFixed(2);
-    const futureMs = totalAccumulatedInt - msPassed - startCalcDate.getTime();
-    const futureDate = new Date(nowDate.getTime() + totalAccumulatedInt - msPassed);
-    const pastDate = new Date(nowDate.getTime() - msPassed + totalAccumulatedInt);
+    const futureMs = nowMs + totalAccumulatedInt - msPassed;
+    const futureDate = new Date(futureMs);
+    const pastDate = new Date(nowMs - msPassed + totalAccumulatedInt);
 
     const totalAccumulatedText = totalAccumulated.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
-    const realTimePast = parseRealTimePast(msPassed);
+    const realTimePast = convertMS(msPassed);
     return {
-      age: `${msPassed}`,
+      msPassed: msPassed,
       ageFormatted: `${numberWithCommas(msPassed)}`,
       timeRate: `${rate}x`,
       totalAccumulated: totalAccumulated,
       totalAccumulatedText: `UTC timestamp ms: ${totalAccumulatedText}`,
       realTimePast: realTimePast,
-      dateCreated: dateCreated?.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-      }),
+      dateCreated: dateCreated?.toLocaleDateString('en-US', dateOptions),
       futureDate,
       pastDate,
       isReverseTime,
+      timeLived: convertMS(futureMs - dateCreated),
       calculatedDate: isReverseTime
         ? pastDate.toLocaleDateString('en-US', dateOptions)
         : futureDate.toLocaleDateString('en-US', dateOptions),
+      lifeDuration: convertMS(lifeDuration),
+      isAlive: msPassed < lifeDuration,
     };
   }, [nowDate]);
 
@@ -76,25 +76,34 @@ export const useCardTimeData = (
   return { timeData, rate, setRate };
 };
 
-function parseRealTimePast(miliseconds: number) {
-  var years, days, hours, minutes, seconds, total_hours, total_minutes, total_seconds;
-
-  total_seconds = Math.floor(miliseconds / 1000);
-  total_minutes = Math.floor(total_seconds / 60);
-  total_hours = Math.floor(total_minutes / 60);
-  years = Math.floor(total_hours / 24 / 365);
-  days = Math.floor(total_hours / 24 - years * 365);
-
-  seconds = total_seconds % 60;
-  minutes = total_minutes % 60;
-  hours = total_hours % 24;
-
-  return {
-    breakdown: { y: years, d: days, h: hours, m: minutes, s: seconds },
-    textString: `${years}-years ${days}-days ${hours}h:${minutes}m:${seconds}s`,
-  };
-}
-
 const numberWithCommas = (num: number) => {
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
+
+function convertMS(milliseconds: number) {
+  var years, day, hour, minute, seconds, total_hours, total_minutes, total_seconds;
+  total_seconds = Math.floor(milliseconds / 1000);
+  minute = Math.floor(total_seconds / 60);
+  seconds = total_seconds % 60;
+  hour = Math.floor(minute / 60);
+  minute = minute % 60;
+  day = Math.floor(hour / 24);
+  hour = hour % 24;
+  total_minutes = Math.floor(total_seconds / 60);
+
+  total_hours = Math.floor(total_minutes / 60);
+
+  years = Math.floor(total_hours / 24 / 365);
+  day = Math.floor(total_hours / 24 - years * 365);
+  const data = {
+    day: day,
+    hour: hour,
+    minute: minute,
+    seconds: seconds,
+    ms: milliseconds,
+    string: `${years ? `${numberWithCommas(years)} years,` : ''} ${day ? `${day} days,` : ''} ${
+      hour ? `${hour}h` : ''
+    } ${`${minute < 10 ? '0' : ''}${minute}m`} ${`${seconds < 10 ? '0' : ''}${seconds}s`}`,
+  };
+  return data;
+}

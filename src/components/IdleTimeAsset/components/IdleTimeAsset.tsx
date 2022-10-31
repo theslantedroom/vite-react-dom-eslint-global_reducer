@@ -78,7 +78,7 @@ export const IdleTimeAsset: React.FC<Props> = ({
     const totalAccumulatedText = totalAccumulated.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     const realTimePast = convertMilisecondsB(msPassed).textString;
     return {
-      age: `card age ms: ${msPassed}`,
+      msPassed: `card age ms: ${msPassed}`,
       timeRate: `${rate}x`,
       totalAccumulated: totalAccumulated,
       totalAccumulatedText,
@@ -130,7 +130,7 @@ export const IdleTimeAsset: React.FC<Props> = ({
         <Typography>{`Internal Stats`}</Typography>
 
         <Typography variant="body2">{timeData.totalAccumulatedText}</Typography>
-        <Typography>{timeData.age}</Typography>
+        <Typography>{timeData.msPassed}</Typography>
       </Box>
 
       <Typography variant="h4">{`Calculated Date:`}</Typography>

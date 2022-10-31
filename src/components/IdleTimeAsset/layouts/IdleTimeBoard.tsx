@@ -141,6 +141,7 @@ export const IdleTimeBoard: React.FC<Props> = ({ cards = [], timeTargets = [] })
             const {
               name,
               description,
+              lifeDuration,
               dateCreated,
               timeRate,
               creates,
@@ -157,6 +158,7 @@ export const IdleTimeBoard: React.FC<Props> = ({ cards = [], timeTargets = [] })
                 key={name + i}
                 name={name}
                 description={description}
+                lifeDuration={lifeDuration}
                 dateCreated={dateCreated}
                 timeRate={timeRate}
                 creates={creates}

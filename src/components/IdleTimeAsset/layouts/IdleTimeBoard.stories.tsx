@@ -3,7 +3,7 @@ import React from 'react';
 import type { Meta, Story } from '@storybook/react';
 
 import { Box } from '@mui/material';
-import { genGameTest, genPerson } from '../util/generateCard';
+import { genGameTest, genVillage } from '../util/generateCard';
 
 // Components
 import { IdleTimeBoard, Props } from './IdleTimeBoard';
@@ -22,10 +22,15 @@ const gameTest = genGameTest();
 
 export const Default = Template.bind({});
 Default.args = {
-  cards: gameTest,
+  cards: [...gameTest],
 };
 
 export const NewGame = Template.bind({});
 NewGame.args = {
   cards: [],
+};
+
+export const Village = Template.bind({});
+Village.args = {
+  cards: [...genVillage()],
 };

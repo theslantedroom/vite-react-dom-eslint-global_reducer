@@ -14,6 +14,7 @@ export interface Props {
   maxTimeRate?: number;
   rateSliderStep?: number;
   rateReturn?: number;
+  lifeDuration?: number;
 }
 export const CardBasic: React.FC<Props> = ({
   name = undefined,
@@ -25,12 +26,14 @@ export const CardBasic: React.FC<Props> = ({
   maxTimeRate = 10,
   rateSliderStep = 1,
   rateReturn = -1,
+  lifeDuration = 100000,
 }) => {
   const { timeData, rate, setRate } = useCardTimeData(
     rateReturn,
     timeRate,
     dateCreated,
-    counterSpeedMs
+    counterSpeedMs,
+    lifeDuration
   );
   const centerFlexbox = {
     display: 'flex',
@@ -49,39 +52,40 @@ export const CardBasic: React.FC<Props> = ({
         ...centerFlexbox,
       }}
     >
-      <Stack spacing={1} direction="column">
+      <Stack spacing={1} direction="column" padding={1}>
         <Box sx={centerFlexbox}>
           <Typography variant="h4">{name}</Typography>
-          <Typography variant="caption">Born: {timeData.dateCreated}</Typography>
-          <Typography variant="caption">{description || '-'}</Typography>
+          <Typography variant="caption">{timeData.calculatedDate}</Typography>
+        </Box>
+
+        <Box sx={centerFlexbox}>
+          <Typography variant="h4">Born</Typography>
+          <Typography variant="caption">{timeData.dateCreated}</Typography>
+        </Box>
+
+        <Box sx={centerFlexbox}>
+          <Typography variant="h6">Life Expectancy</Typography>
+          <Typography variant="caption">{timeData.lifeDuration.string}</Typography>
+        </Box>
+
+        <Box sx={centerFlexbox}>
+          <Typography variant="h6">Time Alive</Typography>
+          <Typography variant="caption">{timeData.timeLived.string}</Typography>
         </Box>
 
         {/* REAL TIME CARD HAS EXISTED */}
-
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
-          <Typography variant="caption">Age</Typography>
-
-          {timeData.realTimePast.breakdown.y !== 0 && (
-            <Typography variant="caption">years: {timeData.realTimePast.breakdown.y}</Typography>
-          )}
-          {timeData.realTimePast.breakdown.d !== 0 && (
-            <Typography variant="caption">days: {timeData.realTimePast.breakdown.d}</Typography>
-          )}
-          {timeData.realTimePast.breakdown.h !== 0 && (
-            <Typography variant="caption">hours: {timeData.realTimePast.breakdown.h}</Typography>
-          )}
-          {(timeData.realTimePast.breakdown.m !== 0 || timeData.realTimePast.breakdown.s > 0) && (
-            <Typography variant="caption">min: {timeData.realTimePast.breakdown.m}</Typography>
-          )}
-          {(timeData.realTimePast.breakdown.s !== 0 || timeData.realTimePast.breakdown.m > 0) && (
-            <Typography variant="caption">sec: {timeData.realTimePast.breakdown.s}</Typography>
-          )}
+          <Box sx={centerFlexbox}>
+            <Typography variant="h6">True Age:</Typography>
+            <Typography variant="caption">{timeData.realTimePast.string}</Typography>
+          </Box>
         </Stack>
 
-        <Typography variant="caption">{timeData.calculatedDate}</Typography>
+        <Typography variant="caption">{description || '-'}</Typography>
       </Stack>
       <Typography variant="body2">{`rate: ${rate}x`} </Typography>
-      <Typography sx={{ fontSize: '12px' }}>{`${timeData.ageFormatted}`} </Typography>
+      <Typography sx={{ fontSize: '12px' }}>{`${timeData.ageFormatted}`} </Typography>{' '}
+      <Typography sx={{ fontSize: '12px' }}>{`${timeData.isAlive}`} </Typography>
     </Paper>
   );
 };

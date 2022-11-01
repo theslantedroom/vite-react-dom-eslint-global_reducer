@@ -55,7 +55,9 @@ export const CardBasic: React.FC<Props> = ({
       <Stack spacing={1} direction="column" padding={1}>
         <Box sx={centerFlexbox}>
           <Typography variant="h4">{name}</Typography>
-          <Typography variant="caption">{timeData.calculatedDate}</Typography>
+          {timeData.isAlive ? (
+            <Typography variant="caption">{timeData.calculatedDate}</Typography>
+          ) : null}
         </Box>
 
         <Box sx={centerFlexbox}>
@@ -63,15 +65,23 @@ export const CardBasic: React.FC<Props> = ({
           <Typography variant="caption">{timeData.dateCreated}</Typography>
         </Box>
 
-        <Box sx={centerFlexbox}>
-          <Typography variant="h6">Life Expectancy</Typography>
-          <Typography variant="caption">{timeData.lifeDuration.string}</Typography>
-        </Box>
-
-        <Box sx={centerFlexbox}>
-          <Typography variant="h6">Time Alive</Typography>
-          <Typography variant="caption">{timeData.timeLived.string}</Typography>
-        </Box>
+        {timeData.isAlive ? (
+          <>
+            <Box sx={centerFlexbox}>
+              <Typography variant="h6">Life Expectancy</Typography>
+              <Typography variant="caption">{timeData.lifeDuration.string}</Typography>
+            </Box>
+            <Box sx={centerFlexbox}>
+              <Typography variant="h6">Time Alive</Typography>
+              <Typography variant="caption">{timeData.timeLived.string}</Typography>
+            </Box>
+          </>
+        ) : (
+          <Box sx={centerFlexbox}>
+            <Typography variant="h6">Died</Typography>
+            <Typography variant="caption">{'timeData.timeLived.string'}</Typography>
+          </Box>
+        )}
 
         {/* REAL TIME CARD HAS EXISTED */}
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
@@ -85,7 +95,6 @@ export const CardBasic: React.FC<Props> = ({
       </Stack>
       <Typography variant="body2">{`rate: ${rate}x`} </Typography>
       <Typography sx={{ fontSize: '12px' }}>{`${timeData.ageFormatted}`} </Typography>{' '}
-      <Typography sx={{ fontSize: '12px' }}>{`${timeData.isAlive}`} </Typography>
     </Paper>
   );
 };

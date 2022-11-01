@@ -38,10 +38,19 @@ export const genGameTest = () => {
 export const genVillage = () => {
   return [
     {
-      name: 'Villager',
-      description: 'sticks',
+      name: 'Modern Person',
+      description: 'money',
       lifeDuration: 2.84e12,
       dateCreated: new Date(1667241808900),
+      timeRate: 500,
+      counterSpeedMs: 200,
+    },
+
+    {
+      name: 'Early Roman',
+      description: 'sticks',
+      lifeDuration: 1.04e12,
+      dateCreated: new Date(-50000000000000),
       timeRate: 500,
       counterSpeedMs: 200,
     },

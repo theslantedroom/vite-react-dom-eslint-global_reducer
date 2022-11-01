@@ -6,26 +6,26 @@ import { Box } from '@mui/material';
 import { genGameTest, genVillage, genIrlFamily } from '../util/generateCard';
 
 // Components
-import { IdleTimeBoard, Props } from './IdleTimeBoard';
+import { IdleHistoryBoard, Props } from './IdleHistoryBoard';
 
 export default {
-  title: 'IdleTime/IdleTimeBoard',
-  component: IdleTimeBoard,
+  title: 'IdleTime/IdleHistoryBoard',
+  component: IdleHistoryBoard,
 } as Meta;
 
 const Template: Story<Props> = (args) => (
   <Box>
-    <IdleTimeBoard {...args} />
+    <IdleHistoryBoard {...args} />
   </Box>
 );
 const gameTest = genGameTest();
 
-export const Default = Template.bind({});
-Default.args = {
-  cards: [...gameTest],
-};
-
 export const NewGame = Template.bind({});
 NewGame.args = {
   cards: [],
+};
+
+export const Village = Template.bind({});
+Village.args = {
+  cards: [...genVillage()],
 };

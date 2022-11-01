@@ -1,6 +1,6 @@
 import React, { useCallback, useState, useEffect, useMemo, useRef } from 'react';
 
-import { Typography, Box, Paper, Stack, Slider } from '@mui/material';
+import { Typography, Box, Paper, Stack, Slider, Divider } from '@mui/material';
 import { useCardTimeData } from '../hooks/useCardTimeData';
 
 export interface Props {
@@ -38,63 +38,80 @@ export const CardBasic: React.FC<Props> = ({
   const centerFlexbox = {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
   };
+
+  const dateDied = 'n/a';
+
+  const isAlive = timeData.isAlive;
 
   return (
     <Paper
       sx={{
-        minWidth: '150px',
+        minWidth: '350px',
         p: 1,
         borderRadius: '5px',
         boxShadow: 'rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px',
-        ...centerFlexbox,
       }}
     >
-      <Stack spacing={1} direction="column" padding={1}>
-        <Box sx={centerFlexbox}>
-          <Typography variant="h4">{name}</Typography>
-          {timeData.isAlive ? (
-            <Typography variant="caption">{timeData.calculatedDate}</Typography>
-          ) : null}
-        </Box>
+      <Box sx={centerFlexbox}>
+        {/* Header */}
 
-        <Box sx={centerFlexbox}>
-          <Typography variant="h6">Born</Typography>
-          <Typography variant="caption">{timeData.dateCreated}</Typography>
-        </Box>
+        <Typography variant="h4">{name}</Typography>
+        <Typography variant="h6">{description || '-'}</Typography>
 
-        {timeData.isAlive ? (
+        <Typography variant="caption">{timeData.calculatedDate}</Typography>
+      </Box>
+
+      {/* Split pillars */}
+
+      <Stack spacing={1} direction="row" justifyContent={'center'} padding={1}>
+        {/* pillar 1 */}
+        <Stack spacing={1} direction="column" padding={1}>
           <>
             <Box sx={centerFlexbox}>
-              <Typography variant="h6">Life Expectancy</Typography>
-              <Typography variant="caption">{timeData.lifeDuration.string}</Typography>
-            </Box>
-            <Box sx={centerFlexbox}>
-              <Typography variant="h6">Time Alive</Typography>
-              <Typography variant="caption">{timeData.timeLived.string}</Typography>
+              <Typography variant="h6">{isAlive ? 'Time Alive' : `Time since birth`}</Typography>
+              <Typography variant="caption">{timeData.timeLived.dateString}</Typography>
+              <Typography variant="caption">{timeData.timeLived.timeString}</Typography>
             </Box>
           </>
-        ) : (
-          <Box sx={centerFlexbox}>
-            <Typography variant="h6">Died</Typography>
-            <Typography variant="caption">{'timeData.timeLived.string'}</Typography>
-          </Box>
-        )}
-
-        {/* REAL TIME CARD HAS EXISTED */}
-        <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
-          <Box sx={centerFlexbox}>
-            <Typography variant="h6">True Age:</Typography>
-            <Typography variant="caption">{timeData.realTimePast.string}</Typography>
-          </Box>
         </Stack>
-
-        <Typography variant="caption">{description || '-'}</Typography>
+        {/* pillar 2 */}
+        <Stack spacing={1} direction="column" padding={1}>
+          <>
+            <Box sx={centerFlexbox}>
+              <Typography variant="h6">{isAlive ? 'Life Span' : 'Survived'}</Typography>
+              <Typography variant="caption">{timeData.lifeDuration.dateString}</Typography>
+              <Typography variant="caption">{timeData.lifeDuration.timeString}</Typography>
+            </Box>
+          </>
+        </Stack>
       </Stack>
-      <Typography variant="body2">{`rate: ${rate}x`} </Typography>
-      <Typography sx={{ fontSize: '12px' }}>{`${timeData.ageFormatted}`} </Typography>{' '}
+      {/* footer */}
+
+      {!isAlive ? (
+        <Box sx={centerFlexbox}>
+          <Typography variant="h1">DEAD</Typography>
+        </Box>
+      ) : null}
+
+      <Box sx={centerFlexbox}>
+        <Typography variant="body1">Born</Typography>
+        <Typography variant="caption">{timeData.dateCreated}</Typography>
+      </Box>
+
+      <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
+        <Box sx={centerFlexbox}>
+          <Typography variant="caption">True Age:</Typography>
+          <Typography variant="caption">{timeData.realTimePast.string}</Typography>
+        </Box>
+      </Stack>
+
+      <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
+        <Typography variant="body2">{`rate: ${rate}x`} </Typography>
+        <Typography sx={{ fontSize: '12px' }}>{`${timeData.ageFormatted}`} </Typography>
+      </Stack>
     </Paper>
   );
 };

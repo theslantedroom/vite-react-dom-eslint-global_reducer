@@ -39,9 +39,8 @@ export const useCardTimeData = (
     const futureMs = nowMs + totalAccumulatedInt - msPassed;
     const futureDate = new Date(futureMs);
     const pastDate = new Date(nowMs - msPassed + totalAccumulatedInt);
-
+    const msTimeCreated = dateCreated.getTime();
     const totalAccumulatedText = totalAccumulated.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-
     const realTimePast = convertMS(msPassed);
     return {
       msPassed: msPassed,
@@ -59,7 +58,7 @@ export const useCardTimeData = (
         ? pastDate.toLocaleDateString('en-US', dateOptions)
         : futureDate.toLocaleDateString('en-US', dateOptions),
       lifeDuration: convertMS(lifeDuration),
-      isAlive: msPassed < lifeDuration,
+      isAlive: futureMs < lifeDuration + msTimeCreated,
     };
   }, [nowDate]);
 
@@ -104,6 +103,10 @@ function convertMS(milliseconds: number) {
     string: `${years ? `${numberWithCommas(years)} years,` : ''} ${day ? `${day} days,` : ''} ${
       hour ? `${hour}h` : ''
     } ${`${minute < 10 ? '0' : ''}${minute}m`} ${`${seconds < 10 ? '0' : ''}${seconds}s`}`,
+    dateString: `${years ? `${numberWithCommas(years)} years,` : ''} ${day ? `${day} days` : ''}`,
+    timeString: `${hour ? `${hour}h` : ''} ${`${minute < 10 ? '0' : ''}${minute}m`} ${`${
+      seconds < 10 ? '0' : ''
+    }${seconds}s`}`,
   };
   return data;
 }

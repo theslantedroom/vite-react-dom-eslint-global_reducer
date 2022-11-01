@@ -18,103 +18,41 @@ export interface Props {
   cards?: any[];
   timeTargets?: any[];
 }
-export const IdleTimeBoard: React.FC<Props> = ({ cards = [], timeTargets = [] }) => {
+export const IdleHistoryBoard: React.FC<Props> = ({ cards = [], timeTargets = [] }) => {
   const [localCards, setLocalCards] = useState<any>(cards);
-  const [localTimeTargets, setLocalTimeTargets] = useState<any>(timeTargets);
-
-  const [completedCardIndexes, setCompletedCardIndexes] = useState<Set<number>>(new Set());
-  useEffect(() => {
-    const interval = setInterval(() => {
-      //Process Targets
-      localTimeTargets.forEach((timeTarget: any, i: number) => {
-        //get out if target already completed
-        if (completedCardIndexes.has(i)) return;
-        const { targetTime, name: targetName, dateTargetCreated } = timeTarget;
-        console.log('Wait for ', targetName);
-
-        localCards.forEach((card: any, cardIndex: number) => {
-          const { timeRate, name } = card;
-          const isTravelForward = timeRate > 0;
-          const nowDate = new Date();
-          const msPassed = nowDate.getTime();
-          const totalAccumulatedInt = msPassed * card.timeRate;
-
-          const futureDate = new Date(nowDate.getTime() + totalAccumulatedInt - msPassed);
-          const pastDate = new Date(nowDate.getTime() - msPassed + totalAccumulatedInt);
-          console.log('isTravelForward', isTravelForward);
-          const isTravelToPast = card.timeRate < 0;
-          const isTargetInPast = targetTime < Date.now();
-
-          // if (isTargetInPast && isTravelForward) {
-          //   console.log('xxx');
-          //   return;
-          // }
-          // if (!isTargetInPast && !isTravelForward) {
-          //   console.log('yyy');
-          //   return;
-          // }
-          const travelerCurrentTime = isTravelToPast ? pastDate.getTime() : futureDate.getTime();
-          if (!isTravelForward && !isTargetInPast) {
-            console.log('hit past target', targetName);
-            setCompletedCardIndexes((p) => new Set([...p, i]));
-          }
-
-          if (isTravelForward && isTargetInPast) {
-            console.log('hit future target', targetName);
-            setCompletedCardIndexes((p) => new Set([...p, i]));
-          }
-        });
-
-        return;
-      });
-    }, 200);
-
-    return function cleanup() {
-      clearInterval(interval);
-    };
-  }, [localCards, localTimeTargets, completedCardIndexes]);
-
-  useEffect(() => {
-    console.log('completedCardIndexes', completedCardIndexes);
-  }, [completedCardIndexes]);
 
   const spawnCards = (cards: any[]) => {
     setLocalCards((prev: any) => [...prev, ...cards]);
   };
 
-  const spawnTarget = () => {
-    const futureTarget = {
-      name: 'Hop to the future',
-      targetTime: Date.now() + 5000,
-      dateTargetCreated: Date.now(),
-    };
-
-    const dayFutureTarget = {
-      name: 'Hop to the future',
-      targetTime: Date.now() + 10000,
-      dateTargetCreated: Date.now(),
-    };
-    // const pastTarget = {
-    //   name: 'Hop to the Past',
-    //   targetTime: Date.now() - 529000,
-    //   dateTargetCreated: Date.now(),
-    // };
-    setLocalTimeTargets((prev: any) => [...prev, futureTarget, dayFutureTarget]);
-  };
-
   const start = () => {
-    const scientist = {
-      name: 'You',
-      description: 'Passes through time at a normal rate.',
-      dateCreated: new Date(),
-      timeRate: 1,
-      counterSpeedMs: 100,
-    };
-    spawnTarget();
-    spawnCards([scientist]);
+    const cards = [
+      {
+        name: 'Ada and Eva',
+        description: 'the first of your race, racing through time..',
+        lifeDuration: 1.94e12,
+        dateCreated: new Date(1661343850690),
+        timeRate: 1000,
+        counterSpeedMs: 200,
+      },
+      {
+        name: '1',
+        description: 'test',
+        lifeDuration: 10000,
+        dateCreated: new Date(),
+        timeRate: 1,
+        counterSpeedMs: 200,
+      },
+    ];
+    spawnCards([...cards]);
   };
+  useEffect(() => {
+    start();
+    return function cleanup() {
+      console.log('cleanup');
+    };
+  }, []);
 
-  if (!completedCardIndexes) return null;
   return (
     <Paper
       sx={{
@@ -127,14 +65,7 @@ export const IdleTimeBoard: React.FC<Props> = ({ cards = [], timeTargets = [] })
       }}
     >
       <Stack spacing={1} direction="column">
-        {/* <Typography variant="h4">{`Time Travelers`}</Typography> */}
-
-        {localTimeTargets.map((target: any, i: number) => {
-          const isComplete = completedCardIndexes.has(i);
-          return (
-            <TimeTarget key={target.name + i} timeTargetCard={target} isComplete={isComplete} />
-          );
-        })}
+        <Typography variant="h4">{`Time Travelers`}</Typography>
 
         <Stack spacing={1} direction="row" justifyContent={'center'}>
           {localCards.length === 0 && <Button onClick={start}>Start</Button>}

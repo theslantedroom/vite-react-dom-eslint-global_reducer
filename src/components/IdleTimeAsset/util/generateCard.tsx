@@ -1,3 +1,6 @@
+const dayMs = 8.64e7;
+const yearMs = 8.64e7 * 365;
+
 export const generateCard = () => {
   return {
     name: 'Kitten',
@@ -97,14 +100,35 @@ export const genTimeTarget = () => {
 
 export const subject0 = {
   name: 'Subject 0',
-  description: [
-    'help... help me....',
-    '1.2.3.',
-    'my lifespan is 15 seconds...',
-    'I will die soon..',
-  ],
-  lifeDuration: 15000,
+  description: ['help... help me....', '1.2.3.', 'I will die soon..'],
+  lifeDuration: yearMs * 1,
   dateCreated: new Date(),
+  timeRate: 1000000,
+  counterSpeedMs: 200,
+};
+
+export const baseTime = {
+  name: 'Subject X',
+  description: [
+    '.......',
+    '.......',
+    'performing system diagnostics',
+    '.......',
+    'this is your local frame of reference',
+    'all systems normal',
+    'proceeding as normal',
+  ],
+  lifeDuration: yearMs * yearMs * 1.212 + 3453667,
+  dateCreated: new Date(1667349725930),
+  timeRate: 1,
+  counterSpeedMs: 200,
+};
+
+export const subjectLongDead = {
+  name: 'Long Dead Roman',
+  description: ['help... help me....', '1.2.3.', 'I will die soon..'],
+  lifeDuration: yearMs * 25,
+  dateCreated: new Date(-50000000000000),
   timeRate: 1,
   counterSpeedMs: 200,
 };

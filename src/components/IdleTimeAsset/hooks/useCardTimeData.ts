@@ -42,10 +42,13 @@ export const useCardTimeData = (
     const msTimeCreated = dateCreated.getTime();
     const totalAccumulatedText = totalAccumulated.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     const realTimePast = convertMS(msPassed);
+    const isInvalidDate = isReverseTime
+      ? pastDate.toLocaleDateString('en-US', dateOptions)
+      : futureDate.toLocaleDateString('en-US', dateOptions) === 'Invalid Date';
     return {
       msPassed: msPassed,
       ageFormatted: `${numberWithCommas(msPassed)}`,
-      timeRate: `${rate}x`,
+      timeRate: `${numberWithCommas(rate)}`,
       totalAccumulated: totalAccumulated,
       totalAccumulatedText: `UTC timestamp ms: ${totalAccumulatedText}`,
       realTimePast: realTimePast,
@@ -59,6 +62,7 @@ export const useCardTimeData = (
         : futureDate.toLocaleDateString('en-US', dateOptions),
       lifeDuration: convertMS(lifeDuration),
       isAlive: futureMs < lifeDuration + msTimeCreated,
+      isInvalidDate,
     };
   }, [nowDate]);
 

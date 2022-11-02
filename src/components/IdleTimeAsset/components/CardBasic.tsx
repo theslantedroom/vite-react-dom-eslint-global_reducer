@@ -16,6 +16,7 @@ export interface Props {
   rateSliderStep?: number;
   rateReturn?: number;
   lifeDuration?: number;
+  addQuarks?: any;
 }
 export const CardBasic: React.FC<Props> = ({
   name = undefined,
@@ -28,6 +29,7 @@ export const CardBasic: React.FC<Props> = ({
   rateSliderStep = 1,
   rateReturn = -1,
   lifeDuration = 100000,
+  addQuarks = () => null,
 }) => {
   const { timeData, rate, setRate } = useCardTimeData(
     rateReturn,
@@ -36,6 +38,13 @@ export const CardBasic: React.FC<Props> = ({
     counterSpeedMs,
     lifeDuration
   );
+
+  const { isInvalidDate, msPassed } = timeData;
+
+  useEffect(() => {
+    addQuarks(name, msPassed);
+  }, [msPassed]);
+
   const centerFlexbox = {
     display: 'flex',
     flexDirection: 'column',
@@ -51,7 +60,6 @@ export const CardBasic: React.FC<Props> = ({
   useEffect(() => {
     if (!isAlive) handleOnDeath();
   }, [isAlive]);
-
   return (
     <Paper
       sx={{
@@ -70,15 +78,18 @@ export const CardBasic: React.FC<Props> = ({
             <TypeOut
               words={description}
               typeSpeed={50}
-              rewindSpeed={10}
+              rewindSpeed={1}
               pauseSpeed={2000}
               Node="span"
             />
             "
           </Typography>
         ) : null}
-
-        <Typography variant="caption">{timeData.calculatedDate}</Typography>
+        {isAlive ? (
+          <Typography variant="caption">{isInvalidDate ? '' : timeData.calculatedDate}</Typography>
+        ) : (
+          <Typography variant="caption">{''}</Typography>
+        )}
       </Box>
 
       {/* Split pillars */}
@@ -114,21 +125,11 @@ export const CardBasic: React.FC<Props> = ({
       ) : null}
 
       <Box sx={centerFlexbox}>
-        <Typography variant="body1">Born</Typography>
-        <Typography variant="caption">{timeData.dateCreated}</Typography>
-      </Box>
-
-      <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
-        <Box sx={centerFlexbox}>
-          <Typography variant="caption">True Age</Typography>
-          <Typography variant="caption">{timeData.realTimePast.string}</Typography>
-        </Box>
-      </Stack>
-
-      <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
-        <Typography variant="body2">{`rate: ${rate}x`} </Typography>
+        <Typography variant="caption">Started: {timeData.dateCreated}</Typography>
+        <Typography variant="caption">True Age: {timeData.realTimePast.string}</Typography>
+        <Typography variant="body2">{`time rate: ${timeData.timeRate}x`} </Typography>
         <Typography sx={{ fontSize: '12px' }}>{`${timeData.ageFormatted}`} </Typography>
-      </Stack>
+      </Box>
     </Paper>
   );
 };

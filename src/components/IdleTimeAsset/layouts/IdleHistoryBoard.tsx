@@ -1,10 +1,10 @@
 import React, { useCallback, useState, useEffect, useMemo, useRef } from 'react';
 
-import { Typography, Box, Paper, Stack, Button } from '@mui/material';
+import { Typography, Box, Paper, Stack, Button, Divider } from '@mui/material';
 import { genTimeTarget } from '../util/generateCard';
 import { CardBasic } from '../components/CardBasic';
 import { useCardTimeData } from '../hooks/useCardTimeData';
-import { subject0 } from '../util/generateCard';
+import { subject0, subjectLongDead, baseTime } from '../util/generateCard';
 
 const dateOptions: Intl.DateTimeFormatOptions = {
   year: 'numeric',
@@ -21,17 +21,25 @@ export interface Props {
 export const IdleHistoryBoard: React.FC<Props> = ({ cards = [], timeTargets = [] }) => {
   const [localCards, setLocalCards] = useState<any>(cards);
 
+  const [gameData, setGameData] = useState({});
   const spawnCards = (cards: any[]) => {
     setLocalCards((prev: any) => [...prev, ...cards]);
   };
 
   const start = () => {
-    const cards = [subject0];
+    const cards = [baseTime];
     spawnCards([...cards]);
   };
   useEffect(() => {
     start();
   }, []);
+
+  const addQuarks = useCallback(
+    (name: string, amount: number) => {
+      setGameData((e) => ({ ...e, [name]: amount / 1000 }));
+    },
+    [setGameData]
+  );
 
   return (
     <Paper
@@ -78,60 +86,18 @@ export const IdleHistoryBoard: React.FC<Props> = ({ cards = [], timeTargets = []
                 maxTimeRate={maxTimeRate}
                 rateSliderStep={rateSliderStep}
                 rateReturn={rateReturn}
+                addQuarks={addQuarks}
               />
             );
           })}
         </Stack>
       </Stack>
+      <Divider sx={{ width: '100%', my: '10px' }} />
+      {JSON.stringify(gameData, null, '\t')}
     </Paper>
   );
 };
 
-interface XProps {
-  timeTargetCard: any;
-  isComplete: boolean;
-}
-const TimeTarget: React.FC<XProps> = ({ timeTargetCard, isComplete }) => {
-  const { name, targetTime, dateTargetCreated } = timeTargetCard;
-  const dateTargetTime = new Date(targetTime);
-  const dateCreatedTime = new Date(dateTargetCreated);
-  const isInPast = dateTargetTime < new Date();
-
-  const targetTimeMemo = useMemo(() => {
-    return dateTargetTime.toLocaleDateString('en-US', dateOptions);
-  }, [dateTargetTime]);
-
-  const createdTimeMemo = useMemo(() => {
-    return dateCreatedTime.toLocaleDateString('en-US', dateOptions);
-  }, [dateCreatedTime]);
-
-  return (
-    <Paper
-      sx={{
-        minWidth: '150px',
-        p: 1,
-        borderRadius: '5px',
-        boxShadow: 'rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <Typography variant="body1">{name}</Typography>
-      {!isComplete && (
-        <Typography variant="caption">
-          {isInPast ? 'back in time to' : 'forward in time to'}
-        </Typography>
-      )}
-      <Typography variant="caption">{targetTimeMemo}</Typography>
-      <Typography variant="caption">created: {createdTimeMemo}</Typography>
-
-      {isComplete && (
-        <Typography sx={{ color: isComplete ? 'green' : 'red' }} variant="body2">
-          {isComplete ? 'complete' : `in progress`}
-        </Typography>
-      )}
-    </Paper>
-  );
+const numberWithCommas = (num: number) => {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };

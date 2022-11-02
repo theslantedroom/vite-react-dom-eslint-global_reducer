@@ -4,7 +4,7 @@ import { Typography, Box, Paper, Stack, Button } from '@mui/material';
 import { genTimeTarget } from '../util/generateCard';
 import { CardBasic } from '../components/CardBasic';
 import { useCardTimeData } from '../hooks/useCardTimeData';
-import { genGameTest, genVillage, genIrlFamily } from '../util/generateCard';
+import { subject0 } from '../util/generateCard';
 
 const dateOptions: Intl.DateTimeFormatOptions = {
   year: 'numeric',
@@ -26,31 +26,11 @@ export const IdleHistoryBoard: React.FC<Props> = ({ cards = [], timeTargets = []
   };
 
   const start = () => {
-    const cards = [
-      {
-        name: 'Ada and Eva',
-        description: 'the first of your race, racing through time..',
-        lifeDuration: 1.94e12,
-        dateCreated: new Date(1661343850690),
-        timeRate: 1000,
-        counterSpeedMs: 200,
-      },
-      {
-        name: '1',
-        description: 'test',
-        lifeDuration: 10000,
-        dateCreated: new Date(),
-        timeRate: 1,
-        counterSpeedMs: 200,
-      },
-    ];
+    const cards = [subject0];
     spawnCards([...cards]);
   };
   useEffect(() => {
     start();
-    return function cleanup() {
-      console.log('cleanup');
-    };
   }, []);
 
   return (
@@ -60,7 +40,6 @@ export const IdleHistoryBoard: React.FC<Props> = ({ cards = [], timeTargets = []
         borderRadius: '5px',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
         alignItems: 'center',
       }}
     >

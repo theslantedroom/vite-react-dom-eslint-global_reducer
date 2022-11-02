@@ -85,7 +85,6 @@ export const genPerson = () => {
     timeRate: 1,
     counterSpeedMs: 200,
   };
-  a;
 };
 
 export const genTimeTarget = () => {
@@ -94,6 +93,20 @@ export const genTimeTarget = () => {
     dateTargetCreated: Date.now(),
     targetTime: Date.now() + 5000,
   };
+};
+
+export const subject0 = {
+  name: 'Subject 0',
+  description: [
+    'help... help me....',
+    '1.2.3.',
+    'my lifespan is 15 seconds...',
+    'I will die soon..',
+  ],
+  lifeDuration: 15000,
+  dateCreated: new Date(),
+  timeRate: 1,
+  counterSpeedMs: 200,
 };
 
 console.log('NOW:', Date.now());

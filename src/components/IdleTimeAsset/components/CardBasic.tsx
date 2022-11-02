@@ -1,4 +1,5 @@
 import React, { useCallback, useState, useEffect, useMemo, useRef } from 'react';
+import TypeOut from 'react-typeout';
 
 import { Typography, Box, Paper, Stack, Slider, Divider } from '@mui/material';
 import { useCardTimeData } from '../hooks/useCardTimeData';
@@ -42,9 +43,14 @@ export const CardBasic: React.FC<Props> = ({
     alignItems: 'center',
   };
 
-  const dateDied = 'n/a';
-
   const isAlive = timeData.isAlive;
+  const handleOnDeath = () => {
+    console.log('card died:', name);
+  };
+
+  useEffect(() => {
+    if (!isAlive) handleOnDeath();
+  }, [isAlive]);
 
   return (
     <Paper
@@ -57,9 +63,20 @@ export const CardBasic: React.FC<Props> = ({
     >
       <Box sx={centerFlexbox}>
         {/* Header */}
-
         <Typography variant="h4">{name}</Typography>
-        <Typography variant="h6">{description || '-'}</Typography>
+        {isAlive ? (
+          <Typography variant="body1">
+            "
+            <TypeOut
+              words={description}
+              typeSpeed={50}
+              rewindSpeed={10}
+              pauseSpeed={2000}
+              Node="span"
+            />
+            "
+          </Typography>
+        ) : null}
 
         <Typography variant="caption">{timeData.calculatedDate}</Typography>
       </Box>
@@ -71,7 +88,7 @@ export const CardBasic: React.FC<Props> = ({
         <Stack spacing={1} direction="column" padding={1}>
           <>
             <Box sx={centerFlexbox}>
-              <Typography variant="h6">{isAlive ? 'Time Alive' : `Time since birth`}</Typography>
+              <Typography variant="h6">{isAlive ? 'Time Alive' : `Time since born`}</Typography>
               <Typography variant="caption">{timeData.timeLived.dateString}</Typography>
               <Typography variant="caption">{timeData.timeLived.timeString}</Typography>
             </Box>
@@ -103,7 +120,7 @@ export const CardBasic: React.FC<Props> = ({
 
       <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
         <Box sx={centerFlexbox}>
-          <Typography variant="caption">True Age:</Typography>
+          <Typography variant="caption">True Age</Typography>
           <Typography variant="caption">{timeData.realTimePast.string}</Typography>
         </Box>
       </Stack>

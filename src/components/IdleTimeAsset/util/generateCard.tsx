@@ -118,8 +118,9 @@ export const baseTime = {
     'all systems normal',
     'proceeding as normal',
   ],
-  lifeDuration: yearMs * yearMs * 1.212 + 3453667,
-  dateCreated: new Date(1667349725930),
+  // lifeDuration: yearMs * yearMs * 1.212 + 3453667,
+  lifeDuration: 10000,
+  dateCreated: new Date(),
   timeRate: 1,
   counterSpeedMs: 200,
 };

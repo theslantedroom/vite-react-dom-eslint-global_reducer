@@ -25,14 +25,7 @@ export const decorators = [
           Toggle Theme
         </button>
         <MuiThemeProvider optionalMode={optionalMode}>
-              <Box
-                sx={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  height: '100vh',
-                  display: 'flex',
-                }}
-              >
+              <Box>             
                 {Story()}
               </Box>
         </MuiThemeProvider>

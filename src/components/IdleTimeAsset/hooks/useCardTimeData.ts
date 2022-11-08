@@ -56,6 +56,7 @@ export const useCardTimeData = (
       futureDate,
       pastDate,
       isReverseTime,
+      timeLivedMs: futureMs - dateCreated,
       timeLived: convertMS(futureMs - dateCreated),
       calculatedDate: isReverseTime
         ? pastDate.toLocaleDateString('en-US', dateOptions)

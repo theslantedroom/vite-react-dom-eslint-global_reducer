@@ -108,7 +108,7 @@ export const subject0 = {
 };
 
 export const baseTime = {
-  name: 'Subject X',
+  name: 'Time Probe',
   description: [
     '.......',
     '.......',
@@ -119,9 +119,9 @@ export const baseTime = {
     'proceeding as normal',
   ],
   // lifeDuration: yearMs * yearMs * 1.212 + 3453667,
-  lifeDuration: 10000,
-  dateCreated: new Date(),
-  timeRate: 1,
+  lifeDuration: 10000000,
+  dateCreated: new Date(1667885263906),
+  timeRate: 12,
   counterSpeedMs: 200,
 };
 

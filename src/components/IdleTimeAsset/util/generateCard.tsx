@@ -138,7 +138,7 @@ export const genTimeProbe = () => {
       'proceeding as normal',
     ],
     // lifeDuration: yearMs * yearMs * 1.212 + 3453667,
-    lifeDuration: 3000000,
+    lifeDuration: 100000,
     dateCreated: new Date(),
     timeRate: 12,
     counterSpeedMs: 200,

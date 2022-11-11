@@ -24,7 +24,7 @@ export const IdleHistoryBoard: React.FC<Props> = ({ cards = [], timeTargets = []
   const [quarks, setQuarks] = useState(0);
   const [darkQuarks, setDarkQuarks] = useState(0);
   const [gameLog, setGameLog] = useState(['waiting.....']);
-  const [cardCapacity, setCardCapacity] = useState(5);
+  const [cardCapacity, setCardCapacity] = useState(4);
   const displayQuarks = quarks - darkQuarks;
   const [gameData, setGameData] = useState<any>({});
   const spawnCards = (cards: any[]) => {
@@ -86,6 +86,11 @@ export const IdleHistoryBoard: React.FC<Props> = ({ cards = [], timeTargets = []
   };
 
   const destroyCard = (dateCreated: Date) => {
+    if (localCards.length === 1) {
+      addGameLog(`error... destroying last probe violates Ai directive`);
+
+      return;
+    }
     const card = localCards.filter((obj: any) => {
       return obj.dateCreated === dateCreated;
     })[0];
@@ -98,10 +103,16 @@ export const IdleHistoryBoard: React.FC<Props> = ({ cards = [], timeTargets = []
   };
 
   const displayGameLog = useMemo(() => {
-    return gameLog.reverse().map((log, I) => {
+    return gameLog.reverse().map((log, i) => {
+      const isTopLog = i < 3;
       return (
-        <Box sx={centerFlexbox}>
-          <Typography variant="caption">{log}</Typography>
+        <Box key={log + i} sx={centerFlexbox}>
+          <Typography
+            variant={isTopLog ? 'body1' : 'caption'}
+            sx={{ color: isTopLog ? 'lightgreen' : 'inherit' }}
+          >
+            {log}
+          </Typography>
         </Box>
       );
     });
@@ -125,12 +136,9 @@ export const IdleHistoryBoard: React.FC<Props> = ({ cards = [], timeTargets = []
       <Typography variant="h4">{displayQuarks}</Typography>
 
       <Divider sx={{ width: '100%', my: '10px' }} />
-      <Typography
-        sx={{ width: '100%', textAlign: 'center', height: '75px', overflow: 'auto' }}
-        variant="body1"
-      >
+      <Box sx={{ width: '100%', textAlign: 'center', height: '75px', overflow: 'auto' }}>
         {gameLog.length > 0 ? displayGameLog : null}
-      </Typography>
+      </Box>
       <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
         {localCards.length === 0 && <Button onClick={start}>Start</Button>}
         {localCards.map((card: any, i: number) => {

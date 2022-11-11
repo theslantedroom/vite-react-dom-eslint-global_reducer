@@ -119,12 +119,31 @@ export const baseTime = {
     'proceeding as normal',
   ],
   // lifeDuration: yearMs * yearMs * 1.212 + 3453667,
-  lifeDuration: 10000000,
-  dateCreated: new Date(1667885263906),
+  lifeDuration: 3000000,
+  dateCreated: new Date(),
   timeRate: 12,
   counterSpeedMs: 200,
 };
 
+export const genTimeProbe = () => {
+  return {
+    name: 'Time Probe',
+    description: [
+      '.......',
+      '.......',
+      'performing system diagnostics',
+      '.......',
+      'this is your local frame of reference',
+      'all systems normal',
+      'proceeding as normal',
+    ],
+    // lifeDuration: yearMs * yearMs * 1.212 + 3453667,
+    lifeDuration: 3000000,
+    dateCreated: new Date(),
+    timeRate: 12,
+    counterSpeedMs: 200,
+  };
+};
 export const subjectLongDead = {
   name: 'Long Dead Roman',
   description: ['help... help me....', '1.2.3.', 'I will die soon..'],

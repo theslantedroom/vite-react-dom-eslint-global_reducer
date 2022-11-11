@@ -3,7 +3,6 @@ import TypeOut from 'react-typeout';
 
 import { Typography, Box, Paper, Stack, Button, Divider } from '@mui/material';
 import { useCardTimeData } from '../hooks/useCardTimeData';
-import { CardDead } from './CardDead';
 
 export interface Props {
   name?: String;
@@ -21,7 +20,7 @@ export interface Props {
   duplicate?: any;
   destroy?: any;
 }
-export const CardBasic: React.FC<Props> = ({
+export const CardDead: React.FC<Props> = ({
   name = undefined,
   description = undefined,
   dateCreated = undefined,
@@ -35,7 +34,6 @@ export const CardBasic: React.FC<Props> = ({
   addQuarks = () => null,
   duplicate = () => null,
   destroy = () => null,
-  creates,
 }) => {
   const { timeData, rate, setRate } = useCardTimeData(
     rateReturn,
@@ -71,31 +69,11 @@ export const CardBasic: React.FC<Props> = ({
   useEffect(() => {
     if (!isAlive) handleOnDeath();
   }, [isAlive]);
-
-  if (!isAlive)
-    return (
-      <CardDead
-        name={name}
-        description={description}
-        lifeDuration={lifeDuration}
-        dateCreated={dateCreated}
-        timeRate={timeRate}
-        creates={creates}
-        counterSpeedMs={counterSpeedMs}
-        minTimeRate={minTimeRate}
-        maxTimeRate={maxTimeRate}
-        rateSliderStep={rateSliderStep}
-        rateReturn={rateReturn}
-        addQuarks={addQuarks}
-        duplicate={duplicate}
-        destroy={destroy}
-      />
-    );
   return (
     <Paper
       sx={{
-        minWidth: '350px',
-        p: 1,
+        minWidth: isAlive ? '250px' : '50px',
+        p: 2,
         m: 1,
         borderRadius: '5px',
         boxShadow: 'rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px',
@@ -124,45 +102,35 @@ export const CardBasic: React.FC<Props> = ({
         )}
       </Box>
 
-      {/* Split pillars */}
-
-      <Stack spacing={1} direction="row" justifyContent={'center'} padding={1}>
-        {/* pillar 1 */}
-        <Stack spacing={1} direction="column" padding={1}>
-          <Box sx={centerFlexbox}>
-            <Typography variant="h6">{isAlive ? 'Time Alive' : `Time since born`}</Typography>
-            <Typography variant="caption">{timeData.timeLived.dateString}</Typography>
-            <Typography variant="caption">{timeData.timeLived.timeString}</Typography>
-          </Box>
-        </Stack>
-        {/* pillar 2 */}
-        <Stack spacing={1} direction="column" padding={1}>
-          <Box sx={centerFlexbox}>
-            <Typography variant="h6">{isAlive ? 'Life Span' : 'Survived'}</Typography>
-            <Typography variant="caption">{timeData.lifeDuration.dateString}</Typography>
-            <Typography variant="caption">{timeData.lifeDuration.timeString}</Typography>
-          </Box>
-        </Stack>
-      </Stack>
+      <Box sx={centerFlexbox}>
+        <Typography variant="caption">{timeData.dateCreated}</Typography>
+      </Box>
       {/* footer */}
-
       {!isAlive ? (
         <Box sx={centerFlexbox}>
           <Typography variant="h1">LOST</Typography>
         </Box>
       ) : null}
-
-      <Box sx={centerFlexbox}>
-        <Typography variant="caption">Card's Birth: {timeData.dateCreated}</Typography>
-        <Typography variant="caption">Card's Age: {timeData.realTimePast.string}</Typography>
-        <Typography variant="h2">{`time rate: ${timeData.timeRate}x`} </Typography>
-        <Typography sx={{ fontSize: '12px' }}>{`${timeData.ageFormatted}`} </Typography>
-      </Box>
-      <Box sx={{ my: 2, width: '100%', display: 'flex', justifyContent: 'center' }}>
+      <Stack spacing={1} direction="row" justifyContent={'center'} padding={1}>
+        <Box sx={centerFlexbox}>
+          <Typography variant="caption">
+            {isAlive ? 'Life Span' : 'Survived'}
+            {timeData.lifeDuration.dateString}
+          </Typography>
+          <Typography variant="caption">{timeData.lifeDuration.timeString}</Typography>
+        </Box>
+      </Stack>
+      <Stack spacing={0.5} sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+        <Typography variant="caption">{numberWithCommas(lifeDuration / 1000)}</Typography>
+      </Stack>
+      <Stack spacing={0.5} sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
         <Button onClick={duplicate} variant="outlined">
           Replicate
         </Button>
-      </Box>
+        <Button onClick={destroy} variant="outlined">
+          Destroy
+        </Button>
+      </Stack>
     </Paper>
   );
 };

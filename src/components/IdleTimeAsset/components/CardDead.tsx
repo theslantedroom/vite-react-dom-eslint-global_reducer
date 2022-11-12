@@ -47,11 +47,11 @@ export const CardDead: React.FC<Props> = ({
 
   useEffect(() => {
     if (!isAlive) {
-      addQuarks(dateCreated, lifeDuration);
+      // set timerate 1 for dead cards
+      const completedLiveTimeRate = 1;
+      addQuarks(dateCreated, lifeDuration, completedLiveTimeRate);
       return;
     }
-
-    addQuarks(dateCreated, msPassed);
   }, [msPassed, timeData.isAlive]);
 
   const centerFlexbox = {
@@ -109,6 +109,7 @@ export const CardDead: React.FC<Props> = ({
       {!isAlive ? (
         <Box sx={centerFlexbox}>
           <Typography variant="h1">LOST</Typography>
+          <Typography variant="caption">{`time rate: ${timeData.timeRate}x`} </Typography>
         </Box>
       ) : null}
       <Stack spacing={1} direction="row" justifyContent={'center'} padding={1}>
@@ -121,7 +122,9 @@ export const CardDead: React.FC<Props> = ({
         </Box>
       </Stack>
       <Stack spacing={0.5} sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-        <Typography variant="caption">{numberWithCommas(lifeDuration / 1000)}</Typography>
+        <Typography variant="caption">
+          quark made: {numberWithCommas(lifeDuration / 1000)}
+        </Typography>
       </Stack>
       <Stack spacing={0.5} sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
         <Button onClick={duplicate} variant="outlined">

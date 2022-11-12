@@ -49,11 +49,9 @@ export const CardBasic: React.FC<Props> = ({
 
   useEffect(() => {
     if (!isAlive) {
-      addQuarks(dateCreated, lifeDuration);
       return;
     }
-
-    addQuarks(dateCreated, msPassed);
+    addQuarks(dateCreated, msPassed, timeRate);
   }, [msPassed, timeData.isAlive]);
 
   const centerFlexbox = {
@@ -64,13 +62,6 @@ export const CardBasic: React.FC<Props> = ({
   };
 
   const isAlive = timeData.isAlive;
-  const handleOnDeath = () => {
-    console.log('card died:', name);
-  };
-
-  useEffect(() => {
-    if (!isAlive) handleOnDeath();
-  }, [isAlive]);
 
   if (!isAlive)
     return (

@@ -43,8 +43,11 @@ export const IdleHistoryBoard: React.FC<Props> = ({ cards = [], timeTargets = []
   // }, []);
 
   const addQuarks = useCallback(
-    (dateCreated: Date, amount: number) => {
-      setGameData((prev: any) => ({ ...prev, [dateCreated.getTime()]: amount / 1000 }));
+    (dateCreated: Date, amount: number, timeRate: number) => {
+      setGameData((prev: any) => ({
+        ...prev,
+        [dateCreated.getTime()]: (amount * timeRate) / 1000,
+      }));
     },
     [setGameData]
   );
@@ -124,6 +127,7 @@ export const IdleHistoryBoard: React.FC<Props> = ({ cards = [], timeTargets = []
     const sum: any = values.reduce((accumulator: any, value: any) => {
       return accumulator + value;
     }, 0);
+
     setQuarks(Math.round(sum));
   }, [gameData]);
 

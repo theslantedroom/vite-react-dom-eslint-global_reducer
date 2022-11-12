@@ -140,7 +140,7 @@ export const genTimeProbe = () => {
     // lifeDuration: yearMs * yearMs * 1.212 + 3453667,
     lifeDuration: 60000,
     dateCreated: new Date(),
-    timeRate: 10,
+    timeRate: 1,
     counterSpeedMs: 200,
   };
 };

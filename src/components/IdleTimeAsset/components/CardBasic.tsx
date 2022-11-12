@@ -2,7 +2,7 @@ import React, { useCallback, useState, useEffect, useMemo, useRef } from 'react'
 import TypeOut from 'react-typeout';
 
 import { Typography, Box, Paper, Stack, Button, Divider } from '@mui/material';
-import { useCardTimeData } from '../hooks/useCardTimeData';
+import { useCardTimeData, convertMS } from '../hooks/useCardTimeData';
 import { CardDead } from './CardDead';
 
 export interface Props {
@@ -46,7 +46,7 @@ export const CardBasic: React.FC<Props> = ({
   );
 
   const { isInvalidDate, msPassed, timeLivedMs } = timeData;
-
+  const replicateCost = convertMS(lifeDuration / 5 / timeRate);
   useEffect(() => {
     if (!isAlive) {
       return;
@@ -121,7 +121,7 @@ export const CardBasic: React.FC<Props> = ({
         {/* pillar 1 */}
         <Stack spacing={1} direction="column" padding={1}>
           <Box sx={centerFlexbox}>
-            <Typography variant="h6">{isAlive ? 'Time Alive' : `Time since born`}</Typography>
+            <Typography variant="h6">Traveled</Typography>
             <Typography variant="caption">{timeData.timeLived.dateString}</Typography>
             <Typography variant="caption">{timeData.timeLived.timeString}</Typography>
           </Box>
@@ -149,11 +149,16 @@ export const CardBasic: React.FC<Props> = ({
         <Typography variant="h2">{`time rate: ${timeData.timeRate}x`} </Typography>
         <Typography sx={{ fontSize: '12px' }}>{`${timeData.ageFormatted}`} </Typography>
       </Box>
-      <Box sx={{ my: 2, width: '100%', display: 'flex', justifyContent: 'center' }}>
+      <Stack spacing={0.5} sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
         <Button onClick={duplicate} variant="outlined">
           Replicate
+          {replicateCost.dateString}
+          {replicateCost.timeString}
         </Button>
-      </Box>
+        <Button onClick={destroy} variant="outlined">
+          Destroy
+        </Button>
+      </Stack>
     </Paper>
   );
 };

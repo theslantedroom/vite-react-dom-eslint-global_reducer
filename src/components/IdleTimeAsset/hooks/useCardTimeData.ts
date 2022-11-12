@@ -84,7 +84,7 @@ const numberWithCommas = (num: number) => {
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 
-function convertMS(milliseconds: number) {
+export function convertMS(milliseconds: number) {
   var years, day, hour, minute, seconds, total_hours, total_minutes, total_seconds;
   total_seconds = Math.floor(milliseconds / 1000);
   minute = Math.floor(total_seconds / 60);

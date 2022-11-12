@@ -4,7 +4,7 @@ import TypeOut from 'react-typeout';
 import { Typography, Box, Paper, Stack, Button, Divider } from '@mui/material';
 import { genTimeTarget } from '../util/generateCard';
 import { CardBasic } from '../components/CardBasic';
-import { useCardTimeData } from '../hooks/useCardTimeData';
+import { convertMS } from '../hooks/useCardTimeData';
 import { subject0, subjectLongDead, genTimeProbe } from '../util/generateCard';
 
 const dateOptions: Intl.DateTimeFormatOptions = {
@@ -32,6 +32,8 @@ export const IdleHistoryBoard: React.FC<Props> = ({ cards = [], timeTargets = []
   };
 
   const start = () => {
+    addGameLog(`Traveling an normal speed.`);
+    addGameLog(`time travel probe activated....`);
     addGameLog(`initializing....`);
 
     const cards = [genTimeProbe()];
@@ -46,7 +48,7 @@ export const IdleHistoryBoard: React.FC<Props> = ({ cards = [], timeTargets = []
     (dateCreated: Date, amount: number, timeRate: number) => {
       setGameData((prev: any) => ({
         ...prev,
-        [dateCreated.getTime()]: (amount * timeRate) / 1000,
+        [dateCreated.getTime()]: amount * timeRate,
       }));
     },
     [setGameData]
@@ -61,7 +63,7 @@ export const IdleHistoryBoard: React.FC<Props> = ({ cards = [], timeTargets = []
   );
   const purchaseForQuarks = (cost: number) => {
     if (displayQuarks < cost) return false;
-    addGameLog(`-${cost} quarks`);
+    addGameLog(`-${convertMS(cost).dateString}${convertMS(cost).timeString}`);
     setDarkQuarks((prev) => prev + cost);
     return true;
   };
@@ -73,7 +75,8 @@ export const IdleHistoryBoard: React.FC<Props> = ({ cards = [], timeTargets = []
       addGameLog(`error... failed to replicate... maximum ${cardCapacity}/${cardCapacity} probes`);
       return;
     }
-    const cardCost = 1;
+
+    const cardCost = card.lifeDuration / 5 / card.timeRate;
     const canAfford = purchaseForQuarks(cardCost);
     if (canAfford) {
       addGameLog(`job complete.... replicated ${card.name}`);
@@ -84,7 +87,11 @@ export const IdleHistoryBoard: React.FC<Props> = ({ cards = [], timeTargets = []
       const cards = [newCard];
       spawnCards([...cards]);
     } else {
-      addGameLog(`insufficient quarks - required: ${cardCost}`);
+      addGameLog(
+        `insufficient quarks - required: ${convertMS(cardCost).dateString}${
+          convertMS(cardCost).timeString
+        }`
+      );
     }
   };
 
@@ -133,14 +140,28 @@ export const IdleHistoryBoard: React.FC<Props> = ({ cards = [], timeTargets = []
 
   return (
     <Stack spacing={1} direction="column">
-      <Typography variant="h4">{`Time Probe Replicator`}</Typography>
+      <Typography variant="h4">Time Probe Replicator</Typography>
+      <Typography variant="caption">Mutators</Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
+        <Button sx={{ mx: 0.5 }} onClick={() => null} variant="outlined">
+          TimeRate
+        </Button>
+        <Button sx={{ mx: 0.5 }} onClick={() => null} variant="outlined">
+          LifeSpan
+        </Button>
+      </Box>
+
       <Typography variant="h6">
-        {localCards.length}/{cardCapacity}
+        Probes: {localCards.length}/{cardCapacity}
       </Typography>
-      <Typography variant="h4">{displayQuarks}</Typography>
+      <Typography variant="h5">Distance Traveled</Typography>
+      <Box sx={{ width: '100%', textAlign: 'center' }}>
+        <Typography variant="h5">{convertMS(displayQuarks).dateString}</Typography>
+        <Typography variant="h6">{convertMS(displayQuarks).timeString}</Typography>
+      </Box>
 
       <Divider sx={{ width: '100%', my: '10px' }} />
-      <Box sx={{ width: '100%', textAlign: 'center', height: '75px', overflow: 'auto' }}>
+      <Box sx={{ width: '100%', textAlign: 'center', height: '75px', overflow: 'hidden' }}>
         {gameLog.length > 0 ? displayGameLog : null}
       </Box>
       <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>

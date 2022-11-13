@@ -28,7 +28,7 @@
     "react-router-dom": "^6.3.0",
     "react-swipeable": "^7.0.0",
     "react-typeout": "^1.0.0",
-    "rooks": "^7.4.0",
+    "rooks": "^7.4.2",
     "xstate": "^4.33.2"
   },
   "devDependencies": {

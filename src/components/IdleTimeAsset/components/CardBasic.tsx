@@ -4,6 +4,7 @@ import TypeOut from 'react-typeout';
 import { Typography, Box, Paper, Stack, Button, Divider } from '@mui/material';
 import { useCardTimeData, convertMS } from '../hooks/useCardTimeData';
 import { CardDead } from './CardDead';
+import { calcReplicateCost } from '../layouts/IdleHistoryBoard';
 
 export interface Props {
   name?: String;
@@ -46,7 +47,7 @@ export const CardBasic: React.FC<Props> = ({
   );
 
   const { isInvalidDate, msPassed, timeLivedMs } = timeData;
-  const replicateCost = convertMS(lifeDuration / 5 / timeRate);
+  const replicateCost = convertMS(calcReplicateCost(lifeDuration, timeRate));
   useEffect(() => {
     if (!isAlive) {
       return;
@@ -155,9 +156,9 @@ export const CardBasic: React.FC<Props> = ({
           {replicateCost.dateString}
           {replicateCost.timeString}
         </Button>
-        <Button onClick={destroy} variant="outlined">
-          Destroy
-        </Button>
+        {/* <Button onClick={() => destroy(dateCreated)} variant="outlined">
+          Abandon
+        </Button> */}
       </Stack>
     </Paper>
   );

@@ -48,7 +48,8 @@ export const useCardTimeData = (
     return {
       msPassed: msPassed,
       ageFormatted: `${numberWithCommas(msPassed)}`,
-      timeRate: `${numberWithCommas(rate)}`,
+      timeRate: timeRate,
+      timeRateStr: `${numberWithCommas(rate)}`,
       totalAccumulated: totalAccumulated,
       totalAccumulatedText: `UTC timestamp ms: ${totalAccumulatedText}`,
       realTimePast: realTimePast,

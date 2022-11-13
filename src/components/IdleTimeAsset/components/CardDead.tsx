@@ -2,7 +2,7 @@ import React, { useCallback, useState, useEffect, useMemo, useRef } from 'react'
 import TypeOut from 'react-typeout';
 
 import { Typography, Box, Paper, Stack, Button, Divider } from '@mui/material';
-import { useCardTimeData } from '../hooks/useCardTimeData';
+import { convertMS, useCardTimeData } from '../hooks/useCardTimeData';
 
 export interface Props {
   name?: String;
@@ -64,6 +64,7 @@ export const CardDead: React.FC<Props> = ({
   const isAlive = timeData.isAlive;
   const handleOnDeath = () => {
     console.log('card died:', name);
+    destroy();
   };
 
   useEffect(() => {
@@ -108,7 +109,7 @@ export const CardDead: React.FC<Props> = ({
       {/* footer */}
       {!isAlive ? (
         <Box sx={centerFlexbox}>
-          <Typography variant="h1">LOST</Typography>
+          <Typography variant="h1">Arrived</Typography>
           <Typography variant="caption">{`time rate: ${timeData.timeRate}x`} </Typography>
         </Box>
       ) : null}
@@ -123,16 +124,17 @@ export const CardDead: React.FC<Props> = ({
       </Stack>
       <Stack spacing={0.5} sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
         <Typography variant="caption">
-          quark made: {numberWithCommas(lifeDuration / 1000)}
+          probed: {convertMS(lifeDuration).dateString}
+          {convertMS(lifeDuration).timeString}
         </Typography>
       </Stack>
       <Stack spacing={0.5} sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
         <Button onClick={duplicate} variant="outlined">
           Replicate
         </Button>
-        <Button onClick={destroy} variant="outlined">
+        {/* <Button onClick={destroy} variant="outlined">
           Destroy
-        </Button>
+        </Button> */}
       </Stack>
     </Paper>
   );

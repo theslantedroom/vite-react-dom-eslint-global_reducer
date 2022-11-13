@@ -138,10 +138,11 @@ export const genTimeProbe = () => {
       'proceeding as normal',
     ],
     // lifeDuration: yearMs * yearMs * 1.212 + 3453667,
-    lifeDuration: 60000,
+    lifeDuration: 600000,
     dateCreated: new Date(),
-    timeRate: 1,
+    timeRate: 10,
     counterSpeedMs: 200,
+    isDestroyed: false,
   };
 };
 export const subjectLongDead = {

@@ -18,7 +18,7 @@ export interface Props {
   lifeDuration?: number;
   addQuarks?: any;
   duplicate?: any;
-  destroy?: any;
+  destroyCard?: any;
 }
 export const CardDead: React.FC<Props> = ({
   name = undefined,
@@ -33,7 +33,7 @@ export const CardDead: React.FC<Props> = ({
   lifeDuration = 100000,
   addQuarks = () => null,
   duplicate = () => null,
-  destroy = () => null,
+  destroyCard = () => null,
 }) => {
   const { timeData, rate, setRate } = useCardTimeData(
     rateReturn,
@@ -43,16 +43,14 @@ export const CardDead: React.FC<Props> = ({
     lifeDuration
   );
 
-  const { isInvalidDate, msPassed, timeLivedMs } = timeData;
+  const { isInvalidDate, msPassed } = timeData;
 
-  useEffect(() => {
-    if (!isAlive) {
-      // set timerate 1 for dead cards
-      const completedLiveTimeRate = 1;
-      addQuarks(dateCreated, lifeDuration, completedLiveTimeRate);
-      return;
-    }
-  }, [msPassed, timeData.isAlive]);
+  // useEffect(() => {
+  //   // set timerate 1 for dead cards
+  //   console.log('dead add');
+  //   const completedLiveTimeRate = 1;
+  //   addQuarks(dateCreated, lifeDuration, completedLiveTimeRate);
+  // }, [msPassed, timeData.isAlive]);
 
   const centerFlexbox = {
     display: 'flex',
@@ -61,19 +59,17 @@ export const CardDead: React.FC<Props> = ({
     alignItems: 'center',
   };
 
-  const isAlive = timeData.isAlive;
-  const handleOnDeath = () => {
-    console.log('card died:', name);
-    destroy();
-  };
-
   useEffect(() => {
-    if (!isAlive) handleOnDeath();
-  }, [isAlive]);
+    const completedLiveTimeRate = 1;
+    addQuarks(dateCreated, lifeDuration, completedLiveTimeRate);
+    console.log('xxx');
+    destroyCard();
+  }, []);
+
   return (
     <Paper
       sx={{
-        minWidth: isAlive ? '250px' : '50px',
+        minWidth: '50px',
         p: 2,
         m: 1,
         borderRadius: '5px',
@@ -83,42 +79,21 @@ export const CardDead: React.FC<Props> = ({
       <Box sx={centerFlexbox}>
         {/* Header */}
         <Typography variant="h4">{name}</Typography>
-        {isAlive ? (
-          <Typography variant="body1">
-            "
-            <TypeOut
-              words={description}
-              typeSpeed={50}
-              rewindSpeed={1}
-              pauseSpeed={2000}
-              Node="span"
-            />
-            "
-          </Typography>
-        ) : null}
-        {isAlive ? (
-          <Typography variant="caption">{isInvalidDate ? '' : timeData.calculatedDate}</Typography>
-        ) : (
-          <Typography variant="caption">{''}</Typography>
-        )}
+
+        <Typography variant="caption">{''}</Typography>
       </Box>
 
       <Box sx={centerFlexbox}>
         <Typography variant="caption">{timeData.dateCreated}</Typography>
       </Box>
       {/* footer */}
-      {!isAlive ? (
-        <Box sx={centerFlexbox}>
-          <Typography variant="h1">Arrived</Typography>
-          <Typography variant="caption">{`time rate: ${timeData.timeRate}x`} </Typography>
-        </Box>
-      ) : null}
+      <Box sx={centerFlexbox}>
+        <Typography variant="h1">Arrived</Typography>
+        <Typography variant="caption">{`time rate: ${timeData.timeRate}x`} </Typography>
+      </Box>
       <Stack spacing={1} direction="row" justifyContent={'center'} padding={1}>
         <Box sx={centerFlexbox}>
-          <Typography variant="caption">
-            {isAlive ? 'Life Span' : 'Survived'}
-            {timeData.lifeDuration.dateString}
-          </Typography>
+          <Typography variant="caption">{timeData.lifeDuration.dateString}</Typography>
           <Typography variant="caption">{timeData.lifeDuration.timeString}</Typography>
         </Box>
       </Stack>

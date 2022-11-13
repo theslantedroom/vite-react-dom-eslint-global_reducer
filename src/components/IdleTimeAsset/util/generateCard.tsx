@@ -121,8 +121,9 @@ export const baseTime = {
   // lifeDuration: yearMs * yearMs * 1.212 + 3453667,
   lifeDuration: 3000000,
   dateCreated: new Date(),
-  timeRate: 12,
+  timeRate: 1,
   counterSpeedMs: 200,
+  isDestroyed: false,
 };
 
 export const genTimeProbe = () => {
@@ -130,15 +131,11 @@ export const genTimeProbe = () => {
     name: 'Time Probe',
     description: [
       '.......',
-      '.......',
-      'performing system diagnostics',
-      '.......',
-      'this is your local frame of reference',
-      'all systems normal',
-      'proceeding as normal',
+      'processing....',
+      'all systems functional',
+      'this probe will travel 30 second',
     ],
-    // lifeDuration: yearMs * yearMs * 1.212 + 3453667,
-    lifeDuration: 600000,
+    lifeDuration: 30000,
     dateCreated: new Date(),
     timeRate: 10,
     counterSpeedMs: 200,

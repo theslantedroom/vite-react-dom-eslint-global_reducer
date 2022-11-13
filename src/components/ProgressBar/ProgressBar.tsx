@@ -1,35 +1,33 @@
-import React, { useCallback, useState, useMemo, useEffect } from 'react';
+import React, { useCallback, useState, useMemo, useEffect, useRef } from 'react';
 
 import { Typography, Box, Button, Stack } from '@mui/material';
 
 export interface Props {
-  message?: string;
+  message?: string | any;
   tooltip?: string;
   max?: number;
   value?: number;
   width?: number;
   height?: number;
+  parentRef?: React.RefObject<HTMLDivElement>;
 }
 export const ProgressBar: React.FC<Props> = ({
   message = 'Status',
   tooltip = 'This is a tooltip',
   max = 100,
   value = 2,
-  width = 200,
-  height = 30,
+  width = undefined,
+  height = 25,
 }) => {
-  const style = {
-    position: 'absolute',
-    minHeight: height,
-    width: width,
-    p: 0,
-    background: `linear-gradient(90deg, rgba(142,142,142,1) 0%, rgba(96,96,97,1) 69%, rgba(78,79,79,1) 100%)`,
-    border: '1px solid black',
-    borderRadius: '5px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  };
+  const ref = useRef<HTMLDivElement>(null);
+
+  const [widthBar, setWidthBar] = useState(
+    width ? width : ref?.current?.parentElement?.offsetWidth || 200
+  );
+  useEffect(() => {
+    if (width) return;
+    setWidthBar(ref?.current?.parentElement?.offsetWidth || 200);
+  }, [ref?.current?.parentElement?.offsetWidth]);
 
   const [hover, setHover] = useState<boolean>(false);
   const [shallowValue, setShallowValue] = useState<number>(value);
@@ -48,30 +46,44 @@ export const ProgressBar: React.FC<Props> = ({
   }, []);
 
   const memoWidth = useMemo(() => {
-    const w = (shallowValue / max) * width;
-    if (shallowValue >= max) return width;
+    const w = (shallowValue / max) * widthBar;
+    if (shallowValue >= max) return widthBar;
     return w;
-  }, [shallowValue, max, width]);
+  }, [shallowValue, max, widthBar]);
 
   useEffect(() => {
     setShallowValue(value);
   }, [value]);
 
+  const style = {
+    position: 'absolute',
+    height: height,
+    width: widthBar,
+    p: 0,
+    background: `linear-gradient(90deg, rgba(142,142,142,1) 0%, rgba(96,96,97,1) 69%, rgba(78,79,79,1) 100%)`,
+    border: '1px solid black',
+    borderRadius: '5px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  };
+
   return (
     <Box
+      ref={ref}
       onMouseOver={handleMouseIn}
       onMouseOut={handleMouseOut}
       sx={{
         cursor: 'pointer',
         height: height + 2,
-        width: width,
+        width: widthBar,
       }}
     >
       {showControls && (
         <>
           <Stack
             id="controls"
-            sx={{ width: `${width}px` }}
+            sx={{ width: `${widthBar}px` }}
             direction="row"
             justifyContent="space-between"
             alignItems="center"

@@ -4,6 +4,7 @@ import TypeOut from 'react-typeout';
 import { Typography, Box, Paper, Stack, Button, Divider } from '@mui/material';
 import { useCardTimeData, convertMS } from '../hooks/useCardTimeData';
 import { CardDead } from './CardDead';
+import { ProgressBar } from '../../ProgressBar/ProgressBar';
 import { calcReplicateCost } from '../layouts/IdleHistoryBoard';
 
 export interface Props {
@@ -20,7 +21,7 @@ export interface Props {
   lifeDuration?: number;
   addQuarks?: any;
   duplicate?: any;
-  destroy?: any;
+  destroyCard?: any;
 }
 export const CardBasic: React.FC<Props> = ({
   name = undefined,
@@ -35,7 +36,7 @@ export const CardBasic: React.FC<Props> = ({
   lifeDuration = 100000,
   addQuarks = () => null,
   duplicate = () => null,
-  destroy = () => null,
+  destroyCard = () => null,
   creates,
 }) => {
   const { timeData, rate, setRate } = useCardTimeData(
@@ -54,7 +55,6 @@ export const CardBasic: React.FC<Props> = ({
     }
     addQuarks(dateCreated, msPassed, timeRate);
   }, [msPassed, timeData.isAlive]);
-
   const centerFlexbox = {
     display: 'flex',
     flexDirection: 'column',
@@ -63,7 +63,6 @@ export const CardBasic: React.FC<Props> = ({
   };
 
   const isAlive = timeData.isAlive;
-
   if (!isAlive)
     return (
       <CardDead
@@ -80,7 +79,7 @@ export const CardBasic: React.FC<Props> = ({
         rateReturn={rateReturn}
         addQuarks={addQuarks}
         duplicate={duplicate}
-        destroy={destroy}
+        destroyCard={destroyCard}
       />
     );
   return (
@@ -96,9 +95,14 @@ export const CardBasic: React.FC<Props> = ({
       <Box sx={centerFlexbox}>
         {/* Header */}
         <Typography variant="h4">{name}</Typography>
-        {isAlive ? (
-          <Typography variant="body1">
-            "
+        <Typography variant="caption">{isInvalidDate ? '' : timeData.calculatedDate}</Typography>
+      </Box>
+      <Box sx={{ width: '100%' }}>
+        <ProgressBar
+          value={timeData.timeLived.ms}
+          max={timeData.lifeDuration.ms}
+          tooltip={'probe active'}
+          message={
             <TypeOut
               words={description}
               typeSpeed={50}
@@ -106,16 +110,9 @@ export const CardBasic: React.FC<Props> = ({
               pauseSpeed={2000}
               Node="span"
             />
-            "
-          </Typography>
-        ) : null}
-        {isAlive ? (
-          <Typography variant="caption">{isInvalidDate ? '' : timeData.calculatedDate}</Typography>
-        ) : (
-          <Typography variant="caption">{''}</Typography>
-        )}
+          }
+        />
       </Box>
-
       {/* Split pillars */}
 
       <Stack spacing={1} direction="row" justifyContent={'center'} padding={1}>
@@ -130,19 +127,13 @@ export const CardBasic: React.FC<Props> = ({
         {/* pillar 2 */}
         <Stack spacing={1} direction="column" padding={1}>
           <Box sx={centerFlexbox}>
-            <Typography variant="h6">{isAlive ? 'Life Span' : 'Survived'}</Typography>
+            <Typography variant="h6">Capacity</Typography>
             <Typography variant="caption">{timeData.lifeDuration.dateString}</Typography>
             <Typography variant="caption">{timeData.lifeDuration.timeString}</Typography>
           </Box>
         </Stack>
       </Stack>
       {/* footer */}
-
-      {!isAlive ? (
-        <Box sx={centerFlexbox}>
-          <Typography variant="h1">LOST</Typography>
-        </Box>
-      ) : null}
 
       <Box sx={centerFlexbox}>
         <Typography variant="caption">Card's Birth: {timeData.dateCreated}</Typography>

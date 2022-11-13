@@ -24,7 +24,8 @@ export interface Props {
 export const IdleHistoryBoard: React.FC<Props> = ({ cards = [], timeTargets = [] }) => {
   const [localCards, setLocalCards] = useState<any>([]);
   const [quarks, setQuarks] = useState(0);
-  const [aliveProbesCount, setAliveProbesCount] = useState(0);
+  0;
+  const [createdProbesCount, setCreatedProbesCount] = useState(0);
   const [deadProbesCount, setDeadProbesCount] = useState(0);
   const [darkQuarks, setDarkQuarks] = useState(0);
   const [jumpedDistance, setJumpedDistance] = useState(0);
@@ -33,29 +34,9 @@ export const IdleHistoryBoard: React.FC<Props> = ({ cards = [], timeTargets = []
   const displayQuarks = quarks - darkQuarks;
   const [gameData, setGameData] = useState<any>({});
   const {} = useSaveObjectLocalStorage();
-  const spawnCards = (cards: any[]) => {
-    setLocalCards((prev: any) => [...prev, ...cards]);
-  };
-
-  useEffect(() => {
-    setAliveProbesCount(localCards.length);
-  }, [localCards.length]);
 
   const [isMutateTimeRate, setIsMutateTimeRate] = useState(true);
   const [isMutateLifeSpan, setIsMutateLifeSpan] = useState(false);
-
-  const start = () => {
-    addGameLog(`Traveling an normal speed.`);
-    addGameLog(`time travel probe activated....`);
-    addGameLog(`initializing....`);
-
-    const cards = [genTimeProbe()];
-    spawnCards([...cards]);
-  };
-
-  useEffect(() => {
-    start();
-  }, []);
 
   const addQuarks = useCallback(
     (dateCreated: Date, amount: number, timeRate: number) => {
@@ -66,35 +47,50 @@ export const IdleHistoryBoard: React.FC<Props> = ({ cards = [], timeTargets = []
     },
     [setGameData]
   );
-  const addGameLog = useCallback(
-    (text: string) => {
-      setGameLog((prev) => {
-        return [...prev, text];
-      });
-    },
-    [gameLog]
-  );
+
+  // Card Actions
+  const activeCards = localCards.filter((card: any) => card.isDestroyed === false);
+  const deadCards = localCards.filter((card: any) => card.isDestroyed === true);
+  const lastDeadCards = useMemo(() => {
+    return deadCards.slice(-2).reverse();
+  }, [deadCards]);
+
+  const spawnCards = (cards: any[]) => {
+    console.log('spawn');
+    console.log('localCards', localCards);
+
+    const created = cards[0].dateCreated;
+    if (
+      localCards.find((card: any) => {
+        console.log('created', created.getTime());
+        console.log('card', card.dateCreated.getTime());
+        return card.dateCreated.getTime() === created.getTime();
+      })
+    ) {
+      console.log('xsads');
+      return;
+    }
+    setLocalCards((prev: any) => [...prev, ...cards]);
+  };
+
   const purchaseForQuarks = (cost: number) => {
     if (displayQuarks < cost) return false;
-    addGameLog(`-${convertMS(cost).dateString}${convertMS(cost).timeString}`);
+    addGameLog(
+      `lost ${convertMS(cost).dateString}${
+        convertMS(cost).timeString
+      } quarks in replication process...
+      `
+    );
     setDarkQuarks((prev) => prev + cost);
     return true;
   };
 
-  const deadProbes = localCards.filter((obj: any) => {
-    if (obj.isDestroyed === true) {
-      return true;
-    }
-    return false;
-  }).length;
-
   const replicateCard = (card: any, i: number) => {
-    const isAtProbeMax = aliveProbesCount - deadProbesCount >= cardCapacity;
+    const isAtProbeMax = activeCards.length >= cardCapacity;
     if (isAtProbeMax) {
       addGameLog(`error... failed to replicate... maximum ${cardCapacity}/${cardCapacity} probes`);
       return;
     }
-
     const cardCost = calcReplicateCost(card.lifeDuration, card.timeRate);
     const canAfford = purchaseForQuarks(cardCost);
     if (canAfford) {
@@ -104,14 +100,20 @@ export const IdleHistoryBoard: React.FC<Props> = ({ cards = [], timeTargets = []
       };
       newCard.dateCreated = new Date();
       newCard.isDestroyed = false;
+      newCard.description = [];
+
       if (isMutateTimeRate) {
         const mutateScale = 1 + Math.random();
         const newTimeRate = Math.round(card.timeRate * mutateScale * 10) / 10;
         addGameLog(`mutating time rate.. ${card.name} ${card.timeRate}>${newTimeRate}`);
         newCard.timeRate = newTimeRate;
+        newCard.description.push(`mutated time travel rate...`);
+        newCard.description.push(`${Math.round(mutateScale * 100)}% faster time travel`);
+        newCard.description.push(`time rate: ${card.timeRate}x > ${newTimeRate}x`);
       }
       const cards = [newCard];
       spawnCards([...cards]);
+      setCreatedProbesCount((prev) => prev + 1);
     } else {
       addGameLog(
         `insufficient quarks - required: ${convertMS(cardCost).dateString}${
@@ -121,65 +123,40 @@ export const IdleHistoryBoard: React.FC<Props> = ({ cards = [], timeTargets = []
     }
   };
 
-  const destroyCard = (dateCreated: Date) => {
-    if (localCards.length === 1) {
-      addGameLog(`error... eliminating last probe violates Ai directive`);
-      return;
-    }
-    const cardToDestroy = localCards.filter((obj: any) => {
-      return obj.dateCreated === dateCreated;
-    })[0];
+  const destroyCard = useCallback(
+    (dateCreated: Date) => {
+      console.log('-- destroyCard  --');
 
-    const index = localCards.findIndex((obj: any) => {
-      return obj.dateCreated === dateCreated;
-    });
-    localCards[index].isDestroyed = true;
+      const cardToDestroy = localCards.filter((obj: any) => {
+        return obj.dateCreated === dateCreated;
+      })[0];
 
-    addGameLog(`destroyed: ${cardToDestroy.name} x${cardToDestroy.timeRate}`);
-    setDeadProbesCount((prev) => prev + 1);
-    // remove card from localCards
-    // const afterLocalCards = localCards.filter((obj: any) => {
-    //   return obj.dateCreated.getTime() !== dateCreated.getTime();
-    // });
-    // setLocalCards((prev: any) => [...afterLocalCards]);
-  };
+      const index = localCards.findIndex((obj: any) => {
+        return obj.dateCreated === dateCreated;
+      });
+      console.log('index', index, cardToDestroy);
+      if (!cardToDestroy) console.error('Failed to destroy card');
 
-  const displayGameLog = useMemo(() => {
-    return gameLog.reverse().map((log, i) => {
-      const isTopLog = i < 3;
-      return (
-        <Box key={log + i} sx={centerFlexbox}>
-          <Typography
-            variant={isTopLog ? 'body1' : 'caption'}
-            sx={{ color: isTopLog ? 'lightgreen' : 'inherit' }}
-          >
-            {log}
-          </Typography>
-        </Box>
-      );
-    });
-  }, [gameLog]);
+      console.log('set isDestroyed', localCards[index].timeRate);
+      localCards[index].isDestroyed = true;
 
-  // update gameData
-  useEffect(() => {
-    const values = Object.values(gameData);
-    const sum: any = values.reduce((accumulator: any, value: any) => {
-      return accumulator + value;
-    }, 0);
+      addGameLog(`destroyed: ${cardToDestroy.name} x${cardToDestroy.timeRate}`);
+      setDeadProbesCount((prev) => prev + 1);
+    },
+    [localCards]
+  );
 
-    setQuarks(Math.round(sum));
-  }, [gameData]);
-
+  // Util
   const getAdjustedDate = () => {
     const currentTimeAsMs = Date.now();
     const adjustedTimeAsMs = currentTimeAsMs + jumpedDistance;
     return new Date(adjustedTimeAsMs);
   };
-
   const getAdjustedDateStr = () => {
     return getAdjustedDate().toLocaleDateString('en-US', dateOptions);
   };
 
+  // Board Actions
   const jumpWarp = useCallback(() => {
     const currentTimeAsMs = getAdjustedDate().getTime();
     const adjustedTimeAsMs = currentTimeAsMs + jumpedDistance;
@@ -201,13 +178,71 @@ export const IdleHistoryBoard: React.FC<Props> = ({ cards = [], timeTargets = []
     convertMS(displayQuarks).dateString
   }`;
 
+  // Update gameData
   useEffect(() => {
-    console.log('activeCards', activeCards);
-    console.log('deadCards', deadCards);
-  }, [localCards]);
+    const values = Object.values(gameData);
+    const sum: any = values.reduce((accumulator: any, value: any) => {
+      return accumulator + value;
+    }, 0);
 
-  const deadCards = localCards.filter((card: any) => card.isDestroyed === true);
-  const activeCards = localCards.filter((card: any) => card.isDestroyed === false);
+    setQuarks(Math.round(sum));
+  }, [gameData]);
+
+  // GAME LOG
+  const start = useCallback(() => {
+    addGameLog(`Traveling an normal speed.`);
+    addGameLog(`time travel probe activated....`);
+    addGameLog(`initializing....`);
+    const cards = [genTimeProbe()];
+    spawnCards([...cards]);
+  }, []);
+
+  useEffect(() => {
+    addGameLog(`Traveling an normal speed.`);
+    addGameLog(`time travel probe activated....`);
+    addGameLog(`initializing....`);
+    const cards = [genTimeProbe()];
+    spawnCards([...cards]);
+  }, []);
+
+  const addGameLog = useCallback(
+    (text: string) => {
+      setGameLog((prev) => {
+        return [...prev, text];
+      });
+      logRef.current?.scrollIntoView();
+    },
+    [gameLog]
+  );
+  const logRef = useRef<HTMLDivElement>();
+  const displayGameLog = useMemo(() => {
+    return (
+      <Box sx={{ width: '100%', textAlign: 'center', height: '75px', overflow: 'auto' }}>
+        {gameLog.length > 0 ? displayGameLog : null}
+
+        {gameLog.map((log, i) => {
+          const isTopLog = true;
+          return (
+            <Box key={log + i} sx={centerFlexbox}>
+              <Typography
+                variant={isTopLog ? 'body1' : 'caption'}
+                sx={{ color: isTopLog ? 'lightgreen' : 'inherit' }}
+              >
+                {log}
+              </Typography>
+            </Box>
+          );
+        })}
+        <Box ref={logRef} />
+      </Box>
+    );
+  }, [gameLog]);
+
+  // useEffect(() => {
+  //   console.log('deadCards', deadCards);
+  //   console.log('activeCards', activeCards);
+  //   console.log('lastDeadCards', lastDeadCards);
+  // }, [deadProbesCount, createdProbesCount]);
 
   return (
     <Stack spacing={1} direction="column">
@@ -216,9 +251,7 @@ export const IdleHistoryBoard: React.FC<Props> = ({ cards = [], timeTargets = []
       </Typography>
       {/* Game Log */}
       <Divider sx={{ width: '100%', my: '10px' }} />
-      <Box sx={{ width: '100%', textAlign: 'center', height: '75px', overflow: 'hidden' }}>
-        {gameLog.length > 0 ? displayGameLog : null}
-      </Box>
+      {displayGameLog}
       <Typography variant="caption">probed - ready for time jump:</Typography>
       <Typography variant="h6"> {jumpBtnText}</Typography>
       <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -233,14 +266,23 @@ export const IdleHistoryBoard: React.FC<Props> = ({ cards = [], timeTargets = []
       </Box>
       <Typography variant="caption">{`jumped: ${convertMS(jumpedDistance).timeString}`}</Typography>
       <Typography variant="h4">
-        RepliCATor Time Probes: {aliveProbesCount - deadProbesCount}/{cardCapacity}
+        RepliCATor Time Probes:
+        {activeCards.length}/{cardCapacity}
       </Typography>
       <Typography variant="caption">Mutators</Typography>
       <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
-        <Button sx={{ mx: 0.5 }} onClick={() => null} variant="outlined">
+        <Button
+          sx={{ mx: 0.5 }}
+          onClick={() => null}
+          variant={isMutateTimeRate ? 'contained' : 'outlined'}
+        >
           TimeRate
         </Button>
-        <Button sx={{ mx: 0.5 }} onClick={() => null} variant="outlined">
+        <Button
+          sx={{ mx: 0.5 }}
+          onClick={() => null}
+          variant={isMutateLifeSpan ? 'contained' : 'outlined'}
+        >
           LifeSpan
         </Button>
       </Box>
@@ -280,14 +322,15 @@ export const IdleHistoryBoard: React.FC<Props> = ({ cards = [], timeTargets = []
               rateReturn={rateReturn}
               addQuarks={addQuarks}
               duplicate={() => replicateCard(card, i)}
-              destroy={() => destroyCard(card.dateCreated)}
+              destroyCard={() => destroyCard(card.dateCreated)}
             />
           );
         })}
       </Box>
+      <Divider sx={{ width: '100%', my: '10px' }} />
       <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
         {/* Dead */}
-        {deadCards.map((card: any, i: number) => {
+        {lastDeadCards.map((card: any, i: number) => {
           const {
             name,
             description,
@@ -319,7 +362,7 @@ export const IdleHistoryBoard: React.FC<Props> = ({ cards = [], timeTargets = []
               rateReturn={rateReturn}
               addQuarks={addQuarks}
               duplicate={() => replicateCard(card, i)}
-              destroy={() => destroyCard(card.dateCreated)}
+              destroyCard={() => destroyCard(card.dateCreated)}
             />
           );
         })}

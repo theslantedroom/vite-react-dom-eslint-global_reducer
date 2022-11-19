@@ -1,11 +1,16 @@
 import React, { useCallback, useState, useEffect, useMemo, useRef } from 'react';
 import TypeOut from 'react-typeout';
-
 import { Typography, Box, Paper, Stack, Button, Divider } from '@mui/material';
-import { useCardTimeData, convertMS } from '../hooks/useCardTimeData';
-import { CardDead } from './CardDead';
+import FastForwardIcon from '@mui/icons-material/FastForward';
+import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import UpdateIcon from '@mui/icons-material/Update';
+
 import { ProgressBar } from '../../ProgressBar/ProgressBar';
 import { calcReplicateCost } from '../layouts/IdleHistoryBoard';
+import { CardDead } from './CardDead';
+// hooks
+import { useCardTimeData, convertMS } from '../hooks/useCardTimeData';
 
 export interface Props {
   name?: String;
@@ -22,6 +27,9 @@ export interface Props {
   addQuarks?: any;
   duplicate?: any;
   destroyCard?: any;
+  selectCard?: any;
+  selectedCard?: any;
+  gameOptions: any;
 }
 export const CardBasic: React.FC<Props> = ({
   name = undefined,
@@ -37,6 +45,9 @@ export const CardBasic: React.FC<Props> = ({
   addQuarks = () => null,
   duplicate = () => null,
   destroyCard = () => null,
+  selectCard = () => null,
+  selectedCard = undefined,
+  gameOptions,
   creates,
 }) => {
   const { timeData, rate, setRate } = useCardTimeData(
@@ -46,49 +57,34 @@ export const CardBasic: React.FC<Props> = ({
     counterSpeedMs,
     lifeDuration
   );
+  const isAlive = timeData.isAlive;
 
   const { isInvalidDate, msPassed, timeLivedMs } = timeData;
   const replicateCost = convertMS(calcReplicateCost(lifeDuration, timeRate));
+
+  // add quarks to charge while alive
   useEffect(() => {
     if (!isAlive) {
       return;
     }
     addQuarks(dateCreated, msPassed, timeRate);
   }, [msPassed, timeData.isAlive]);
-  const centerFlexbox = {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  };
 
-  const isAlive = timeData.isAlive;
-  if (!isAlive)
-    return (
-      <CardDead
-        name={name}
-        description={description}
-        lifeDuration={lifeDuration}
-        dateCreated={dateCreated}
-        timeRate={timeRate}
-        creates={creates}
-        counterSpeedMs={counterSpeedMs}
-        minTimeRate={minTimeRate}
-        maxTimeRate={maxTimeRate}
-        rateSliderStep={rateSliderStep}
-        rateReturn={rateReturn}
-        addQuarks={addQuarks}
-        duplicate={duplicate}
-        destroyCard={destroyCard}
-      />
-    );
+  //select this card on render
+  useEffect(() => {
+    selectCard();
+  }, []);
+
+  const isSelected = selectedCard?.dateCreated === dateCreated;
+
   return (
     <Paper
       sx={{
         minWidth: '350px',
         p: 1,
         m: 1,
-        borderRadius: '5px',
+        borderRadius: '15px',
+        border: isSelected ? '2px solid green' : 'initial',
         boxShadow: 'rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px',
       }}
     >
@@ -120,8 +116,12 @@ export const CardBasic: React.FC<Props> = ({
         <Stack spacing={1} direction="column" padding={1}>
           <Box sx={centerFlexbox}>
             <Typography variant="h6">Traveled</Typography>
-            <Typography variant="caption">{timeData.timeLived.dateString}</Typography>
-            <Typography variant="caption">{timeData.timeLived.timeString}</Typography>
+            <Typography variant="caption">
+              {!isAlive ? timeData.lifeDuration.dateString : timeData.timeLived.dateString}
+            </Typography>
+            <Typography variant="caption">
+              {!isAlive ? timeData.lifeDuration.timeString : timeData.timeLived.timeString}
+            </Typography>
           </Box>
         </Stack>
         {/* pillar 2 */}
@@ -139,17 +139,61 @@ export const CardBasic: React.FC<Props> = ({
         <Typography variant="caption">Card's Birth: {timeData.dateCreated}</Typography>
         <Typography variant="caption">Card's Age: {timeData.realTimePast.string}</Typography>
         <Typography variant="h2">{`time rate: ${timeData.timeRate}x`} </Typography>
-        <Typography sx={{ fontSize: '12px' }}>{`${timeData.ageFormatted}`} </Typography>
+
+        {isAlive ? null : <Typography sx={{ fontSize: '12px' }}>Reached Destination</Typography>}
       </Box>
+
       <Stack spacing={0.5} sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-        <Button onClick={duplicate} variant="outlined">
-          Replicate
-          {replicateCost.dateString}
-          {replicateCost.timeString}
-        </Button>
-        {/* <Button onClick={() => destroy(dateCreated)} variant="outlined">
-          Abandon
-        </Button> */}
+        {isSelected ? (
+          <Stack>
+            {gameOptions.isCloningFree ? (
+              <Typography variant="h6" sx={{ width: '100%', textAlign: 'center' }}>
+                Clone
+              </Typography>
+            ) : (
+              <Typography variant="h6" sx={{ width: '100%', textAlign: 'center' }}>
+                Clone for <ElectricBoltIcon sx={{ position: 'relative', top: '5px' }} />
+                {replicateCost.dateString}
+                {replicateCost.timeString}
+              </Typography>
+            )}
+
+            <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <Button
+                sx={{ mx: 0.5 }}
+                startIcon={<FastForwardIcon />}
+                endIcon={<TrendingUpIcon />}
+                onClick={duplicate}
+                color="success"
+                variant="contained"
+              >
+                Time Rate
+              </Button>
+              <Button
+                startIcon={<UpdateIcon />}
+                endIcon={<TrendingUpIcon />}
+                sx={{ mx: 0.5 }}
+                onClick={duplicate}
+                color="success"
+                variant="contained"
+              >
+                Durability
+              </Button>
+            </Box>
+          </Stack>
+        ) : (
+          <Button
+            onClick={selectCard}
+            sx={{
+              '.MuiButton-root': {
+                backgroundColor: 'green',
+              },
+            }}
+            variant="outlined"
+          >
+            Select Probe
+          </Button>
+        )}
       </Stack>
     </Paper>
   );
@@ -157,4 +201,10 @@ export const CardBasic: React.FC<Props> = ({
 
 const numberWithCommas = (num: number) => {
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+};
+const centerFlexbox = {
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  alignItems: 'center',
 };

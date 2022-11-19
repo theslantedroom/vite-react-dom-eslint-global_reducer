@@ -86,6 +86,17 @@ const numberWithCommas = (num: number) => {
 };
 
 export function convertMS(milliseconds: number) {
+  if (milliseconds < 0)
+    return {
+      day: 0,
+      hour: 0,
+      minute: 0,
+      seconds: 0,
+      ms: 0,
+      string: ``,
+      dateString: `launch probe to begin...`,
+      timeString: ``,
+    };
   var years, day, hour, minute, seconds, total_hours, total_minutes, total_seconds;
   total_seconds = Math.floor(milliseconds / 1000);
   minute = Math.floor(total_seconds / 60);

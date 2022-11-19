@@ -131,13 +131,13 @@ export const genTimeProbe = () => {
     name: 'Time Probe',
     description: [
       '.......',
-      'processing....',
       'all systems functional',
-      'this probe will travel 30 second',
+      'traveling at standard 1x time speed',
+      'target: 30 seconds into the future',
     ],
     lifeDuration: 30000,
     dateCreated: new Date(),
-    timeRate: 10,
+    timeRate: 1,
     counterSpeedMs: 200,
     isDestroyed: false,
   };

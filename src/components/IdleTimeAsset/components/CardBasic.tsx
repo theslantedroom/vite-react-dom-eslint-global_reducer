@@ -59,16 +59,18 @@ export const CardBasic: React.FC<Props> = ({
   );
   const isAlive = timeData.isAlive;
 
-  const { isInvalidDate, msPassed, timeLivedMs } = timeData;
+  const { isInvalidDate, msPassed, willDieBeforeFirstFrame } = timeData;
   const replicateCost = convertMS(calcReplicateCost(lifeDuration, timeRate));
 
   // add quarks to charge while alive
   useEffect(() => {
-    if (!isAlive) {
+    if (!isAlive || willDieBeforeFirstFrame) {
+      addQuarks(dateCreated, lifeDuration, 1);
       return;
     }
+
     addQuarks(dateCreated, msPassed, timeRate);
-  }, [msPassed, timeData.isAlive]);
+  }, [msPassed]);
 
   //select this card on render
   useEffect(() => {
@@ -88,27 +90,31 @@ export const CardBasic: React.FC<Props> = ({
         boxShadow: 'rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px',
       }}
     >
+      {willDieBeforeFirstFrame ? 'willDieBeforeFirstFrame' : ''}
       <Box sx={centerFlexbox}>
         {/* Header */}
         <Typography variant="h4">{name}</Typography>
-        <Typography variant="caption">{isInvalidDate ? '' : timeData.calculatedDate}</Typography>
       </Box>
-      <Box sx={{ width: '100%' }}>
-        <ProgressBar
-          value={timeData.timeLived.ms}
-          max={timeData.lifeDuration.ms}
-          tooltip={'probe active'}
-          message={
-            <TypeOut
-              words={description}
-              typeSpeed={50}
-              rewindSpeed={1}
-              pauseSpeed={2000}
-              Node="span"
-            />
-          }
-        />
-      </Box>
+      {isAlive ? (
+        <Box sx={{ width: '100%' }}>
+          <ProgressBar
+            value={timeData.timeLived.ms}
+            max={timeData.lifeDuration.ms}
+            tooltip={'probe active'}
+            message={isInvalidDate ? '' : timeData.calculatedDate}
+          />
+        </Box>
+      ) : (
+        <Box sx={{ width: '100%' }}>
+          <ProgressBar
+            value={timeData.timeLived.ms}
+            max={timeData.lifeDuration.ms}
+            tooltip={'probe deactivated'}
+            message={`destination time reached`}
+          />
+        </Box>
+      )}
+
       {/* Split pillars */}
 
       <Stack spacing={1} direction="row" justifyContent={'center'} padding={1}>
@@ -127,7 +133,7 @@ export const CardBasic: React.FC<Props> = ({
         {/* pillar 2 */}
         <Stack spacing={1} direction="column" padding={1}>
           <Box sx={centerFlexbox}>
-            <Typography variant="h6">Capacity</Typography>
+            <Typography variant="h6">Max Travel</Typography>
             <Typography variant="caption">{timeData.lifeDuration.dateString}</Typography>
             <Typography variant="caption">{timeData.lifeDuration.timeString}</Typography>
           </Box>
@@ -136,11 +142,8 @@ export const CardBasic: React.FC<Props> = ({
       {/* footer */}
 
       <Box sx={centerFlexbox}>
-        <Typography variant="caption">Card's Birth: {timeData.dateCreated}</Typography>
-        <Typography variant="caption">Card's Age: {timeData.realTimePast.string}</Typography>
-        <Typography variant="h2">{`time rate: ${timeData.timeRate}x`} </Typography>
-
-        {isAlive ? null : <Typography sx={{ fontSize: '12px' }}>Reached Destination</Typography>}
+        <Typography variant="caption">Created: {timeData.dateCreated}</Typography>
+        <Typography variant="h4">{`time rate: ${timeData.timeRate}x`} </Typography>
       </Box>
 
       <Stack spacing={0.5} sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
@@ -148,7 +151,7 @@ export const CardBasic: React.FC<Props> = ({
           <Stack>
             {gameOptions.isCloningFree ? (
               <Typography variant="h6" sx={{ width: '100%', textAlign: 'center' }}>
-                Clone
+                Clone with Mutator
               </Typography>
             ) : (
               <Typography variant="h6" sx={{ width: '100%', textAlign: 'center' }}>
@@ -163,7 +166,7 @@ export const CardBasic: React.FC<Props> = ({
                 sx={{ mx: 0.5 }}
                 startIcon={<FastForwardIcon />}
                 endIcon={<TrendingUpIcon />}
-                onClick={duplicate}
+                onClick={() => duplicate('isMutateTimeRate')}
                 color="success"
                 variant="contained"
               >
@@ -173,11 +176,11 @@ export const CardBasic: React.FC<Props> = ({
                 startIcon={<UpdateIcon />}
                 endIcon={<TrendingUpIcon />}
                 sx={{ mx: 0.5 }}
-                onClick={duplicate}
+                onClick={() => duplicate('isMutateDurability')}
                 color="success"
                 variant="contained"
               >
-                Durability
+                Max Travel
               </Button>
             </Box>
           </Stack>

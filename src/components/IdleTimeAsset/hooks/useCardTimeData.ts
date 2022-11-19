@@ -29,7 +29,6 @@ export const useCardTimeData = (
       if (rate < 1) setRate(rate + 1 * 100 > 0 ? 0 : rate + 1 * 100);
       setRateReturnCounter(rateReturn);
     }
-
     const isReverseTime = rate < 0;
     const nowMs = nowDate.getTime();
     const startCalcDate = dateCreated ? dateCreated : realTimeOnRender.current;
@@ -40,11 +39,14 @@ export const useCardTimeData = (
     const futureDate = new Date(futureMs);
     const pastDate = new Date(nowMs - msPassed + totalAccumulatedInt);
     const msTimeCreated = dateCreated.getTime();
+    const isAlive = futureMs < lifeDuration + msTimeCreated;
     const totalAccumulatedText = totalAccumulated.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     const realTimePast = convertMS(msPassed);
     const isInvalidDate = isReverseTime
       ? pastDate.toLocaleDateString('en-US', dateOptions)
       : futureDate.toLocaleDateString('en-US', dateOptions) === 'Invalid Date';
+
+    const willDieBeforeFirstFrame = lifeDuration / 10 / timeRate < counterSpeedMs;
     return {
       msPassed: msPassed,
       ageFormatted: `${numberWithCommas(msPassed)}`,
@@ -63,8 +65,9 @@ export const useCardTimeData = (
         ? pastDate.toLocaleDateString('en-US', dateOptions)
         : futureDate.toLocaleDateString('en-US', dateOptions),
       lifeDuration: convertMS(lifeDuration),
-      isAlive: futureMs < lifeDuration + msTimeCreated,
+      isAlive: isAlive,
       isInvalidDate,
+      willDieBeforeFirstFrame,
     };
   }, [nowDate]);
 

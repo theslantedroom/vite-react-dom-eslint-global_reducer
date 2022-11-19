@@ -1,5 +1,5 @@
-const dayMs = 8.64e7;
-const yearMs = 8.64e7 * 365;
+export const dayMs = 8.64e7;
+export const yearMs = 8.64e7 * 365;
 
 export const generateCard = () => {
   return {
@@ -135,10 +135,10 @@ export const genTimeProbe = () => {
       'traveling at standard 1x time speed',
       'target: 30 seconds into the future',
     ],
-    lifeDuration: 30000,
+    lifeDuration: 10000,
     dateCreated: new Date(),
     timeRate: 1,
-    counterSpeedMs: 200,
+    counterSpeedMs: 1,
     isDestroyed: false,
   };
 };

@@ -5,7 +5,10 @@ import { genTimeTarget } from '../util/generateCard';
 import { CardBasic } from '../components/CardBasic';
 import { useCardTimeData } from '../hooks/useCardTimeData';
 import { genGameTest, genVillage, genIrlFamily } from '../util/generateCard';
-
+const gameOptions = {
+  isCloningFree: true,
+  cardCapacity: 2,
+};
 const dateOptions: Intl.DateTimeFormatOptions = {
   year: 'numeric',
   month: 'short',
@@ -156,6 +159,7 @@ export const IdleTimeBoard: React.FC<Props> = ({ cards = [], timeTargets = [] })
 
             return (
               <CardBasic
+                gameOptions={gameOptions}
                 key={name + i}
                 name={name}
                 description={description}

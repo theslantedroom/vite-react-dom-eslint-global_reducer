@@ -16,7 +16,7 @@ export const ProgressBar: React.FC<Props> = ({
   tooltip = 'This is a tooltip',
   max = 100,
   value = 2,
-  width = undefined,
+  width = 335,
   height = 25,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -102,7 +102,7 @@ export const ProgressBar: React.FC<Props> = ({
           width: `${memoWidth}px`,
           background: 'linear-gradient(90deg, #fcff9e 0%, #c67700 100%)',
           zIndex: 1,
-          transition: 'width 0.5s ease-in-out',
+          // transition: 'width 0.5s ease-in-out', //30fps
         }}
       />
       <Box

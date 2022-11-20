@@ -41,10 +41,6 @@ export const ProgressBar: React.FC<Props> = ({
     setHover(false);
   }, []);
 
-  const setValue = useCallback((val: number) => {
-    setShallowValue(val);
-  }, []);
-
   const memoWidth = useMemo(() => {
     const w = (shallowValue / max) * widthBar;
     if (shallowValue >= max) return widthBar;
@@ -89,9 +85,9 @@ export const ProgressBar: React.FC<Props> = ({
             alignItems="center"
             spacing={0}
           >
-            <Button onClick={() => setValue(0)}>0</Button>
-            <Button onClick={() => setValue(50)}>50</Button>
-            <Button onClick={() => setValue(100)}>100</Button>
+            <Button onClick={() => setShallowValue(0)}>0</Button>
+            <Button onClick={() => setShallowValue(50)}>50</Button>
+            <Button onClick={() => setShallowValue(100)}>100</Button>
           </Stack>
         </>
       )}

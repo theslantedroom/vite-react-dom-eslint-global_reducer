@@ -3,9 +3,10 @@ import TypeOut from 'react-typeout';
 import { Typography, Box, Paper, Stack, Button, Divider } from '@mui/material';
 import FastForwardIcon from '@mui/icons-material/FastForward';
 import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import UpdateIcon from '@mui/icons-material/Update';
-
+import MoreTimeIcon from '@mui/icons-material/MoreTime';
 import { ProgressBar } from '../../ProgressBar/ProgressBar';
 import { calcReplicateCost } from '../layouts/IdleHistoryBoard';
 import { CardDead } from './CardDead';
@@ -30,6 +31,9 @@ export interface Props {
   selectCard?: any;
   selectedCard?: any;
   gameOptions: any;
+  localCards?: any[];
+  activeCards?: any[];
+  jumpWarp?: any;
 }
 export const CardBasic: React.FC<Props> = ({
   name = undefined,
@@ -49,6 +53,9 @@ export const CardBasic: React.FC<Props> = ({
   selectedCard = undefined,
   gameOptions,
   creates,
+  localCards = [],
+  activeCards = [],
+  jumpWarp = () => null,
 }) => {
   const { timeData, rate, setRate } = useCardTimeData(
     rateReturn,
@@ -58,6 +65,11 @@ export const CardBasic: React.FC<Props> = ({
     lifeDuration
   );
   const isAlive = timeData.isAlive;
+  const canClone = activeCards.length < gameOptions.cardCapacity;
+
+  useEffect(() => {
+    if (!isAlive) destroyCard();
+  }, [isAlive]);
 
   const { isInvalidDate, msPassed, willDieBeforeFirstFrame } = timeData;
   const replicateCost = convertMS(calcReplicateCost(lifeDuration, timeRate));
@@ -90,7 +102,6 @@ export const CardBasic: React.FC<Props> = ({
         boxShadow: 'rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px',
       }}
     >
-      {willDieBeforeFirstFrame ? 'willDieBeforeFirstFrame' : ''}
       <Box sx={centerFlexbox}>
         {/* Header */}
         <Typography variant="h4">{name}</Typography>
@@ -142,15 +153,15 @@ export const CardBasic: React.FC<Props> = ({
       {/* footer */}
 
       <Box sx={centerFlexbox}>
-        <Typography variant="caption">Created: {timeData.dateCreated}</Typography>
         <Typography variant="h4">{`time rate: ${timeData.timeRate}x`} </Typography>
+        <Typography variant="caption">Created: {timeData.dateCreated}</Typography>
       </Box>
 
       <Stack spacing={0.5} sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
         {isSelected ? (
-          <Stack>
+          <Stack direction="column">
             {gameOptions.isCloningFree ? (
-              <Typography variant="h6" sx={{ width: '100%', textAlign: 'center' }}>
+              <Typography variant="h5" sx={{ width: '100%', textAlign: 'center' }}>
                 Clone with Mutator
               </Typography>
             ) : (
@@ -160,29 +171,44 @@ export const CardBasic: React.FC<Props> = ({
                 {replicateCost.timeString}
               </Typography>
             )}
+            {canClone ? (
+              <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', pt: 0 }}>
+                <Button
+                  sx={{ mx: 0.5 }}
+                  // startIcon={<TrendingUpIcon />}
+                  endIcon={<TrendingUpIcon />}
+                  onClick={() => duplicate('isMutateTimeRate')}
+                  color="success"
+                  variant="contained"
+                >
+                  Time Rate
+                </Button>
+                <Button
+                  startIcon={<MoreTimeIcon />}
+                  // endIcon={<MoreTimeIcon />}
+                  sx={{ mx: 0.5 }}
+                  onClick={() => duplicate('isMutateDurability')}
+                  color="success"
+                  variant="contained"
+                >
+                  Max Travel
+                </Button>
+              </Box>
+            ) : null}
 
-            <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
-              <Button
-                sx={{ mx: 0.5 }}
-                startIcon={<FastForwardIcon />}
-                endIcon={<TrendingUpIcon />}
-                onClick={() => duplicate('isMutateTimeRate')}
-                color="success"
-                variant="contained"
-              >
-                Time Rate
-              </Button>
-              <Button
-                startIcon={<UpdateIcon />}
-                endIcon={<TrendingUpIcon />}
-                sx={{ mx: 0.5 }}
-                onClick={() => duplicate('isMutateDurability')}
-                color="success"
-                variant="contained"
-              >
-                Max Travel
-              </Button>
-            </Box>
+            {localCards.length > 0 ? (
+              <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', pt: 1 }}>
+                <Button
+                  endIcon={<FastForwardIcon />}
+                  sx={{ mx: 0.5 }}
+                  onClick={jumpWarp}
+                  variant="contained"
+                  color="error"
+                >
+                  Warp with Probe
+                </Button>
+              </Box>
+            ) : null}
           </Stack>
         ) : (
           <Button

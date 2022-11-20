@@ -133,12 +133,12 @@ export const genTimeProbe = () => {
       '.......',
       'all systems functional',
       'traveling at standard 1x time speed',
-      'target: 30 seconds into the future',
+      'target: 10 minutes into the future',
     ],
-    lifeDuration: 10000,
+    lifeDuration: 60000,
     dateCreated: new Date(),
     timeRate: 1,
-    counterSpeedMs: 1,
+    counterSpeedMs: 100,
     isDestroyed: false,
   };
 };

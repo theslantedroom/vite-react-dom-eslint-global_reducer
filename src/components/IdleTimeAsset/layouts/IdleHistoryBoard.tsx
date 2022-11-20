@@ -239,8 +239,6 @@ export const IdleHistoryBoard: React.FC<Props> = ({ cards = [], timeTargets = []
   const displayGameLog = useMemo(() => {
     return (
       <Box sx={{ width: '100%', textAlign: 'center', height: '75px', overflow: 'auto' }}>
-        {gameLog.length > 0 ? displayGameLog : null}
-
         {gameLog.map((log, i) => {
           const isTopLog = true;
           return (
